@@ -23,7 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity {
+public class MainActv extends ListActivity {
 	
 	public static Vibrator vib;
 
@@ -220,6 +220,12 @@ public class MainActivity extends ListActivity {
 		 * 3. Return
 			----------------------------*/
 		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "file path: " + file.getAbsolutePath());
+		
+		
 		File[] files = file.listFiles();
 		
 		/*----------------------------
@@ -268,6 +274,7 @@ public class MainActivity extends ListActivity {
 			return;
 			
 		}//if (temp == null)
+		
 		
 		/*----------------------------
 		 * 2. Get editor
@@ -322,7 +329,7 @@ public class MainActivity extends ListActivity {
 	private File create_root_dir() {
 		String baseDirPath = StringUtils.join(
 				new String[]{
-						this.dirName_ExternalStorage, this.dirName_base},
+						dirName_ExternalStorage, dirName_base},
 				File.separator);
 
 		File file = new File(baseDirPath);
@@ -450,5 +457,44 @@ public class MainActivity extends ListActivity {
 		
 		return target;
 	}//private File get_file_object(String itemName)
+
+	@Override
+	protected void onDestroy() {
+		/*----------------------------
+		 * 1. Reconfirm if the user means to quit
+		 * 2. super
+		 * 3. Clear => prefs
+		 * 4. Clear => file_names
+			----------------------------*/
+		
+		super.onDestroy();
+		
+		/*----------------------------
+		 * 3. Clear => prefs
+			----------------------------*/
+		prefs = 
+				this.getSharedPreferences(prefs_current_path, MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = prefs.edit();
+
+		editor.clear();
+		editor.commit();
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Prefs cleared");
+		
+		/*----------------------------
+		 * 4. Clear => file_names
+			----------------------------*/
+		file_names = null;
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "file_names => Set to null");
+		
+	}//protected void onDestroy()
 
 }//public class MainActivity extends Activity

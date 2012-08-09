@@ -3,7 +3,7 @@ package ifm9.utils;
 import ifm9.items.ThumbnailItem;
 import ifm9.listeners.DialogButtonOnClickListener;
 import ifm9.listeners.DialogButtonOnTouchListener;
-import ifm9.main.MainActivity;
+import ifm9.main.MainActv;
 import ifm9.main.R;
 
 import java.io.BufferedWriter;
@@ -211,5 +211,327 @@ public class Methods {
 		Arrays.sort(files, filecomparator);
 
 	}//public static void sortFileList(File[] files)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. MainActv.onListItemClick()
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void enterDir(Activity actv, File newDir) {
+		/*----------------------------
+		 * Steps
+		 * 1. Update the current path
+		 * 2. Refresh list view
+		 * 3. Update path view
+		 * 
+		 * 
+			----------------------------*/
+		/*----------------------------
+		 * 1. Update the current path
+			----------------------------*/
+		
+		MainActv.dirPath_current = newDir.getAbsolutePath();
+		
+		Methods.update_prefs_currentPath(actv, MainActv.dirPath_current);
+		
+		/*----------------------------
+		 * 2. Refresh list view
+			----------------------------*/
+		refreshListView(actv);
+		
+		/*----------------------------
+		 * 3. "Up" button => Enable
+			----------------------------*/
+		ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
+		
+		if (!ib.isEnabled()) {
+			
+			ib.setEnabled(true);
+			
+			ib.setImageResource(R.drawable.ifm8_up);
+			
+			
+		}//if (!ib.isEnabled())
+		
+		/*----------------------------
+		 * 3. Update path view
+			----------------------------*/
+		updatePathLabel(actv);
+		
+		
+	}//public static void enterDir(Activity actv, File newDir)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. Methods.enterDir()
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static boolean update_prefs_currentPath(Activity actv, String newPath) {
+		
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(MainActv.prefs_current_path, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * 2. Get editor
+			----------------------------*/
+		SharedPreferences.Editor editor = prefs.edit();
+
+		/*----------------------------
+		 * 3. Set value
+			----------------------------*/
+		editor.putString(MainActv.prefs_current_path, newPath);
+		
+		try {
+			editor.commit();
+			
+			return true;
+			
+		} catch (Exception e) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Excption: " + e.toString());
+			
+			return false;
+		}
+
+	}//public static boolean update_prefs_current_path(Activity actv, Strin newPath)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. Methods.enterDir()
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static String get_currentPath_from_prefs(Activity actv) {
+		
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(MainActv.prefs_current_path, MainActv.MODE_PRIVATE);
+
+		return prefs.getString(MainActv.prefs_current_path, null);
+		
+	}//public static String get_currentPath_from_prefs(Activity actv)
+
+	
+	/****************************************
+	 * 		refreshListView(Activity actv)
+	 * 
+	 * <Caller> 
+	 * 1. Methods.enterDir()
+	 * 
+	 * <Desc> 
+	 * 1. 
+	 * 
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void refreshListView(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get currentPath
+		 * 2. Get file array
+		 * 3. Sort file array
+		 * 
+		 * 4. Add file names to list
+		 * 5. Notify adapter of changes
+		 * 6. Update image buttons
+		 * 
+		 * 
+		 * 1. Get file list
+		 * 1-2. Sort list
+		 * 2. Clear => ImageFileManager8Activity.file_names
+		 * 3. Add file names to => ImageFileManager8Activity.file_names
+		 * 4. Notify adapter of changes
+		 * 
+		 * 
+		 * 
+		 * 5. Update image buttons
+			----------------------------*/
+		/*----------------------------
+		 * 1. Get currentPath
+			----------------------------*/
+		String currentPath = Methods.get_currentPath_from_prefs(actv);
+		
+		if (currentPath == null) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Methods.get_currentPath_from_prefs(actv) => null");
+			
+			return;
+			
+		}//if (currentPath == null)
+		// 
+		/*----------------------------
+		 * 2. Get file array
+			----------------------------*/
+		File currentDir = new File(currentPath);
+		
+		File[] files = currentDir.listFiles();
+		
+		/*----------------------------
+		 * 3. Sort file array
+			----------------------------*/
+		sortFileList(files);
+		
+		/*----------------------------
+		 * 4. Add file names to list
+			----------------------------*/
+		// Reset file_names
+		if(MainActv.file_names != null) {
+			
+			MainActv.file_names.clear();
+			
+		} else {
+			
+			MainActv.file_names = new ArrayList<String>();
+			
+		}
+		
+		// Add names
+		for (File item : files) {
+			
+			MainActv.file_names.add(item.getName());
+			
+		}
+		
+		/*----------------------------
+		 * 5. Notify adapter of changes
+			----------------------------*/
+		if (MainActv.adapter != null) {
+			
+			MainActv.adapter.notifyDataSetChanged();
+			
+		} else {//if (condition)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "MainActv.adapter => null");
+			
+			// debug
+			Toast.makeText(actv, "MainActv.adapter => null", 3000).show();
+
+		}//if (condition)
+		
+		/*----------------------------
+		 * 6. Update image buttons
+			----------------------------*/
+		update_image_buttons(actv, currentPath);
+		
+		
+	}//private static void refreshListView()
+
+	private static void update_image_buttons(Activity actv, String currentPath) {
+		
+		ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
+		
+		if (currentPath.equals(MainActv.dirPath_base)) {
+			
+			ib.setImageResource(R.drawable.ifm8_up_disenabled);
+			ib.setEnabled(false);
+			
+		} else {//if (currentPath.equals(MainActv.dirPath_base))
+
+			ib.setImageResource(R.drawable.ifm8_up);
+			ib.setEnabled(true);
+			
+		}//if (currentPath.equals(MainActv.dirPath_base))
+		
+	}//private static void update_image_buttons()
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1.  Methods.enterDir(this, target)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void updatePathLabel(Activity actv) {
+		// 
+		TextView tv = (TextView) actv.findViewById(R.id.v1_tv_dir_path);
+		
+		tv.setText(getCurrentPathLabel(actv));
+		
+	}//public static void updatePathLabel(Activity actv)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. Methods.updatePathLabel(Activity actv)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static String getCurrentPathLabel(Activity actv) {
+		/*----------------------------
+		 * 1. Prep => pathArray, currentBaseDirName
+		 * 2. Detect loation of "IFM8"
+		 * 3. Build path label
+			----------------------------*/
+		
+		String currentPath = Methods.get_currentPath_from_prefs(actv);
+		
+		String[] pathArray = currentPath.split(File.separator);
+		
+		String currentBaseDirName = pathArray[pathArray.length - 1];
+		
+		/*----------------------------
+		 * 2. Detect loation of "IFM8"
+			----------------------------*/
+		int location = -1;
+		
+		for (int i = 0; i < pathArray.length; i++) {
+			if (pathArray[i].equals(MainActv.dirName_base)) {
+				location = i;
+				break;
+			}//if (pathArray[i].equals(ImageFileManager8Activity.baseDirName))
+		}//for (int i = 0; i < pathArray.length; i++)
+		
+		/*----------------------------
+		 * 3. Build path label
+			----------------------------*/
+		//REF=> http://stackoverflow.com/questions/4439595/how-to-create-a-sub-array-from-another-array-in-java
+		String[] newPath = Arrays.copyOfRange(pathArray, location, pathArray.length);
+		
+		String s_newPath = StringUtils.join(newPath, File.separator);
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "s_newPath => " + s_newPath);
+		
+		return s_newPath;
+		
+	}//public static String getCurrentPathLabel(Activity actv)
 
 }//public class Methods
