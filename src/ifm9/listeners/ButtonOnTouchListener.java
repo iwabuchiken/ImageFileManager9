@@ -30,87 +30,26 @@ public class ButtonOnTouchListener implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
-		Methods.ButtonTags tag_name = (Methods.ButtonTags) v.getTag();
+//		Methods.ButtonTags tag_name = (Methods.ButtonTags) v.getTag();
 		
 		switch (event.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:
-			switch (tag_name) {
-				//
-			case ib_up://----------------------------------------------------
-				//
-//				(ImageButton) v).setImageResource(R.drawable.ifm8_up_disenabled);
-//				ImageButton ib = new ImageButton(actv);
-				
-				ImageButton ib = (ImageButton) v;
-				ib.setImageResource(R.drawable.ifm8_up_disenabled);
-				
-				break;
-	
-			case thumb_activity_ib_back://----------------------------------------------------
-				
-//				vib.vibrate(Methods.vibLength_click);
-				
-				ib = (ImageButton) v;
-				ib.setImageResource(R.drawable.ifm8_thumb_back_touched);
-				
-				break;
 			
-				
-			// image_activity.xml
-			case image_activity_back://----------------------------------------------------
-				
-				ib = (ImageButton) v;
-				ib.setImageResource(R.drawable.ifm8_image_actv_back_70x70_touched);
-				
-				break;
-				
-			case db_manager_activity_create_table://----------------------------------------------------
-			case db_manager_activity_drop_table:
-			case db_manager_activity_register_patterns:
+//			switch (tag_name) {
 			
-				v.setBackgroundColor(Color.GRAY);
-			
-			break;
-				
-			}//switch (tag_name)
+//			case :
+//				v.setBackgroundColor(Color.GRAY);
+//				break;
+//			}//switch (tag_name)
 			
 			break;//case MotionEvent.ACTION_DOWN:
 			
 		case MotionEvent.ACTION_UP:
-			switch (tag_name) {
-				//
-			case ib_up://----------------------------------------------------
-				//
-				
-				ImageButton ib = (ImageButton) v;
-				ib.setImageResource(R.drawable.ifm8_up);
-
-				break;
-
-			case thumb_activity_ib_back://----------------------------------------------------
-				
-				ib = (ImageButton) v;
-				ib.setImageResource(R.drawable.ifm8_thumb_back_50x50);
-				
-				break;
-
-			// image_activity.xml
-			case image_activity_back://----------------------------------------------------
-				
-				ib = (ImageButton) v;
-				ib.setImageResource(R.drawable.ifm8_image_actv_back_70x70);
-				
-				break;
-				
-			case db_manager_activity_create_table://----------------------------------------------------
-			case db_manager_activity_drop_table:
-			case db_manager_activity_register_patterns:
-				
-				v.setBackgroundColor(Color.WHITE);
-				
-				break;
-				
-			}//switch (tag_name)
+//			switch (tag_name) {
+//			case internet_actv_bt_post_json_async:
+//				v.setBackgroundColor(Color.WHITE);
+//				break;
+//			}//switch (tag_name)
 			
 			break;//case MotionEvent.ACTION_UP:
 		}//switch (event.getActionMasked())

@@ -553,7 +553,7 @@ public class DBUtils extends SQLiteOpenHelper{
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "sql => Done: " + sql);
 			
-			Methods.toastAndLog(actv, "Data updated", 2000);
+//			Methods.toastAndLog(actv, "Data updated", 2000);
 			
 			return true;
 			
