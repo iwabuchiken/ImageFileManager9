@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Generic items -->
+    <string name="generic_bt_ok">OK</string>
+    <string name="generic_bt_cancel">キャンセル</string>
+    <string name="generic_tv_confirm">確認</string>
+    <string name="generic_tv_menu">メニュー</string>
+    <string name="generic_tv_register">登録</string>
+    
+    <string name="hello">Hello World, ImageFileManager8Activity!</string>
+    <string name="app_name">ImageFileManager8</string>
+    <string name="v1_tv_dir_path">Directory path</string>
+    
+    <!-- main_menu.xml -->
+    <string name="main_opt_menu_create_folder">フォルダ作成</string>
+    <string name="main_opt_menu_refresh_db">DBリフレッシュ</string>
+    <string name="main_opt_menu_db_activity">データベース</string>
+    <string name="main_opt_menu_search">探す</string>
+
+    <!-- dlg_create_folder.xml -->
+    <string name="dlg_create_folder_title">フォルダ作成</string>
+    <string name="dlg_create_folder_tv_message">フォルダ名を入れてください</string>
+    <string name="dlg_create_folder_tv_folder_set">フォルダセットの作成</string>
+    
+    <!-- dlg_input_empty.xml -->
+    <string name="dlg_input_empty_title">注意！</string>
+    <string name="dlg_input_empty_message">入力がありません</string>
+    <string name="dlg_input_empty_reenter">もう一度入力</string>
+    <string name="dlg_input_empty_cancel">取りやめ</string>
+    
+    <!-- dlg_confirm_create_folder.xml -->
+    <string name="dlg_confirm_create_folder_tv_message">このフォルダを作りますか？</string>
+    
+    <!-- dlg_confirm_remove_folder.xml -->
+    <string name="dlg_confirm_remove_folder_tv_message">このフォルダを削除しますか？</string>
+    
+    <!-- db_manager.xml -->
+    <string name="db_manager_btn_create_table">テーブル作成</string>
+    <string name="db_manager_btn_drop_table">テーブル削除</string>
+    <string name="db_manager_btn_register_patterns">定型句登録</string>
+    
+    <!-- dlg_drop_table.xml -->
+    <string name="dlg_drop_table_title">テーブル削除</string>
+    
+    <!-- dlg_confirm_drop_table.xml -->
+    <string name="dlg_confirm_drop_table_tv_message_drop">このテーブルを削除しますか？</string>
+    
+    
+    <!-- image_actv_menu.xml -->
+    <string name="image_actv_menu_add_memo">メモ</string>
+    <string name="image_actv_menu_add_patterns">定型句登録</string>
+    
+    <!-- dlg_add_memos.xml -->
+    <string name="dlg_add_memos_tv_title">メモ</string>
+    <string name="dlg_add_memos_bt_patterns">定型</string>
+    
+    <!-- thumb_actv_menu.xml -->
+    <string name="thumb_actv_menu_move_mode">移動モード</string>
+    <string name="thumb_actv_menu_move_files">移動</string>
+    
+    <!-- dlg_confirm_move_files.xml -->
+    <string name="dlg_confirm_move_files_tv_message">このフォルダへ移しますか？</string>
+    
+    <!-- dlg_item_menu.xml -->
+    <string name="dlg_item_menu_item_edit_memo">メモ編集</string>
+    <string name="dlg_item_menu_item_delete">削除</string>
+    <string name="dlg_item_menu_item_move">移動</string>
+    
+    <!-- dlg_create_table.xml -->
+	    <string name="dlg_create_table_title">テーブル作成</string>
+	    <string name="dlg_create_table_label_column_name">カラム名</string>
+	    <string name="dlg_create_table_label_data_type">データ・タイプ</string>
+	    <string name="dlg_create_table_label_table_name">テーブル名</string>
+	    
+    <!-- dlg_memo_patterns.xml -->
+    	<string name="dlg_memo_patterns_title">定型</string>
+    
+    <!-- dlg_register_patterns.xml -->
+    	<string name="dlg_register_patterns_title">定型句登録</string>
+    	<string name="dlg_register_patterns_tv_word">語句</string>
+    	<string name="dlg_register_patterns_tv_table_name">テーブル名</string>
+    	
+    <!-- dlg_search.xml -->
+    	<string name="dlg_search_title">サーチ</string>
+    	<string name="dlg_search_tv_message">サーチする語句を入れてください（複数の場合、スペースで区切ります）</string>
+    
+</resources>
