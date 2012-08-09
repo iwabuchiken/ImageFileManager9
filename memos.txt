@@ -13,6 +13,8 @@ g init
 g a .
 gitk
 
+git remote add origin git@github.com:iwabuchiken/ImageFileManager9.git
+
 git log --grep=B4 -3
 git log --grep=B5 -3
 

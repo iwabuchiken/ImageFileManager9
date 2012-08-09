@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/thumb_actv_menu_move_mode" 
+        android:title="@string/thumb_actv_menu_move_mode" 
+        android:icon="@drawable/ifm8_thumb_actv_opt_menu_move_mode_off"
+        >
+        
+    </item>
+    
+	<item 
+        android:id="@+id/thumb_actv_menu_move_files" 
+        android:title="@string/thumb_actv_menu_move_files" 
+        android:icon="@drawable/ifm8_thumb_actv_opt_menu_move_file_2"
+        >
+        
+    </item>
+    
+</menu>

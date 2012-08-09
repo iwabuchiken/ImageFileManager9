@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/image_actv_menu_add_memo" 
+        android:title="@string/image_actv_menu_add_memo" 
+        android:icon="@drawable/ifm8_image_actv_opt_menu_add_memo"
+        >
+        
+    </item>
+    
+    <item 
+        android:id="@+id/image_actv_menu_add_patterns" 
+        android:title="@string/image_actv_menu_add_patterns" 
+        android:icon="@drawable/ifm8_image_actv_opt_menu_add_pattern_30x30_v3"
+        >
+        
+    </item>
+    
+</menu>
