@@ -3,8 +3,10 @@ package ifm9.utils;
 import ifm9.items.ThumbnailItem;
 import ifm9.listeners.DialogButtonOnClickListener;
 import ifm9.listeners.DialogButtonOnTouchListener;
+import ifm9.listeners.DialogListener;
 import ifm9.main.MainActv;
 import ifm9.main.R;
+import ifm9.main.TNActv;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
@@ -32,6 +35,7 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
@@ -590,5 +594,52 @@ public class Methods {
 		Methods.updatePathLabel(actv);
 		
 	}//public static void upDir(Activity actv)
+
+	public static void startThumbnailActivity(Activity actv, String targetFileName) {
+		/*----------------------------
+		 * Steps
+		 * 1. "list.txt"?
+		 * 2. If yes, start activity
+			----------------------------*/
+		if (!targetFileName.equals(MainActv.listFileName)) {
+			
+			// debug
+			Toast.makeText(actv, "list.txt ではありません", 2000).show();
+			
+			return;
+		}//if (!target.getName().equals(ImageFileManager8Activity.listFileName))
+		
+		/*----------------------------
+		 * 2. If yes, start activity
+			----------------------------*/
+		Intent i = new Intent();
+		
+		i.setClass(actv, TNActv.class);
+		
+		i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		
+		actv.startActivity(i);
+		
+	}//public static void startThumbnailActivity(Activity actv, File target)
+
+	public static void confirm_quit(Activity actv, int keyCode) {
+		
+		// TODO 自動生成されたメソッド・スタブ
+		if (keyCode==KeyEvent.KEYCODE_BACK) {
+			
+			AlertDialog.Builder dialog=new AlertDialog.Builder(actv);
+			
+	        dialog.setTitle("アプリの終了");
+	        dialog.setMessage("アプリを終了しますか？");
+	        
+	        dialog.setPositiveButton("終了",new DialogListener(actv, dialog, 0));
+	        dialog.setNegativeButton("キャンセル",new DialogListener(actv, dialog, 1));
+	        
+	        dialog.create();
+	        dialog.show();
+			
+		}//if (keyCode==KeyEvent.KEYCODE_BACK)
+		
+	}//public static void confirm_quit(Activity actv, int keyCode)
 
 }//public class Methods

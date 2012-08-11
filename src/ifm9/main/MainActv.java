@@ -3,6 +3,7 @@ package ifm9.main;
 import ifm9.listeners.ButtonOnClickListener;
 import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
+import ifm9.listeners.DialogListener;
 import ifm9.utils.Methods;
 
 import java.io.BufferedWriter;
@@ -15,11 +16,13 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -470,14 +473,14 @@ public class MainActv extends ListActivity {
 			
 		} else if (target.isFile()) {//if (target.isDirectory())
 			
-//			Methods.startThumbnailActivity(this, target);
+			Methods.startThumbnailActivity(this, target.getName());
 			
 //			Methods.toastAndLog(this, "This is a file: " + itemName, 2000);
 			
-			// debug
-			Toast.makeText(this, "This is a file: " + itemName, 
-					2000)
-					.show();
+//			// debug
+//			Toast.makeText(this, "This is a file: " + itemName, 
+//					2000)
+//					.show();
 			
 		}//if (target.isDirectory())
 		
@@ -548,5 +551,13 @@ public class MainActv extends ListActivity {
 				+ "]", "file_names => Set to null");
 		
 	}//protected void onDestroy()
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		Methods.confirm_quit(this, keyCode);
+		
+		return super.onKeyDown(keyCode, event);
+	}
 
 }//public class MainActivity extends Activity
