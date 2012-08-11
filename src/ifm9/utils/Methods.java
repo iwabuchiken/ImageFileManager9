@@ -534,4 +534,61 @@ public class Methods {
 		
 	}//public static String getCurrentPathLabel(Activity actv)
 
+	public static void upDir(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get the current path from preference
+		 * 2. Is the current path "roof"?
+		 * 3. Go up the path
+		 * 3-2. New path => Equal to base dir path?
+		 * 4. Refresh list
+		 * 5. Update path view
+			----------------------------*/
+		/*----------------------------
+		 * 1. Get the current path from preference
+			----------------------------*/
+		String currentPath = Methods.get_currentPath_from_prefs(actv);
+		
+		/*----------------------------
+		 * 2. Is the current path "roof"?
+			----------------------------*/
+		if (currentPath.equals(MainActv.dirPath_base)) {
+			
+			// debug
+			Toast.makeText(actv, "トップ・フォルダにいます", 2000).show();
+		
+			return;
+		}//if (ImageFileManager8Activity.currentDirPath == ImageFileManager8Activity.baseDirPath)
+		
+		/*----------------------------
+		 * 3. Update the current path
+			----------------------------*/
+		Methods.update_prefs_currentPath(actv, new File(currentPath).getParent());
+		
+//		ImageFileManager8Activity.currentDirPath = 
+//						(new File(ImageFileManager8Activity.currentDirPath))
+		
+//		File f = new File(ImageFileManager8Activity.currentDirPath);
+//		
+//		ImageFileManager8Activity.currentDirPath = f.getParent();
+//		
+//		Methods.toastAndLog(actv, "f.getParent() => " + f.getParent(), 3000);
+		
+//		/*----------------------------
+//		 * 3-2. New path => Equal to base dir path?
+//			----------------------------*/
+//		
+//		
+		/*----------------------------
+		 * 4. Refresh list
+			----------------------------*/
+		Methods.refreshListView(actv);
+		
+		/*----------------------------
+		 * 5. Update path view
+			----------------------------*/
+		Methods.updatePathLabel(actv);
+		
+	}//public static void upDir(Activity actv)
+
 }//public class Methods
