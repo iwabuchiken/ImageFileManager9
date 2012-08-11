@@ -1,5 +1,7 @@
 package ifm9.main;
 
+import ifm9.listeners.ButtonOnClickListener;
+import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
 import ifm9.utils.Methods;
 
@@ -20,6 +22,7 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -60,9 +63,10 @@ public class MainActv extends ListActivity {
 		 * 1. super
 		 * 2. Set content
 		 * 2-2. Set title
-		 * 3. Vibrate
+		 * 3. Initialize => vib
 		 * 
 		 *  4. Set list
+		 *  5. Set listener => Image buttons
 			----------------------------*/
 		
         super.onCreate(savedInstanceState);
@@ -80,7 +84,42 @@ public class MainActv extends ListActivity {
 			----------------------------*/
         set_initial_dir_list();
         
+        /*----------------------------
+		 * 5. Set listener => Image buttons
+			----------------------------*/
+		set_listeners();
+        
     }//public void onCreate(Bundle savedInstanceState)
+
+	private void set_listeners() {
+		/*----------------------------
+		 * 1. Get view
+		 * 2. Set enables
+			----------------------------*/
+		
+		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);
+		
+		/*----------------------------
+		 * 2. Set enables
+			----------------------------*/
+		String curDirPath = Methods.get_currentPath_from_prefs(this);
+		
+		if (curDirPath.equals(dirPath_base)) {
+			
+			ib_up.setEnabled(false);
+			
+		}//if (this.currentDirPath == this.baseDirPath)
+		
+		/*----------------------------
+		 * 3. Listeners => Click
+			----------------------------*/
+		ib_up.setTag(Methods.ButtonTags.ib_up);
+		
+		ib_up.setOnTouchListener(new ButtonOnTouchListener(this));
+		ib_up.setOnClickListener(new ButtonOnClickListener(this));
+
+		
+	}//private void set_listeners()
 
 	private boolean set_initial_dir_list() {
 		// TODO 自動生成されたメソッド・スタブ
@@ -225,8 +264,21 @@ public class MainActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "file path: " + file.getAbsolutePath());
 		
+		File[] files = null;
 		
-		File[] files = file.listFiles();
+		String path_in_prefs = Methods.get_currentPath_from_prefs(this);
+		
+		if (path_in_prefs == null) {
+			
+			files = file.listFiles();
+			
+		} else {//if (path_in_prefs == null)
+			
+			files = new File(path_in_prefs).listFiles();
+			
+		}//if (path_in_prefs == null)
+		
+			
 		
 		/*----------------------------
 		 * 2. Sort the array

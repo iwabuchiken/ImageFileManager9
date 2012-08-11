@@ -1,4 +1,6 @@
 package ifm9.listeners;
+import ifm9.utils.Methods;
+
 import java.io.File;
 
 import android.app.Activity;
@@ -58,15 +60,21 @@ public class ButtonOnClickListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 //		//
-//		Methods.ButtonTags tag_name = (Methods.ButtonTags) v.getTag();
+		Methods.ButtonTags tag = (Methods.ButtonTags) v.getTag();
 //
-//		vib.vibrate(Methods.vibLength_click);
+		vib.vibrate(Methods.vibLength_click);
 		
 		//
-//		switch (tag_name) {
-//		case main_bt_play://---------------------------------------------------------
+		switch (tag) {
+		case ib_up://---------------------------------------------------------
+			
+			Methods.upDir(actv);
+			
+			break;
 		
-//		}//switch (tag_name)
+		default:
+			break;
+		}//switch (tag)
 		
 	}//public void onClick(View v)
 

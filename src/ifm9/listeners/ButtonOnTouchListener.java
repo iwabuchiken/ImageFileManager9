@@ -1,7 +1,10 @@
 package ifm9.listeners;
 
+import ifm9.main.R;
+import ifm9.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Vibrator;
 import android.view.MotionEvent;
@@ -24,32 +27,42 @@ public class ButtonOnTouchListener implements OnTouchListener {
 		//
 		this.actv = actv;
 		
-		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
-//		Methods.ButtonTags tag_name = (Methods.ButtonTags) v.getTag();
+		Methods.ButtonTags tag = (Methods.ButtonTags) v.getTag();
 		
 		switch (event.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:
 			
-//			switch (tag_name) {
+			switch (tag) {
 			
-//			case :
+			case ib_up:
+				
+				ImageButton ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_up_disenabled);
+				
 //				v.setBackgroundColor(Color.GRAY);
-//				break;
-//			}//switch (tag_name)
+				
+				break;
+			}//switch (tag)
 			
 			break;//case MotionEvent.ACTION_DOWN:
 			
 		case MotionEvent.ACTION_UP:
-//			switch (tag_name) {
-//			case internet_actv_bt_post_json_async:
+			switch (tag) {
+			case ib_up:
+				
+				ImageButton ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_up);
+				
 //				v.setBackgroundColor(Color.WHITE);
-//				break;
-//			}//switch (tag_name)
+				
+				break;
+			}//switch (tag)
 			
 			break;//case MotionEvent.ACTION_UP:
 		}//switch (event.getActionMasked())
