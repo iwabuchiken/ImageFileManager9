@@ -270,7 +270,7 @@ public class MainActv extends ListActivity {
 		File[] files = null;
 		
 		String path_in_prefs = Methods.get_currentPath_from_prefs(this);
-		
+
 		if (path_in_prefs == null) {
 			
 			files = file.listFiles();
