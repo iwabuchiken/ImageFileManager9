@@ -52,6 +52,9 @@ public class TNActv extends ListActivity {
 		/*----------------------------
 		 * 4. Set up
 			----------------------------*/
+		//debug
+		Methods.update_prefs_currentPath(this, MainActv.dirName_base);
+		
 		set_listeners();
 		
 		set_list();
@@ -79,14 +82,20 @@ public class TNActv extends ListActivity {
 				+ "]", "tableName: " + tableName);
 		
 		//debug
-		Methods.getTableList(this);
+//		Methods.getTableList(this);
 		
 		
-//		/*----------------------------
-//		 * 2. Prep list
-//			----------------------------*/
-//		tiList = Methods.getAllData(this, tableName);
+		/*----------------------------
+		 * 2. Prep list
+			----------------------------*/
+		tiList = Methods.getAllData(this, tableName);
 //		
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tiList.size(): " + tiList.size());
+		
+		
 //		/*----------------------------
 //		 * 3. Sort list
 //			----------------------------*/

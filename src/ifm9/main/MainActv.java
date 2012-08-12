@@ -5,6 +5,7 @@ import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
 import ifm9.listeners.DialogListener;
 import ifm9.utils.Methods;
+import ifm9.utils.RefreshDBTask;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,6 +24,9 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -44,11 +48,15 @@ public class MainActv extends ListActivity {
 	public static String dirName_ExternalStorage = "/mnt/sdcard-ext";
 
 	public static String  dirName_base = "IFM8";
+//	public static String  dirName_base = "ifm9";
 
 	public static String dirPath_base = dirName_ExternalStorage + File.separator + dirName_base;
 
 	public static String dirPath_current = null;
 	
+	/*----------------------------
+	 * Others
+		----------------------------*/
 	// Used => create_list_file()
 	public static String listFileName = "list.txt";
 
@@ -62,7 +70,9 @@ public class MainActv extends ListActivity {
 	/*----------------------------
 	 * DB
 		----------------------------*/
-	public static String dbName = "IFM8";
+//	public static String dbName = "IFM8";
+	public static String dbName = "ifm9.db";
+	public static String tableName_refreshLog = "refresh_log";
 	
     /** Called when the activity is first created. */
     @Override
@@ -159,7 +169,7 @@ public class MainActv extends ListActivity {
 		File file = create_root_dir();
 		
 		if (file == null) {
-			Log.d("MainActivity.java" + "["
+			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "file == null");
 			
@@ -172,7 +182,7 @@ public class MainActv extends ListActivity {
 		boolean res = create_list_file(file);
 		
 		if (res == false) {
-			Log.d("MainActivity.java" + "["
+			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "res == false");
 			
@@ -234,7 +244,7 @@ public class MainActv extends ListActivity {
 		this.setListAdapter(adapter);
 		
 		// Log
-		Log.d("IFM9.java" + "["
+		Log.d("MainActv.java" + "["
 		+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 		+ "]", "adapter => set");
 		
@@ -275,6 +285,12 @@ public class MainActv extends ListActivity {
 		File[] files = null;
 		
 		String path_in_prefs = Methods.get_currentPath_from_prefs(this);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "path_in_prefs: " + path_in_prefs);
+		
 
 		if (path_in_prefs == null) {
 			
@@ -286,7 +302,15 @@ public class MainActv extends ListActivity {
 			
 		}//if (path_in_prefs == null)
 		
+		//debug
+		if (files == null) {
 			
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "files => null");
+			
+		}//if (files == null)
 		
 		/*----------------------------
 		 * 2. Sort the array
@@ -327,7 +351,7 @@ public class MainActv extends ListActivity {
 		if (temp != null) {
 			
 			// Log
-			Log.d("MainActivity.java" + "["
+			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Prefs alread set: " + temp);
 			
@@ -349,7 +373,7 @@ public class MainActv extends ListActivity {
 		editor.commit();
 		
 		// Log
-		Log.d("MainActivity.java" + "["
+		Log.d("MainActv.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "Prefs init => " + prefs_current_path + "/" + dirPath_base);
 		
@@ -360,7 +384,7 @@ public class MainActv extends ListActivity {
 		
 		if (list_file.exists()) {
 			// Log
-			Log.d("IFM9.java" + "["
+			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "\"list.txt\" => Exists");
 			
@@ -375,7 +399,7 @@ public class MainActv extends ListActivity {
 				
 			} catch (IOException e) {
 				// Log
-				Log.d("IFM9.java"
+				Log.d("MainActv.java"
 						+ "["
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "BufferedWriter: Exception => " + e.toString());
@@ -399,7 +423,7 @@ public class MainActv extends ListActivity {
 				file.mkdir();
 				
 				// Log
-				Log.d("IFM9.java"
+				Log.d("MainActv.java"
 				+ "["
 				+ Thread.currentThread().getStackTrace()[2]
 						.getLineNumber() + "]", "Dir created => " + file.getAbsolutePath());
@@ -408,7 +432,7 @@ public class MainActv extends ListActivity {
 				
 			} catch (Exception e) {
 				// Log
-				Log.d("IFM9.java"
+				Log.d("MainActv.java"
 				+ "["
 				+ Thread.currentThread().getStackTrace()[2]
 						.getLineNumber() + "]", "Exception => " + e.toString());
@@ -418,7 +442,7 @@ public class MainActv extends ListActivity {
 			
 		} else {//if (file.exists())
 			// Log
-			Log.d("IFM9.java"
+			Log.d("MainActv.java"
 			+ "["
 			+ Thread.currentThread().getStackTrace()[2]
 				.getLineNumber() + "]", "Dir exists => " + file.getAbsolutePath());
@@ -458,7 +482,7 @@ public class MainActv extends ListActivity {
 					.show();
 			
 			// Log
-			Log.d("IFM9.java" + "["
+			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", 
 					"This item doesn't exist in the directory: " + itemName);
@@ -511,7 +535,7 @@ public class MainActv extends ListActivity {
 		File target = new File(dirPath_current, itemName);
 		
 		// Log
-		Log.d("IFM9.java" + "["
+		Log.d("MainActv.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "dirPath_current: " + dirPath_current);
 		
@@ -565,4 +589,46 @@ public class MainActv extends ListActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 
-}//public class MainActivity extends Activity
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// 
+		MenuInflater mi = getMenuInflater();
+		mi.inflate(R.menu.main_menu, menu);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case R.id.main_opt_menu_refresh_db://---------------------------------------
+			/*----------------------------
+			 * Steps
+			 * 1. Vibrate
+			 * 2. Task
+				----------------------------*/
+			
+			vib.vibrate(Methods.vibLength_click);
+			
+			/*----------------------------
+			 * 2. Task
+				----------------------------*/
+			RefreshDBTask task_ = new RefreshDBTask(this);
+			
+			// debug
+			Toast.makeText(this, "Starting a task...", 2000)
+					.show();
+			
+			task_.execute("Start");
+			
+			break;
+			
+		}//switch (item.getItemId())
+		
+		return super.onOptionsItemSelected(item);
+		
+	}//public boolean onOptionsItemSelected(MenuItem item)
+
+
+}//public class MainActv extends Activity
