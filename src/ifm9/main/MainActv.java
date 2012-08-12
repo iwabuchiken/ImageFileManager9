@@ -37,6 +37,7 @@ public class MainActv extends ListActivity {
 	
 	public static Vibrator vib;
 
+	
 	/*----------------------------
 	 * Preference labels
 		----------------------------*/
