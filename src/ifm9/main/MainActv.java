@@ -40,7 +40,8 @@ public class MainActv extends ListActivity {
 	/*----------------------------
 	 * Preference labels
 		----------------------------*/
-	public static String prefs_current_path = "current_path";
+//	public static String prefs_current_path = "current_path";
+	public static String prefs_current_path = "ifm9_master_current_path";
 	
 	/*----------------------------
 	 * Paths and names
