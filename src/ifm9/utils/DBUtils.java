@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /****************************************
- * Copy & pasted from => C:\WORKS\WORKSPACES_ANDROID\ShoppingList\src\shoppinglist\main\DBManager.java
+ * Copy & pasted from => C:\WORKS\WORKSPACES_ANDROID\ShoppingList\src\shoppinglist\main\DBUtils.java
  ****************************************/
 public class DBUtils extends SQLiteOpenHelper{
 
@@ -155,7 +155,7 @@ public class DBUtils extends SQLiteOpenHelper{
 //		if (!tableExists(db, tableName)) {
 		if (tableExists(db, tableName)) {
 			// Log
-			Log.d("DBManager.java" + "["
+			Log.d("DBUtils.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Table exists => " + tableName);
 			
@@ -182,7 +182,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		sb.append(");");
 		
 		// Log
-		Log.d("DBManager.java" + "["
+		Log.d("DBUtils.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "sql => " + sb.toString());
 		
@@ -291,7 +291,7 @@ public class DBUtils extends SQLiteOpenHelper{
 			db.execSQL("VACUUM");
 			
 			// Log
-			Log.d("DBManager.java" + "["
+			Log.d("DBUtils.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "The table dropped => " + tableName);
 			
@@ -301,7 +301,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		} catch (SQLException e) {
 			// TODO Ž©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
 			// Log
-			Log.e("DBManager.java" + "["
+			Log.e("DBUtils.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "DROP TABLE => failed (table=" + tableName + "): " + e.toString());
 			
