@@ -1,6 +1,6 @@
 package ifm9.items;
 
-public class ThumbnailItem {
+public class TI {
 	/*----------------------------
 	 * Class fields
 		----------------------------*/
@@ -28,7 +28,7 @@ public class ThumbnailItem {
 	/*----------------------------
 	 * Constructor
 		----------------------------*/
-	public ThumbnailItem(long fileId, String file_path, String file_name, 
+	public TI(long fileId, String file_path, String file_name, 
 												long date_added, long date_modified) {
 		//
 		this.fileId = fileId;
@@ -47,7 +47,7 @@ public class ThumbnailItem {
 	 * Methods
 		----------------------------*/
 	
-	public ThumbnailItem(long fileId, String file_path, String file_name, 
+	public TI(long fileId, String file_path, String file_name, 
 			long date_added, long date_modified, String memo, String tags) {
 		//
 		this.fileId = fileId;

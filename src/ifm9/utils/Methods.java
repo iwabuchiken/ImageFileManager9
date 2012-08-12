@@ -1,6 +1,6 @@
 package ifm9.utils;
 
-import ifm9.items.ThumbnailItem;
+import ifm9.items.TI;
 import ifm9.listeners.DialogButtonOnClickListener;
 import ifm9.listeners.DialogButtonOnTouchListener;
 import ifm9.listeners.DialogListener;
@@ -482,7 +482,7 @@ public class Methods {
 		// 
 		TextView tv = (TextView) actv.findViewById(R.id.v1_tv_dir_path);
 		
-		tv.setText(getCurrentPathLabel(actv));
+		tv.setText(convert_prefs_into_path_label(actv));
 		
 	}//public static void updatePathLabel(Activity actv)
 
@@ -497,7 +497,8 @@ public class Methods {
 	 * 
 	 * <Steps> 1.
 	 ****************************************/
-	public static String getCurrentPathLabel(Activity actv) {
+//	public static String getCurrentPathLabel(Activity actv) {
+	public static String convert_prefs_into_path_label(Activity actv) {
 		/*----------------------------
 		 * 1. Prep => pathArray, currentBaseDirName
 		 * 2. Detect loation of "IFM8"
@@ -641,5 +642,204 @@ public class Methods {
 		}//if (keyCode==KeyEvent.KEYCODE_BACK)
 		
 	}//public static void confirm_quit(Activity actv, int keyCode)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 
+	 * 1. TNActv.set_list()
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static List<TI> getAllData(Activity actv, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. DB setup
+		 * 2. Get data
+		 * 		2.1. Get cursor
+		 * 		2.2. Add to list
+		 * 
+		 * 9. Close db
+		 * 10. Return value
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		/*----------------------------
+		 * 2. Get data
+		 * 		2.1. Get cursor
+		 * 		2.2. Add to list
+			----------------------------*/
+		//
+		String sql = "SELECT * FROM " + tableName;
+		
+		Cursor c = null;
+		
+		try {
+			c = rdb.rawQuery(sql, null);
+		} catch (Exception e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			rdb.close();
+			
+			return null;
+		}
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getCount() => " + c.getCount());
+
+		/*----------------------------
+		 * 2.2. Add to list
+			----------------------------*/
+		c.moveToNext();
+		
+		List<TI> tiList = new ArrayList<TI>();
+		
+		for (int i = 0; i < c.getCount(); i++) {
+
+			TI ti = new TI(
+					c.getLong(1),	// file_id
+					c.getString(2),	// file_path
+					c.getString(3),	// file_name
+					c.getLong(4),	// date_added
+//					c.getLong(5)		// date_modified
+					c.getLong(5),		// date_modified
+					c.getString(6),	// memos
+					c.getString(7)	// tags
+			);
+	
+			// Add to the list
+			tiList.add(ti);
+			
+			//
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		rdb.close();
+		
+		/*----------------------------
+		 * 10. Return value
+			----------------------------*/
+		return tiList;
+		
+	}//public static List<ThumbnailItem> getAllData
+
+	public static String convert_path_into_table_name(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get table name => Up to the current path
+		 * 2. Add name => Target folder name
+			----------------------------*/
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+
+		if(convert_prefs_into_path_label(actv).equals(MainActv.dbName)) {
+			
+			tableName = convert_prefs_into_path_label(actv);
+			
+		} else {
+			
+			String[] currentPathArray = convert_prefs_into_path_label(actv).split(File.separator);
+			
+			if (currentPathArray.length > 1) {
+				
+				tableName = StringUtils.join(currentPathArray, "__");
+				
+			} else {//if (currentPathArray.length > 1)
+				
+				sb.append(currentPathArray[0]);
+				
+			}//if (currentPathArray.length > 1)
+			
+		}//if(getCurrentPathLabel(actv).equals(ImageFileManager8Activity.baseDirName))
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName => " + tableName);
+		
+		
+		return tableName;
+	}//public static String convert_path_into_table_name(Activity actv)
+
+	public static List<String> getTableList(Activity actv) {
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		//=> source: http://stackoverflow.com/questions/4681744/android-get-list-of-tables : "Just had to do the same. This seems to work:"
+		String q = "SELECT name FROM " + "sqlite_master"+
+						" WHERE type = 'table' ORDER BY name";
+		
+		Cursor c = null;
+		try {
+			c = rdb.rawQuery(q, null);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount(): " + c.getCount());
+
+		} catch (Exception e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+		}
+		
+		// Table names list
+		List<String> tableList = new ArrayList<String>();
+		
+		// Log
+		if (c != null) {
+			c.moveToFirst();
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				//
+				tableList.add(c.getString(0));
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "c.getString(0): " + c.getString(0));
+				
+				
+				// Next
+				c.moveToNext();
+				
+			}//for (int i = 0; i < c.getCount(); i++)
+
+		} else {//if (c != null)
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c => null");
+		}//if (c != null)
+
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "c.getCount(): " + c.getCount());
+//		
+		rdb.close();
+		
+		return tableList;
+	}//public static List<String> getTableList()
 
 }//public class Methods

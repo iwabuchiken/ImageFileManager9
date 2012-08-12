@@ -59,6 +59,11 @@ public class MainActv extends ListActivity {
 
 	private static SharedPreferences prefs;
 	
+	/*----------------------------
+	 * DB
+		----------------------------*/
+	public static String dbName = "IFM8";
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {

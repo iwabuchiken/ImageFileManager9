@@ -1,7 +1,7 @@
 package ifm9.utils;
 
 
-import ifm9.items.ThumbnailItem;
+import ifm9.items.TI;
 
 import java.util.ArrayList;
 
@@ -422,7 +422,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		}//try
 	}//public insertData(String tableName, String[] columnNames, String[] values)
 
-	public boolean insertData(SQLiteDatabase db, String tableName, ThumbnailItem ti) {
+	public boolean insertData(SQLiteDatabase db, String tableName, TI ti) {
 		/*----------------------------
 		* 1. Insert data
 		----------------------------*/
@@ -477,7 +477,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		}//try
 	}//public insertData(SQLiteDatabase db, String tableName, ThumbnailItem ti)
 
-	public ThumbnailItem getData(Activity actv, SQLiteDatabase rdb, String tableName, long file_id) {
+	public TI getData(Activity actv, SQLiteDatabase rdb, String tableName, long file_id) {
 		/*----------------------------
 		 * Steps
 		 * 1. 
@@ -497,7 +497,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		c.moveToFirst();
 		
 //		ThumbnailItem ti = new ThumbnailItem(
-		return new ThumbnailItem(
+		return new TI(
 				c.getLong(1),	// file_id
 				c.getString(2),	// file_path
 				c.getString(3),	// file_name
@@ -521,7 +521,7 @@ public class DBUtils extends SQLiteOpenHelper{
 	}//public void getData(SQLiteDatabase rdb, String tableName, long file_id)
 
 	public boolean updateData_memos(Activity actv, SQLiteDatabase wdb, 
-								String tableName, ThumbnailItem ti) {
+								String tableName, TI ti) {
 		/*----------------------------
 		 * Steps
 		 * 1. 
