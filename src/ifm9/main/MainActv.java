@@ -4,6 +4,7 @@ import ifm9.listeners.ButtonOnClickListener;
 import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
 import ifm9.listeners.DialogListener;
+import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
 import ifm9.utils.RefreshDBTask;
 
@@ -20,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -32,6 +34,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
+
 
 public class MainActv extends ListActivity {
 	
@@ -115,6 +123,9 @@ public class MainActv extends ListActivity {
 		 * 6. Set path label
 			----------------------------*/
 		Methods.updatePathLabel(this);
+		
+		//debug
+		copy_db_file();
         
     }//public void onCreate(Bundle savedInstanceState)
 
@@ -631,7 +642,13 @@ public class MainActv extends ListActivity {
 			
 			task_.execute("Start");
 			
-			break;
+			break;// case R.id.main_opt_menu_refresh_db
+		
+		case R.id.main_opt_menu_create_folder://----------------------------------
+			
+			Methods.dlg_createFolder(this);
+			
+			break;// case R.id.main_opt_menu_create_folder
 			
 		}//switch (item.getItemId())
 		
@@ -672,5 +689,66 @@ public class MainActv extends ListActivity {
 	
 	}
 
+	private void copy_db_file() {
+		/*----------------------------
+		 * 1. db setup
+		 * 2. Setup files
+			----------------------------*/
+		
+		DBUtils dbu = new DBUtils(this, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "rdb.getPath(): " + rdb.getPath());
+		
+		String dbPath = rdb.getPath();
+		
+		rdb.close();
+		
+		/*----------------------------
+		 * 2. Setup files
+			----------------------------*/
+		
+		String dstPath = "/mnt/sdcard-ext";
+		
+		File src = new File(dbPath);
+//		File dst = new File(dstPath);
+		File dst = new File(dstPath, src.getName());
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "src: " + src.getAbsolutePath() + "/" + "dst: " + dst.getAbsolutePath());
+		
+		
+		try {
+			FileChannel iChannel = new FileInputStream(src).getChannel();
+			FileChannel oChannel = new FileOutputStream(dst).getChannel();
+			iChannel.transferTo(0, iChannel.size(), oChannel);
+			iChannel.close();
+			oChannel.close();
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "File copied");
+			
+		} catch (FileNotFoundException e) {
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+			
+		} catch (IOException e) {
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+		}//try
+
+	}//copy_db_file()
 
 }//public class MainActv extends Activity

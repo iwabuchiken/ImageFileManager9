@@ -1,5 +1,6 @@
 package ifm9.listeners;
 
+import ifm9.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -30,32 +31,45 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
-//		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();
+		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();
 		
 		switch (event.getActionMasked()) {
-//		case MotionEvent.ACTION_DOWN:
-//				switch (tag_name) {
-//				
-//				case dlg_generic_dismiss:
-//					//
-//					v.setBackgroundColor(Color.GRAY);
-//					
-//					break;
-//				}//switch (tag_name)
+		case MotionEvent.ACTION_DOWN:
+				switch (tag_name) {
+				
+				case dlg_generic_dismiss:
+				
+				case dlg_create_folder_ok:
+				case dlg_create_folder_cancel:
+				
+				case dlg_input_empty_cancel:
+				case dlg_input_empty_reenter:
+					//
+					v.setBackgroundColor(Color.GRAY);
+					
+					break;
+				}//switch (tag_name)
 		
-//			break;//case MotionEvent.ACTION_DOWN:
-//			
-//		case MotionEvent.ACTION_UP:
-//			switch (tag_name) {
-//
-//			case dlg_generic_dismiss:
-//					//
-//					v.setBackgroundColor(Color.WHITE);
-//					
-//					break;
-//				}//switch (tag_name)
+			break;//case MotionEvent.ACTION_DOWN:
+			
+		case MotionEvent.ACTION_UP:
+			switch (tag_name) {
+
+			case dlg_generic_dismiss:
+
+			case dlg_create_folder_ok:
+			case dlg_create_folder_cancel:
+
+			case dlg_input_empty_cancel:
+			case dlg_input_empty_reenter:
+
+				//
+					v.setBackgroundColor(Color.WHITE);
+					
+					break;
+				}//switch (tag_name)
 		
-//			break;//case MotionEvent.ACTION_UP:
+			break;//case MotionEvent.ACTION_UP:
 		
 		}//switch (event.getActionMasked())
 		return false;

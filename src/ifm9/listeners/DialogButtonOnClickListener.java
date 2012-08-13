@@ -1,5 +1,6 @@
 package ifm9.listeners;
 
+import ifm9.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Vibrator;
@@ -61,23 +62,34 @@ public class DialogButtonOnClickListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		//
-//		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();
+		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();
 
 		//
-//		switch (tag_name) {
+		switch (tag_name) {
 		
-//		case dlg_generic_dismiss://------------------------------------------------
-//			
-//			vib.vibrate(Methods.vibLength_click);
-//			
-//			dlg.dismiss();
-//			
-//			break;
+		case dlg_generic_dismiss://------------------------------------------------
 			
+			vib.vibrate(Methods.vibLength_click);
+			
+			dlg.dismiss();
+			
+			break;
+			
+		case dlg_create_folder_cancel://---------------------------------------------
+			
+			dlg.dismiss();
+			
+			break;// case dlg_create_folder_cancel
 
-//		default: // ----------------------------------------------------
-//			break;
-//		}//switch (tag_name)
-	}
+		case dlg_create_folder_ok://--------------------------------------------------
+			
+			Methods.dlg_isEmpty(actv, dlg);
+			
+			break;// case dlg_create_folder_ok
 
-}
+		default: // ----------------------------------------------------
+			break;
+		}//switch (tag_name)
+	}//public void onClick(View v)
+
+}//DialogButtonOnClickListener
