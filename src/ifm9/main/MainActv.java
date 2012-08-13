@@ -125,7 +125,7 @@ public class MainActv extends ListActivity {
 		Methods.updatePathLabel(this);
 		
 		//debug
-		copy_db_file();
+//		copy_db_file();
         
     }//public void onCreate(Bundle savedInstanceState)
 

@@ -87,6 +87,32 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 			break;// case dlg_create_folder_ok
 
+		case dlg_input_empty_reenter://----------------------------------------------
+			
+			dlg2.dismiss();
+			
+			break;// case dlg_input_empty_reenter
+
+		case dlg_input_empty_cancel://---------------------------------------------
+			
+			dlg2.dismiss();
+			dlg.dismiss();
+			
+			break;// case dlg_input_empty_cancel
+
+		case dlg_confirm_create_folder_cancel://---------------------------------------------
+			
+			dlg2.dismiss();
+			
+			break;
+
+		// dlg_confirm_create_folder.xml
+		case dlg_confirm_create_folder_ok://---------------------------------------------
+			
+			Methods.createFolder(actv, dlg, dlg2);
+			
+			break;
+
 		default: // ----------------------------------------------------
 			break;
 		}//switch (tag_name)

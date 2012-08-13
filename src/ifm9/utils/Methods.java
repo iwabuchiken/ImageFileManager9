@@ -602,6 +602,47 @@ public class Methods {
 		
 	}//public static String getCurrentPathLabel(Activity actv)
 
+	public static String convert_prefs_into_path_label(Activity actv, String path) {
+		/*----------------------------
+		 * 1. Prep => pathArray, currentBaseDirName
+		 * 2. Detect loation of "IFM8"
+		 * 3. Build path label
+			----------------------------*/
+		
+		String currentPath = path;
+		
+		String[] pathArray = currentPath.split(File.separator);
+		
+		String currentBaseDirName = pathArray[pathArray.length - 1];
+		
+		/*----------------------------
+		 * 2. Detect loation of "IFM8"
+			----------------------------*/
+		int location = -1;
+		
+		for (int i = 0; i < pathArray.length; i++) {
+			if (pathArray[i].equals(MainActv.dirName_base)) {
+				location = i;
+				break;
+			}//if (pathArray[i].equals(ImageFileManager8Activity.baseDirName))
+		}//for (int i = 0; i < pathArray.length; i++)
+		
+		/*----------------------------
+		 * 3. Build path label
+			----------------------------*/
+		//REF=> http://stackoverflow.com/questions/4439595/how-to-create-a-sub-array-from-another-array-in-java
+		String[] newPath = Arrays.copyOfRange(pathArray, location, pathArray.length);
+		
+		String s_newPath = StringUtils.join(newPath, File.separator);
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "s_newPath => " + s_newPath);
+		
+		return s_newPath;
+		
+	}//public static String getCurrentPathLabel(Activity actv)
+
 	public static void upDir(Activity actv) {
 		/*----------------------------
 		 * Steps
@@ -874,6 +915,41 @@ public class Methods {
 			}//if (currentPathArray.length > 1)
 			
 		}//if(getCurrentPathLabel(actv).equals(ImageFileManager8Activity.baseDirName))
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName => " + tableName);
+		
+		
+		return tableName;
+	}//public static String convert_path_into_table_name(Activity actv)
+
+	public static String convert_path_into_table_name(Activity actv, String newPath) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get table name => Up to the current path
+		 * 2. Add name => Target folder name
+			----------------------------*/
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+
+			
+//		String[] currentPathArray = convert_prefs_into_path_label(actv).split(File.separator);
+		String[] currentPathArray = newPath.split(File.separator);
+		
+		if (currentPathArray.length > 1) {
+			
+			tableName = StringUtils.join(currentPathArray, "__");
+			
+		} else {//if (currentPathArray.length > 1)
+			
+			sb.append(currentPathArray[0]);
+			
+			tableName = sb.toString();
+			
+		}//if (currentPathArray.length > 1)
+		
 		
 		// Log
 		Log.d("Methods.java" + "["
@@ -1961,5 +2037,314 @@ public class Methods {
 		dlg2.show();
 		
 	}//private static void dlg_confirm_createFolder
+
+	public static void createFolder(Activity actv, Dialog dlg, Dialog dlg2) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get folder name from dlg2
+		 * 1-1. CheckBox => Checked?
+		 * 1-2. Dismiss dlg2
+		 * 2. Get current directory path
+		 * 3. Create a file object
+		 * 4. Create a dir
+
+		 * 5. If successful, dismiss dialog. Otherwise, toast a message
+		 * 6. Create a "list.txt"
+		 * 6-2. Create a folder set if checked
+		 * 
+		 * 7. Refresh list view 
+		 * 
+		 * 8. Create a new table
+			----------------------------*/
+		File newDir = createFolder_1(actv, dlg, dlg2);
+		
+		boolean res = createFolder_2(actv, dlg, newDir);
+		
+		if (res == true) {
+			
+			createFolder_3(actv, dlg, newDir);
+			
+		} else {//if (res == true)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "createFolder_2() => false");
+			
+		}//if (res == true)
+		
+			
+		
+	}//public static void createFolder(Activity actv, Dialog dlg, Dialog dlg2)
+
+	public static File createFolder_1(Activity actv, Dialog dlg, Dialog dlg2) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get folder name from dlg2
+
+		 * 1-2. Dismiss dlg2
+		 * 2. Get current directory path
+		 * 3. Create a file object
+		 * 4. Create a dir
+
+		 * 5. If successful, dismiss dialog. Otherwise, toast a message
+		 * 6. Create a "list.txt"
+		 * 1-1. CheckBox => Checked?
+		 * 6-2. Create a folder set if checked
+		 * 
+		 * 7. Refresh list view 
+		 * 
+		 * 8. Create a new table
+			----------------------------*/
+		//
+		TextView tv_folderName = (TextView) dlg2.findViewById(R.id.dlg_confirm_create_folder_tv_table_name);
+		String folderName = tv_folderName.getText().toString();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Folder name => " + tv_folderName.getText().toString());
+		
+		/*----------------------------
+		 * 1-2. Dismiss dlg2
+			----------------------------*/
+		dlg2.dismiss();
+		
+		/*----------------------------
+		 * 2. Get current directory path
+		 * 3. Create a file object
+			----------------------------*/
+		String currentDirPath = Methods.get_currentPath_from_prefs(actv);
+		
+		File newDir = new File(currentDirPath, folderName);
+//		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "currentDirPath: " + currentDirPath + " | " + "newDir: " + newDir.getAbsolutePath());
+		
+		/*----------------------------
+		 * 4. Create a file => Use BufferedWriter
+			----------------------------*/
+		//
+		if (newDir.exists()) {
+			// debug
+			Toast.makeText(actv, "この名前のフォルダはすでにあります！： " + folderName, 3000).show();
+			
+			return null;
+			
+		} else {//if (newDir.exists())
+			//
+			try {
+				newDir.mkdir();
+				
+				/*----------------------------
+				 * 5. If successful, dismiss dialog. 
+					----------------------------*/
+				dlg.dismiss();
+				
+				// debug
+				Toast.makeText(actv, "フォルダを作りました : " + newDir.getAbsolutePath(), 3000).show();
+				
+				// Log
+				Log.d("Methods.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Folder created => " + newDir.getAbsolutePath());
+				
+				
+			} catch (Exception e) {
+				// debug
+				Toast.makeText(actv, "フォルダを作れませんでした : " + newDir.getName(), 3000).show();
+				
+				// Log
+				Log.d("Methods.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "newDir.getName() => " + newDir.getName());
+				
+				return null;
+			}//try
+			
+		}//if (newDir.exists())
+		
+		/*----------------------------
+		 * 6. Create a "list.txt"
+			----------------------------*/
+		File listFile = new File(newDir, MainActv.listFileName);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "listFile => " + listFile.getAbsolutePath());
+		
+		if (listFile.exists()) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "listFile => Exists");
+			
+			// debug
+			Toast.makeText(actv, "list.txt => すでにあります", 3000).show();
+			
+		} else {//if (listFile.exists())
+			try {
+				BufferedWriter br = new BufferedWriter(new FileWriter(listFile));
+				
+				br.close();
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "listFile => Created");
+				
+//				// debug
+//				Toast.makeText(actv, "list.txt => 作成されました", 3000).show();
+				
+			} catch (IOException e) {
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
+				// debug
+				Toast.makeText(actv, "list.txt => 作成できませんでした", 3000).show();
+				
+				return null;
+			}
+		}//if (listFile.exists())
+		
+		return newDir;
+		
+		/*----------------------------
+		 * 6-2. Create a folder set if checked
+			----------------------------*/
+		
+	}//public static File createFolder(Activity actv, Dialog dlg, Dialog dlg2)
+
+	public static boolean createFolder_2(Activity actv, Dialog dlg, File newDir) {
+		/*----------------------------
+		 * 6-2. Create a folder set if checked
+			----------------------------*/
+		CheckBox cb = (CheckBox) dlg.findViewById(R.id.dlg_create_folder_cb_folder_set);
+		
+		boolean checked = cb.isChecked();
+		
+		if (checked) {
+			
+			String[] folder_set = {"DO", "DONE", "LATER", "SENT_TO_PC"};
+			
+			for (String eachFolder : folder_set) {
+				/*----------------------------
+				 * 1. Create a folder
+				 * 2. list.txt
+					----------------------------*/
+				/*----------------------------
+				 * 1. Create a folder
+					----------------------------*/
+				File f = new File(newDir, eachFolder);
+				
+				boolean res = f.mkdir();
+				
+				/*----------------------------
+				 * 2. list.txt
+					----------------------------*/
+				File listFile;
+				
+				if (res) {
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "Folder set: " + f.getAbsolutePath());
+					
+					
+					listFile = new File(f, MainActv.listFileName);
+					
+					try {
+						BufferedWriter br = new BufferedWriter(new FileWriter(listFile));
+						
+						br.close();
+						
+						// Log
+						Log.d("Methods.java"
+								+ "["
+								+ Thread.currentThread().getStackTrace()[2]
+										.getLineNumber() + "]", "listFile => Created");
+						
+						// debug
+						Toast.makeText(actv, "list.txt => 作成されました", 3000).show();
+						
+					} catch (IOException e) {
+						// Log
+						Log.d("Methods.java"
+								+ "["
+								+ Thread.currentThread().getStackTrace()[2]
+										.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
+						// debug
+						Toast.makeText(actv, "list.txt => 作成できませんでした", 3000).show();
+					}
+					
+				}//if (res)
+				
+				
+			}//for (String eachFolder : folder_set)
+			
+		}//if (checked)
+		
+		return true;
+		
+		/*----------------------------
+		 * 7. Refresh list viewFile 
+			----------------------------*/
+		
+	}//public static boolean createFolder(Activity actv, Dialog dlg, Dialog dlg2)
+
+	public static boolean createFolder_3(Activity actv, Dialog dlg, File newDir) {
+		/*----------------------------
+		 * 7. Refresh list view
+			----------------------------*/
+		refreshListView(actv);
+		
+		/*----------------------------
+		 * 8. Create a new table
+		 * 		8.1. Build a table name
+		 * 		8.2. Create a table
+			----------------------------*/
+		/*----------------------------
+		 * 8.1. Build a table name
+			----------------------------*/
+		String newPath = newDir.getAbsolutePath();
+
+		String convertedPath = Methods.convert_prefs_into_path_label(actv, newPath);
+		
+		String tableName = Methods.convert_path_into_table_name(actv, convertedPath);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "New table name => " + tableName);
+		
+
+		/*----------------------------
+		 * 8.2. Create a table
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		boolean res = dbu.createTable(wdb, tableName, 
+//					dbu.get_cols(), dbu.get_col_types());
+							DBUtils.cols, DBUtils.col_types);
+		
+		wdb.close();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Methods.createFolder() => Done");
+		
+		return res;
+		
+	}//public static boolean createFolder(Activity actv, Dialog dlg, Dialog dlg2)
 
 }//public class Methods

@@ -56,14 +56,14 @@ public class DBUtils extends SQLiteOpenHelper{
 				{	"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
 					"INTEGER",		"TEXT",	"TEXT"};
 
-	static String[] cols = 
+	public static String[] cols = 
 		{"file_id", 		"file_path", "file_name", "date_added",
 			"date_modified", "memos", "tags"};
 
 	static String[] cols_for_insert_data = 
 		{"file_id", 		"file_path", "file_name", "date_added", "date_modified"};
 
-	static String[] col_types =
+	public static String[] col_types =
 		{"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
 			"INTEGER",		"TEXT",	"TEXT"};
 
