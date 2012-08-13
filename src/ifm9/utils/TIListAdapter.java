@@ -166,7 +166,8 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 				+ "]", "File name, memo => Set");
 		
 		
-    	return null;
+//    	return null;
+		return v;
     }//public View getView(int position, View convertView, ViewGroup parent)
 
 }//public class TIListAdapter extends ArrayAdapter<TI>

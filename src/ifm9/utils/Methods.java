@@ -799,8 +799,8 @@ public class Methods {
 		
 		List<TI> tiList = new ArrayList<TI>();
 		
-//		for (int i = 0; i < c.getCount(); i++) {
-		for (int i = 0; i < c.getCount() / 200; i++) {
+		for (int i = 0; i < c.getCount(); i++) {
+//		for (int i = 0; i < c.getCount() / 200; i++) {
 
 			TI ti = new TI(
 					c.getLong(1),	// file_id
