@@ -77,6 +77,10 @@ public class MainActv extends ListActivity {
 	public static ArrayAdapter<String> adapter = null;
 
 	private static SharedPreferences prefs;
+
+	public static boolean move_mode = false;
+	
+	public static ArrayList<Integer> checkedPositions;
 	
 	/*----------------------------
 	 * DB

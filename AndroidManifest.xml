@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TNActv"></activity>
+        <activity android:name=".ImageActv"></activity>
     </application>
 
 </manifest>
