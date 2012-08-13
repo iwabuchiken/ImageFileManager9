@@ -49,7 +49,8 @@ public class MainActv extends ListActivity {
 		----------------------------*/
 	public static String dirName_ExternalStorage = "/mnt/sdcard-ext";
 
-	public static String  dirName_base = "IFM8";
+//	public static String  dirName_base = "IFM8";
+	public static String  dirName_base = "IFM9";
 //	public static String  dirName_base = "ifm9";
 
 	public static String dirPath_base = dirName_ExternalStorage + File.separator + dirName_base;
@@ -87,6 +88,7 @@ public class MainActv extends ListActivity {
 		 * 
 		 *  4. Set list
 		 *  5. Set listener => Image buttons
+		 *  6. Set path label
 			----------------------------*/
 		
         super.onCreate(savedInstanceState);
@@ -108,6 +110,11 @@ public class MainActv extends ListActivity {
 		 * 5. Set listener => Image buttons
 			----------------------------*/
 		set_listeners();
+		
+		/*----------------------------
+		 * 6. Set path label
+			----------------------------*/
+		Methods.updatePathLabel(this);
         
     }//public void onCreate(Bundle savedInstanceState)
 
@@ -350,7 +357,7 @@ public class MainActv extends ListActivity {
 			----------------------------*/
 		String temp = prefs.getString(prefs_current_path, null);
 		
-		if (temp != null) {
+		if (temp != null && !temp.equals("IFM8")) {
 			
 			// Log
 			Log.d("MainActv.java" + "["
@@ -631,6 +638,39 @@ public class MainActv extends ListActivity {
 		return super.onOptionsItemSelected(item);
 		
 	}//public boolean onOptionsItemSelected(MenuItem item)
+
+	@Override
+	protected void onPause() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onPause();
+
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "onPause()");
+
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "prefs: " + Methods.get_currentPath_from_prefs(this));
+		
+		
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onResume();
+
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "onResume()");
+
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "prefs: " + Methods.get_currentPath_from_prefs(this));
+	
+	}
 
 
 }//public class MainActv extends Activity

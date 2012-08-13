@@ -31,6 +31,8 @@ public class DialogListener implements OnClickListener {
 			dialog.dismiss();
 			actv.finish();
 			
+			actv.overridePendingTransition(0, 0);
+			
 			break;
 			
 		case 1: // Cancel

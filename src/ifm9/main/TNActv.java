@@ -1,5 +1,6 @@
 package ifm9.main;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -9,16 +10,20 @@ import ifm9.items.TI;
 import ifm9.listeners.ButtonOnClickListener;
 import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
+import ifm9.listeners.DialogListener;
 import ifm9.utils.Methods;
 import ifm9.utils.TIListAdapter;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class TNActv extends ListActivity {
 
@@ -52,13 +57,20 @@ public class TNActv extends ListActivity {
 		/*----------------------------
 		 * 4. Set up
 			----------------------------*/
-		//debug
-		Methods.update_prefs_currentPath(this, MainActv.dirName_base);
+//		//debug
+//		Methods.update_prefs_currentPath(this, MainActv.dirName_base);
 		
 		set_listeners();
 		
 		set_list();
 
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Table name: " + Methods.convert_path_into_table_name(this));
+		
+		
+		
 	}//public void onCreate(Bundle savedInstanceState)
 
 
@@ -90,42 +102,84 @@ public class TNActv extends ListActivity {
 			----------------------------*/
 		tiList = Methods.getAllData(this, tableName);
 //		
+		if (tiList == null) {
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "tiList => null");
+			
+			show_message_no_data();
+
+			return;
+//			// debug
+//			Toast.makeText(this, 
+//							"このフォルダには、ファイルはありません。他のフォルダから、オプション・メニューの「移動」を使って、もってこれます", 
+//							7000).show();
+			
+		} else {//if (tiList == null)
+
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "tiList.size(): " + tiList.size());
+			
+		}//if (tiList == null)
+		
+		/*----------------------------
+		 * 3. Sort list
+			----------------------------*/
+		Collections.sort(tiList, new Comparator<TI>(){
+
+			@Override
+			public int compare(TI lhs, TI rhs) {
+				// TODO 自動生成されたメソッド・スタブ
+				
+//				return (int) (lhs.getDate_added() - rhs.getDate_added());
+				
+				return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
+			}
+			
+		});
+
 		// Log
 		Log.d("TNActv.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "tiList.size(): " + tiList.size());
+				+ "]", "tiList => Sort done");
 		
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "After sort => tiList.size(): " + tiList.size());
 		
-//		/*----------------------------
-//		 * 3. Sort list
-//			----------------------------*/
-//		Collections.sort(tiList, new Comparator<TI>(){
-//
-//			@Override
-//			public int compare(TI lhs, TI rhs) {
-//				// TODO 自動生成されたメソッド・スタブ
-//				
-////				return (int) (lhs.getDate_added() - rhs.getDate_added());
-//				
-//				return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
-//			}
-//			
-//		});
-//
-//		/*----------------------------
-//		 * 4. Prep adapter
-//			----------------------------*/
-//		aAdapter = 
-//				new TIListAdapter(
-//						this, 
-//						R.layout.thumb_activity, 
-////						ThumbnailActivity.tiList);
-//						tiList);
-//		
-//		/*----------------------------
-//		 * 5. Set adapter
-//			----------------------------*/
-//		setListAdapter(aAdapter);
+		/*----------------------------
+		 * 4. Prep adapter
+			----------------------------*/
+		aAdapter = 
+				new TIListAdapter(
+						this, 
+						R.layout.thumb_activity, 
+//						ThumbnailActivity.tiList);
+						tiList);
+		
+		/*----------------------------
+		 * 5. Set adapter
+			----------------------------*/
+		setListAdapter(aAdapter);
+		
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for (TI item : tiList) {
+			
+			list.add(item.getFile_name());
+			
+		}
+		
+		ArrayAdapter<String> adp = new ArrayAdapter<String>(
+				this,
+				android.R.layout.simple_list_item_1,
+				list
+				);
+		
+//		setListAdapter(adp);
 		
 	}//private void set_list()
 
@@ -250,5 +304,33 @@ public class TNActv extends ListActivity {
 		overridePendingTransition(0, 0);
 		
 	}//public void onBackPressed()
+
+	/****************************************
+	 * method_name(param_type)
+	 * 
+	 * <Caller> 1. TNActv.set_list()
+	 * 
+	 * <Desc> 
+	 * 1. Click "OK" button, then TNActv will get finished.
+	 * 
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public void show_message_no_data() {
+		AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+		
+        dialog.setTitle("情報");
+        dialog.setMessage("このフォルダには、データはありません。他のフォルダから、オプション・メニューの「移動」を使って、もってこれます");
+        
+        dialog.setPositiveButton("OK",new DialogListener(this, dialog, 0));
+        
+        dialog.create();
+        dialog.show();
+		
+	}//public void show_message_no_data()
 	
 }//public class TNActv

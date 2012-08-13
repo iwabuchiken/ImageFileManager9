@@ -86,6 +86,12 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 		 * 4. Get bitmap
 		 * 5. Get memo, or, file name
 			----------------------------*/
+    	// Log
+		Log.d("TIListAdapter.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "getView");
+		
+    	
     	/*----------------------------
 		 * 0. View
 			----------------------------*/
@@ -153,6 +159,12 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 			tv_memo.setText("");
 			
 		}//if (memo)
+		
+		// Log
+		Log.d("TIListAdapter.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "File name, memo => Set");
+		
 		
     	return null;
     }//public View getView(int position, View convertView, ViewGroup parent)

@@ -49,6 +49,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.os.AsyncTask;
+
 import org.apache.commons.lang.StringUtils;
 
 public class Methods {
@@ -242,6 +244,17 @@ public class Methods {
 		
 		MainActv.dirPath_current = newDir.getAbsolutePath();
 		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "MainActv.dirPath_current: " + MainActv.dirPath_current);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Calling: Methods.update_prefs_currentPath(actv, MainActv.dirPath_current)");
+		
+		
 		Methods.update_prefs_currentPath(actv, MainActv.dirPath_current);
 		
 		/*----------------------------
@@ -314,6 +327,55 @@ public class Methods {
 
 	}//public static boolean update_prefs_current_path(Activity actv, Strin newPath)
 
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. Methods.enterDir()
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static boolean clear_prefs_currentPath(Activity actv, String newPath) {
+		
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(MainActv.prefs_current_path, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * 2. Get editor
+			----------------------------*/
+		SharedPreferences.Editor editor = prefs.edit();
+
+		/*----------------------------
+		 * 3. Clear
+			----------------------------*/
+		try {
+			
+			editor.clear();
+			editor.commit();
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Prefs cleared");
+			
+			return true;
+			
+		} catch (Exception e) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Excption: " + e.toString());
+			
+			return false;
+		}
+
+	}//public static boolean clear_prefs_current_path(Activity actv, Strin newPath)
+
+	
 	/****************************************
 	 *
 	 * 
@@ -658,6 +720,7 @@ public class Methods {
 	public static List<TI> getAllData(Activity actv, String tableName) {
 		/*----------------------------
 		 * Steps
+		 * 0. Table exists?
 		 * 1. DB setup
 		 * 2. Get data
 		 * 		2.1. Get cursor
@@ -666,9 +729,38 @@ public class Methods {
 		 * 9. Close db
 		 * 10. Return value
 			----------------------------*/
+		
+		/*----------------------------
+		 * 1. DB setup
+			----------------------------*/
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
 		
 		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		/*----------------------------
+		 * 0. Table exists?
+			----------------------------*/
+		boolean res = dbu.tableExists(rdb, tableName);
+		
+		if (res == false) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "getAllData() => Table doesn't exist: " + tableName);
+			
+			rdb.close();
+			
+			return null;
+			
+		}//if (res == false)
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "rdb.getPath(): " + rdb.getPath());
+		
+		
 		
 		/*----------------------------
 		 * 2. Get data
@@ -681,7 +773,9 @@ public class Methods {
 		Cursor c = null;
 		
 		try {
+			
 			c = rdb.rawQuery(sql, null);
+			
 		} catch (Exception e) {
 			// Log
 			Log.d("Methods.java" + "["
@@ -705,7 +799,8 @@ public class Methods {
 		
 		List<TI> tiList = new ArrayList<TI>();
 		
-		for (int i = 0; i < c.getCount(); i++) {
+//		for (int i = 0; i < c.getCount(); i++) {
+		for (int i = 0; i < c.getCount() / 200; i++) {
 
 			TI ti = new TI(
 					c.getLong(1),	// file_id
@@ -1110,6 +1205,265 @@ public class Methods {
 		}//if (result == false)
 	}//private static boolean refreshMainDB_1_set_up_table(SQLiteDatabase wdb, DBUtils dbu)
 
+	public static boolean refreshMainDB_async(Activity actv, AsyncTask asy) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up DB(writable)
+		 * 2. Table exists?
+		 * 2-1. If no, then create one
+		 * 3. Execute query for image files
+
+		 * 4. Insert data into db
+		 * 5. Update table "refresh_log"
+		 * 
+		 * 9. Close db
+		 * 10. Return
+			----------------------------*/
+		/*----------------------------
+		 * 1. Set up DB(writable)
+			----------------------------*/
+		//
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		//
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 2. Table exists?
+		 * 2-1. If no, then create one
+		 * 		1. baseDirName
+		 * 		2. backupTableName
+			----------------------------*/
+		boolean res = refreshMainDB_async_1_set_up_table(wdb, dbu);
+		
+		/*----------------------------
+		 * 3. Execute query for image files
+			----------------------------*/
+		Cursor c = refreshMainDB_async_2_exec_query(actv, wdb, dbu);
+		
+		/*----------------------------
+		 * 4. Insert data into db
+			----------------------------*/
+		int numOfItemsAdded;
+		
+		if (c.getCount() < 1) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Query result: 0");
+			
+			numOfItemsAdded = 0;
+			
+		} else {//if (c.getCount() < 1)
+			
+			numOfItemsAdded = refreshMainDB_async_3_insert_data(actv, wdb, dbu, c, asy);
+			
+		}//if (c.getCount() < 1)
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 10. Return
+			----------------------------*/
+		return true;
+		
+	}//public static boolean refreshMainDB(Activity actv)
+
+	private static int refreshMainDB_async_3_insert_data(
+										Activity actv, SQLiteDatabase wdb, DBUtils dbu, Cursor c, AsyncTask asy) {
+		/*----------------------------
+		 * 4. Insert data into db
+			----------------------------*/
+		int numOfItemsAdded = insertDataIntoDB_async(actv, MainActv.dirName_base, c, asy);
+
+//		int numOfItemsAdded = -1;
+		
+		/*----------------------------
+		 * 5. Update table "refresh_log"
+			----------------------------*/
+		c.moveToPrevious();
+		
+		long lastItemDate = c.getLong(3);
+		
+		updateRefreshLog(actv, wdb, dbu, lastItemDate, numOfItemsAdded);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getLong(3) => " + c.getLong(3));
+		
+
+		return numOfItemsAdded;
+		
+	}//private static int refreshMainDB_3_insert_data(Cursor c)
+
+	private static Cursor refreshMainDB_async_2_exec_query(Activity actv, SQLiteDatabase wdb, DBUtils dbu) {
+		/*----------------------------
+		 * 3. Execute query for image files
+		 * 		1. ContentResolver
+		 * 		2. Uri
+		 * 		3. proj
+		 * 		4. Last refreshed date
+		 * 		5. Execute query
+			----------------------------*/
+		/*----------------------------
+		 * 3.1. ContentResolver, Uri, proj
+			----------------------------*/
+		ContentResolver cr = actv.getContentResolver();
+		
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        
+		String[] proj = DBUtils.proj;
+
+		/*----------------------------
+		 * 3.4. Last refreshed date
+			----------------------------*/
+		long lastRefreshedDate = 0;		// Initial value => 0
+
+		boolean result = dbu.tableExists(wdb, MainActv.tableName_refreshLog);
+		
+		if (result != false) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: " + MainActv.tableName_refreshLog);
+			
+			
+			// REF=> http://www.accessclub.jp/sql/10.html
+			String sql = "SELECT * FROM refresh_log ORDER BY " + android.provider.BaseColumns._ID + " DESC";
+			
+			Cursor tempC = wdb.rawQuery(sql, null);
+			
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "tempC.getCount() => " + tempC.getCount());
+	
+			if (tempC.getCount() > 0) {
+				
+				tempC.moveToFirst();
+				
+				lastRefreshedDate = tempC.getLong(1);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", 
+						"lastRefreshedDate => " + String.valueOf(lastRefreshedDate) +
+						" (I will refresh db based on this date!)");
+				
+			}//if (tempC.getCount() > 0)
+		} else {//if (result != false)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + MainActv.tableName_refreshLog);
+			
+			// Create one
+			result = dbu.createTable(
+											wdb, 
+											MainActv.tableName_refreshLog, 
+											DBUtils.cols_refresh_log, 
+											DBUtils.col_types_refresh_log);
+			
+			if (result == true) {
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: " + MainActv.tableName_refreshLog);
+				
+			} else {//if (result == true)
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create table failed: " + MainActv.tableName_refreshLog);
+				
+			}//if (result == true)
+			
+		}//if (result != false)
+		
+		/*----------------------------
+		 * 3.5. Execute query
+			----------------------------*/
+		// REF=> http://blog.csdn.net/uoyevoli/article/details/4970860
+		Cursor c = actv.managedQuery(
+											uri, 
+											proj,
+											MediaStore.Images.Media.DATE_ADDED + " > ?",
+											new String[] {String.valueOf(lastRefreshedDate)},
+											null);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Last refreshed (in sec): " + String.valueOf(lastRefreshedDate / 1000));
+
+        actv.startManagingCursor(c);
+        
+        // Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getCount() => " + c.getCount());
+
+		return c;
+		
+	}//private static Cursor refreshMainDB_2_exec_query()
+
+	private static boolean refreshMainDB_async_1_set_up_table(SQLiteDatabase wdb, DBUtils dbu) {
+		/*----------------------------
+		 * 2-1.1. baseDirName
+			----------------------------*/
+		String tableName = MainActv.dirName_base;
+		boolean result = dbu.tableExists(wdb, tableName);
+		
+		// If the table doesn't exist, create one
+		if (result == false) {
+
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + tableName);
+			
+			result = 
+					dbu.createTable(wdb, tableName, DBUtils.cols, DBUtils.col_types);
+			
+			if (result == false) {
+
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Can't create a table: "+ tableName);
+				
+				return false;
+				
+			} else {//if (result == false)
+				
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: "+ tableName);
+				
+				return true;
+				
+			}//if (result == false)
+
+		} else {//if (result == false)
+			
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: "+ tableName);
+
+			return true;
+			
+		}//if (result == false)
+	}//private static boolean refreshMainDB_1_set_up_table(SQLiteDatabase wdb, DBUtils dbu)
+
 	/****************************************
 	 *		insertDataIntoDB()
 	 * 
@@ -1149,7 +1503,8 @@ public class Methods {
 		 * 2. Set variables
 			----------------------------*/
 		int counter = 0;
-
+		int counter_failed = 0;
+		
 		/*----------------------------
 		 * 3. Obtain data
 			----------------------------*/
@@ -1179,6 +1534,9 @@ public class Methods {
 						+ "["
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "i => " + i + "/" + "c.getLong(0) => " + c.getLong(0));
+				
+				counter_failed += 1;
+				
 			} else {//if (blResult == false)
 				counter += 1;
 			}
@@ -1186,13 +1544,20 @@ public class Methods {
 			//
 			c.moveToNext();
 			
+			if (i % 100 == 0) {
+				// Log
+				Log.d("Methods.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Done up to: " + i);
+				
+			}//if (i % 100 == 0)
 			
 		}//for (int i = 0; i < c.getCount(); i++)
 		
 		// Log
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "Data inserted: " + counter);
+				+ "]", "All data inserted: " + counter);
 		
 		/*----------------------------
 		 * 5. Close db
@@ -1202,6 +1567,125 @@ public class Methods {
 		/*----------------------------
 		 * 6. Return => counter
 			----------------------------*/
+		//debug
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "counter_failed(sum): " + counter_failed);
+		
+		return counter;
+		
+	}//private static int insertDataIntoDB(Activity actv, Cursor c)
+
+	/****************************************
+	 *		insertDataIntoDB()
+	 * 
+	 * <Caller> 
+	 * 1. private static boolean refreshMainDB_3_insert_data(Activity actv, Cursor c)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	private static int insertDataIntoDB_async(Activity actv, String tableName, Cursor c, AsyncTask asy) {
+		/*----------------------------
+		 * Steps
+		 * 0. Set up db
+		 * 1. Move to first
+		 * 2. Set variables
+		 * 3. Obtain data
+		 * 4. Insert data
+		 * 5. Close db
+		 * 6. Return => counter
+			----------------------------*/
+		/*----------------------------
+		 * 0. Set up db
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		/*----------------------------
+		 * 1. Move to first
+			----------------------------*/
+		c.moveToFirst();
+
+		/*----------------------------
+		 * 2. Set variables
+			----------------------------*/
+		int counter = 0;
+		int counter_failed = 0;
+		
+		/*----------------------------
+		 * 3. Obtain data
+			----------------------------*/
+		for (int i = 0; i < c.getCount(); i++) {
+
+			String[] values = {
+					String.valueOf(c.getLong(0)),
+					c.getString(1),
+					c.getString(2),
+					String.valueOf(c.getLong(3)),
+					String.valueOf(c.getLong(4))
+			};
+
+			/*----------------------------
+			 * 4. Insert data
+			 * 		1. Insert data to tableName
+			 * 		2. Record result
+			 * 		3. Insert data to backupTableName
+			 * 		4. Record result
+				----------------------------*/
+			boolean blResult = 
+						dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
+				
+			if (blResult == false) {
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "i => " + i + "/" + "c.getLong(0) => " + c.getLong(0));
+				
+				counter_failed += 1;
+				
+			} else {//if (blResult == false)
+				counter += 1;
+			}
+
+			//
+			c.moveToNext();
+			
+			if (i % 100 == 0) {
+				// Log
+				Log.d("Methods.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Done up to: " + i);
+				
+			}//if (i % 100 == 0)
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "All data inserted: " + counter);
+		
+		/*----------------------------
+		 * 5. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 6. Return => counter
+			----------------------------*/
+		//debug
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "counter_failed(sum): " + counter_failed);
+		
 		return counter;
 		
 	}//private static int insertDataIntoDB(Activity actv, Cursor c)

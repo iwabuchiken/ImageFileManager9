@@ -22,6 +22,8 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 		// TODO 自動生成されたメソッド・スタブ
 		
 		boolean result = Methods.refreshMainDB((ListActivity) actv);
+//		boolean result = Methods.refreshMainDB_async((ListActivity) actv);
+//		boolean result = Methods.refreshMainDB_async((ListActivity) actv, this);
 		
 		// Log
 		Log.d("RefreshDBTask.java" + "["
@@ -51,5 +53,18 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 		Toast.makeText(actv, result, 2000).show();
 		
 	}//protected void onPostExecute(String result)
+
+	@Override
+	protected void onProgressUpdate(Integer... values) {
+		// TODO 自動生成されたメソッド・スタブ
+//		super.onProgressUpdate(values);
+		
+		// Log
+		Log.d("RefreshDBTask.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Progress: " + values[0]);
+		
+		
+	}//protected void onProgressUpdate(Integer... values)
 
 }
