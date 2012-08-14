@@ -77,18 +77,62 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 			----------------------------*/
 		
 		//
-		Methods.ItemTags tag = (Methods.ItemTags) parent.getTag();
+		Methods.ListTags tag = (Methods.ListTags) parent.getTag();
 		
 		// Log
 		Log.d("CustomOnItemLongClickListener.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "itemTag => " + itemTag.name());
+				+ "]", "Tag => " + tag.name());
 
 		//
 //		vib.vibrate(400);
 		vib.vibrate(40);
 		
-		return false;
+		switch (tag) {
+		
+		case actv_main_lv:
+			
+			/*----------------------------
+			 * 0. Get folder name
+				----------------------------*/
+			String folderName = (String) parent.getItemAtPosition(position);
+
+			// Log
+			Log.d("CustomOnItemLongClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "folderName: " + folderName);
+			
+			/*----------------------------
+			 * 5.1.1. Is a directory?
+				----------------------------*/
+			String curPath = Methods.get_currentPath_from_prefs(actv);
+			
+			File targetFile = new File(curPath, folderName);
+			
+			if (targetFile.exists() && targetFile.isFile()) {
+				// debug
+				Toast.makeText(actv, "ƒtƒ@ƒCƒ‹", 2000).show();
+				
+	//			return false;
+				return true;		//=> "false" => Then, onClick process starts
+				
+			}//if (targetFile.exists() && targetFile.isFile())
+			
+			
+			/*----------------------------
+			 * 5.1.2. If yes, call a method
+				----------------------------*/
+			Methods.dlg_removeFolder(actv, folderName);
+			
+
+			
+			break;
+		
+		}//switch (tag)
+		
+		
+//		return false;
+		return true;
 		
 	}//public boolean onItemLongClick()
 

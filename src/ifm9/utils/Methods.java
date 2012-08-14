@@ -960,6 +960,43 @@ public class Methods {
 		return tableName;
 	}//public static String convert_path_into_table_name(Activity actv)
 
+	public static String convert_filePath_into_table_name(Activity actv, File file) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get table name => Up to the current path
+		 * 2. Add name => Target folder name
+			----------------------------*/
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+
+			
+//		String[] currentPathArray = convert_prefs_into_path_label(actv).split(File.separator);
+		String[] currentPathArray = file.getAbsolutePath().split(File.separator);
+		
+		
+		
+		if (currentPathArray.length > 1) {
+			
+			tableName = StringUtils.join(currentPathArray, "__");
+			
+		} else {//if (currentPathArray.length > 1)
+			
+			sb.append(currentPathArray[0]);
+			
+			tableName = sb.toString();
+			
+		}//if (currentPathArray.length > 1)
+		
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName => " + tableName);
+		
+		
+		return tableName;
+	}//public static String convert_path_into_table_name(Activity actv)
+
 	public static List<String> getTableList(Activity actv) {
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
 		
@@ -2346,5 +2383,197 @@ public class Methods {
 		return res;
 		
 	}//public static boolean createFolder(Activity actv, Dialog dlg, Dialog dlg2)
+
+	public static void dlg_removeFolder(Activity actv, String folderName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up
+		 * 2. Set folder name to text view
+			----------------------------*/
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(R.layout.dlg_confirm_remove_folder);
+		
+		// Title
+		dlg.setTitle(R.string.generic_tv_confirm);
+		
+		/*----------------------------
+		 * 2. Set folder name to text view
+			----------------------------*/
+		TextView tv = (TextView) dlg.findViewById(R.id.dlg_confirm_remove_folder_tv_table_name);
+		
+		tv.setText(folderName);
+		
+		/*----------------------------
+		 * 3. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_ok = (Button) dlg.findViewById(R.id.dlg_confirm_remove_folder_btn_ok);
+		Button btn_cancel = (Button) dlg.findViewById(R.id.dlg_confirm_remove_folder_btn_cancel);
+		
+		//
+		btn_ok.setTag(DialogTags.dlg_confirm_remove_folder_ok);
+		btn_cancel.setTag(DialogTags.dlg_confirm_remove_folder_cancel);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		 * 4. Add listeners => OnClick
+			----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		/*----------------------------
+		 * 5. Show dialog
+			----------------------------*/
+		dlg.show();
+
+		
+	}//public static void dlg_removeFolder(Activity actv)
+
+	public static void removeFolder(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get folder name
+		 * 2. Validate
+		 * 3. Remove
+		 * 4. Refresh list
+		 * 5. Dismiss dialog
+		 * 
+		 * 6. Drop table
+			----------------------------*/
+		/*----------------------------
+		 * 1. Get folder name
+			----------------------------*/
+		TextView tv = (TextView) dlg.findViewById(R.id.dlg_confirm_remove_folder_tv_table_name);
+		String folderName = tv.getText().toString();
+		
+		//
+		File targetDir = new File(Methods.get_currentPath_from_prefs(actv), folderName);
+		
+		if (!targetDir.exists()) {
+			// debug
+			Toast.makeText(actv, "このアイテムは、存在しません", 2000).show();
+			
+			return;
+		}
+		
+		if (!targetDir.isDirectory()) {
+			// debug
+			Toast.makeText(actv, "このアイテムは、フォルダではありません", 2000).show();
+			
+			return;
+		}//if (!targetDir.exists() || !targetDir.isDirectory())
+		
+		/*----------------------------
+		 * 3. Remove
+			----------------------------*/
+		String path = targetDir.getAbsolutePath();
+		
+		boolean result = deleteDirectory(targetDir);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "result => " + result);
+
+		if (result == true) {
+			/*----------------------------
+			 * 5. Dismiss dialog
+				----------------------------*/
+			dlg.dismiss();
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Dir => Removed: " + path);
+			
+			// debug
+			Toast.makeText(actv, "削除しました" + path, 3000).show();
+		} else {//if (result == true)
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Remove dir => Failed: " + path);
+			
+			// debug
+			Toast.makeText(actv, "削除できませんでした: " + path, 3000).show();
+			
+			return;
+		}//if (result == true)
+		
+		/*----------------------------
+		 * 4. Refresh list
+			----------------------------*/
+		refreshListView(actv);
+		
+		/*----------------------------
+		 * 6. Drop table
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase db = dbu.getWritableDatabase();
+		
+//		String tableName = Methods.convertPathIntoTableName(actv, targetDir);
+//		String tableName = Methods.convert_path_into_table_name(actv, targetDir.getAbsolutePath());
+		String tableName = Methods.convert_prefs_into_path_label(actv, targetDir.getAbsolutePath());
+		
+		tableName = Methods.convert_path_into_table_name(actv, tableName);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName => " + tableName);
+		
+		dbu.dropTable(actv, db, tableName);
+
+		db.close();
+		
+		return;
+		
+	}//public static void removeFolder(Activity actv, Dialog dlg)
+
+	/*----------------------------
+	 * deleteDirectory(File target)()
+	 * 
+	 * 1. REF=> http://www.rgagnon.com/javadetails/java-0483.html
+		----------------------------*/
+	public static boolean deleteDirectory(File target) {
+		
+		if(target.exists()) {
+			//
+			File[] files = target.listFiles();
+			
+			//
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					
+					deleteDirectory(files[i]);
+					
+				} else {//if (files[i].isDirectory())
+					
+					String path = files[i].getAbsolutePath();
+					
+					files[i].delete();
+					
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "Removed => " + path);
+					
+					
+				}//if (files[i].isDirectory())
+				
+			}//for (int i = 0; i < files.length; i++)
+			
+		}//if(target.exists())
+		
+		return (target.delete());
+	}//public static boolean deleteDirectory(File target)
 
 }//public class Methods

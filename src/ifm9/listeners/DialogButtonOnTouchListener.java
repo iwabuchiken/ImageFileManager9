@@ -47,6 +47,10 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 
 				case dlg_confirm_create_folder_ok:
 				case dlg_confirm_create_folder_cancel:
+					
+				case dlg_confirm_remove_folder_cancel:
+				case dlg_confirm_remove_folder_ok:
+					
 					//
 					v.setBackgroundColor(Color.GRAY);
 					
@@ -68,6 +72,10 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 
 			case dlg_confirm_create_folder_ok:
 			case dlg_confirm_create_folder_cancel:
+
+			case dlg_confirm_remove_folder_cancel:
+			case dlg_confirm_remove_folder_ok:
+
 				//
 					v.setBackgroundColor(Color.WHITE);
 					

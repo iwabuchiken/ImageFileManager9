@@ -247,6 +247,11 @@ public class DBUtils extends SQLiteOpenHelper{
 	}
 
 	public boolean dropTable(Activity actv, SQLiteDatabase db, String tableName) {
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting: dropTable()");
+		
 		/*------------------------------
 		 * The table exists?
 		 *------------------------------*/
@@ -254,27 +259,20 @@ public class DBUtils extends SQLiteOpenHelper{
 		boolean tempBool = tableExists(db, tableName);
 		
 		if (tempBool == true) {
+		
 			// Log
 			Log.d("DBUtils.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Table exists: " + tableName);
-			
-//			Methods.recordLog(actv, 
-//					"DBUtils.java", 
-//					"Table exists: " + tableName);
-			
+
 		} else {//if (tempBool == true)
 			// Log
 			Log.e("DBUtils.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Table doesn't exist: " + tableName);
 
-//			Methods.recordLog(actv, 
-//					"DBUtils.java", 
-//					"Table doesn't exist: " + tableName);
-
 			return false;
-		}
+		}//if (tempBool == true)
 
 		/*------------------------------
 		 * Drop the table
