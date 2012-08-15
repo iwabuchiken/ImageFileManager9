@@ -10,16 +10,21 @@ import ifm9.listeners.ButtonOnClickListener;
 import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
 import ifm9.listeners.DialogListener;
+import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
 import ifm9.utils.TIListAdapter;
+
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -35,7 +40,22 @@ public class TNActv extends ListActivity {
 
 	public static TIListAdapter aAdapter;
 	public static TIListAdapter bAdapter;
+
+	public static boolean move_mode = false;
+
+	public static long[] long_searchedItems; //=> Used in initial_setup()
+
+	public static ArrayList<Integer> checkedPositions;
+
+	/*----------------------------
+	 * Preference names
+		----------------------------*/
+	public static String tnactv_selected_item = "tnactv_selected_item";
 	
+	
+	/****************************************
+	 * Methods
+	 ****************************************/
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		/*----------------------------
@@ -82,9 +102,34 @@ public class TNActv extends ListActivity {
 		/*----------------------------
 		 * 5. Initialize vars
 			----------------------------*/
-		MainActv.checkedPositions = new ArrayList<Integer>();
+		checkedPositions = new ArrayList<Integer>();
+
+		//debug
+		get_data_from_table_AAA();
 		
 	}//public void onCreate(Bundle savedInstanceState)
+
+
+	private void get_data_from_table_AAA() {
+		
+		DBUtils dbu = new DBUtils(this, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		String sql = "SELECT * FROM AAA";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		startManagingCursor(c);
+		
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "AAA: c.getCount()" + c.getCount());
+		
+		rdb.close();
+		
+	}//private void get_data_from_table_AAA()
 
 
 	private void set_list() {
@@ -264,19 +309,6 @@ public class TNActv extends ListActivity {
 		
 	}//private void set_listeners()
 	
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO 自動生成されたメソッド・スタブ
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO 自動生成されたメソッド・スタブ
-		return super.onOptionsItemSelected(item);
-	}
-
 	@Override
 	protected void onPause() {
 		// TODO 自動生成されたメソッド・スタブ
@@ -321,15 +353,33 @@ public class TNActv extends ListActivity {
 
 	@Override
 	protected void onDestroy() {
-		// TODO 自動生成されたメソッド・スタブ
+		/*----------------------------
+		 * 1. super
+		 * 2. move_mode => falsify
+			----------------------------*/
+		
 		super.onDestroy();
 		
 		// Log
 		Log.d("TNActv.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onDestroy()");
+		
+		/*----------------------------
+		 * 2. move_mode => falsify
+			----------------------------*/
+		if (move_mode == true) {
+			
+			move_mode = false;
+			
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "move_mode => Now false");
+			
+		}//if (move_mode == true)
 
-	}
+	}//protected void onDestroy()
 
 	@Override
 	public void onBackPressed() {
@@ -418,14 +468,14 @@ public class TNActv extends ListActivity {
 //			editor.commit();
 //
 //			// Log
-//			Log.d("ThumbnailActivity.java" + "["
+//			Log.d("TNActv.java" + "["
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //					+ "]", "Prefs set");
 //			
 ////			aAdapter.notifyDataSetChanged();
 //			
 //			// Log
-//			Log.d("ThumbnailActivity.java" + "["
+//			Log.d("TNActv.java" + "["
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //					+ "]", "aAdapter notified");
 			
@@ -437,7 +487,7 @@ public class TNActv extends ListActivity {
 			 * CheckBox on, then click on the item, then nothing happens (20120717_221403)
 				----------------------------*/
 			
-			MainActv.checkedPositions.add(position);
+			TNActv.checkedPositions.add(position);
 			
 			if (bAdapter != null) {
 				
@@ -446,10 +496,10 @@ public class TNActv extends ListActivity {
 			}//if (bAdapter != null)
 			
 			// Log
-			Log.d("ThumbnailActivity.java" + "["
+			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "New position => " + position +
-					" / " + "(length=" + MainActv.checkedPositions.size() + ")");
+					" / " + "(length=" + TNActv.checkedPositions.size() + ")");
 			
 			
 		}//if (move_mode == false)
@@ -457,5 +507,269 @@ public class TNActv extends ListActivity {
 		super.onListItemClick(lv, v, position, id);
 		
 	}//protected void onListItemClick(ListView lv, View v, int position, long id)
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// 
+		MenuInflater mi = getMenuInflater();
+		mi.inflate(R.menu.thumb_actv_menu, menu);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		/*----------------------------
+		 * Steps
+		 * 1. R.id.thumb_actv_menu_move_mode
+		 * 2. R.id.thumb_actv_menu_move_files
+			----------------------------*/
+		
+		
+		case R.id.thumb_actv_menu_move_mode://---------------------------------------
+			if (move_mode == true) {
+				
+				move_mode_true(item);
+				
+			} else {// move_mode => false
+				
+				move_mode_false(item);
+				
+			}//if (move_mode == true)
+			
+			break;// case R.id.thumb_actv_menu_move_files
+		
+		case R.id.thumb_actv_menu_move_files:	//------------------------------------------
+			
+			if (move_mode == false) {
+				
+				// debug
+				Toast.makeText(this, "Move mode is not on", 2000)
+						.show();
+				
+				return false;
+				
+			} else if (move_mode == true) {
+				/*----------------------------
+				 * Steps
+				 * 1. checkedPositions => Has contents?
+				 * 2. If yes, show dialog
+					----------------------------*/
+				if (checkedPositions.size() < 1) {
+					
+					// debug
+					Toast.makeText(TNActv.this, "No item selected", 2000).show();
+					
+					return false;
+					
+				}//if (checkedPositions.size() < 1)
+				
+				
+				/*----------------------------
+				 * 2. If yes, show dialog
+					----------------------------*/
+				Methods.dlg_moveFiles(this);
+				
+			}//if (move_mode == false)
+			
+			break;// case R.id.thumb_actv_menu_move_files
+			
+		}//switch (item.getItemId())
+		
+		
+		
+		return super.onOptionsItemSelected(item);
+		
+	}//public boolean onOptionsItemSelected(MenuItem item)
+
+
+	private void move_mode_false(MenuItem item) {
+		
+		/*----------------------------
+		 * Steps: Current mode => false
+		 * 1. Set icon => On
+		 * 2. move_mode => true
+		 * 
+		 * 2-1. Set position to preference
+		 * 
+		 * 3. Update aAdapter
+		 * 4. Re-set tiList
+			----------------------------*/
+		
+		item.setIcon(R.drawable.ifm8_thumb_actv_opt_menu_move_mode_on);
+		
+		move_mode = true;
+		
+		// Log
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "move_mode => Now true");
+		
+		/*----------------------------
+		 * 2-1. Set position to preference
+			----------------------------*/
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "this.getSelectedItemPosition(): " + this.getSelectedItemPosition());
+
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "this.getSelectedItemId(): " + this.getSelectedItemId());
+
+		/*----------------------------
+		 * 4. Re-set tiList
+			----------------------------*/
+//		String tableName = Methods.convertPathIntoTableName(this);
+
+		String currentPath = Methods.get_currentPath_from_prefs(this);
+		
+		String tableName = Methods.convert_filePath_into_table_name(this, currentPath);
+		
+		// Log
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "tableName: " + tableName);
+		
+		
+		//
+		tiList.clear();
+
+		// Log
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "tiList => Cleared");
+
+//		Log.d("TNActv.java"
+//				+ "["
+//				+ Thread.currentThread().getStackTrace()[2]
+//						.getLineNumber() + "]", "checkedPositions.size() => " + checkedPositions.size());
+
+		if (long_searchedItems == null) {
+
+			tiList = Methods.getAllData(this, tableName);
+			
+		} else {//if (long_searchedItems == null)
+
+//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			
+		}//if (long_searchedItems == null)
+
+
+		// Log
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "tiList.size() => " + tiList.size());
+		
+		/*----------------------------
+		 * 3. Update aAdapter
+			----------------------------*/
+		Methods.sort_tiList(tiList);
+		
+		bAdapter =
+				new TIListAdapter(
+						this, 
+						R.layout.thumb_activity, 
+						tiList,
+						Methods.MoveMode.ON);
+
+		setListAdapter(bAdapter);
+
+	}//private void move_mode_false(MenuItem item)
+
+
+	private void move_mode_true(MenuItem item) {
+		/*----------------------------
+		 * Steps: Current mode => false
+		 * 1. Set icon => On
+		 * 2. move_mode => false
+		 * 2-2. TNActv.checkedPositions => clear()
+		 * 
+		 * 2-3. Get position from preference
+		 * 
+		 * 3. Re-set tiList
+		 * 4. Update aAdapter
+			----------------------------*/
+		
+		item.setIcon(R.drawable.ifm8_thumb_actv_opt_menu_move_mode_off);
+		
+		move_mode = false;
+
+		// Log
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "move_mode => Now false");
+		/*----------------------------
+		 * 2-2. TNActv.checkedPositions => clear()
+			----------------------------*/
+		TNActv.checkedPositions.clear();
+		
+		/*----------------------------
+		 * 2-3. Get position from preference
+			----------------------------*/
+		int selected_position = Methods.get_pref(this, tnactv_selected_item, 0);
+		
+		/*----------------------------
+		 * 3. Re-set tiList
+			----------------------------*/
+//		String tableName = Methods.convertPathIntoTableName(this);
+		String currentPath = Methods.get_currentPath_from_prefs(this);
+		
+		String tableName = Methods.convert_filePath_into_table_name(this, currentPath);
+
+
+		tiList.clear();
+
+		// Log
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "tiList => Cleared");
+
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "checkedPositions.size() => " + checkedPositions.size());
+		
+		if (long_searchedItems == null) {
+
+			tiList.addAll(Methods.getAllData(this, tableName));
+			
+		} else {//if (long_searchedItems == null)
+
+//			tiList = Methods.getAllData(this, tableName);
+//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			
+		}//if (long_searchedItems == null)
+
+		// Log
+		Log.d("TNActv.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "tiList.size() => " + tiList.size());
+		
+		/*----------------------------
+		 * 4. Update aAdapter
+			----------------------------*/
+		Methods.sort_tiList(tiList);
+		
+		aAdapter = 
+				new TIListAdapter(
+						this, 
+						R.layout.thumb_activity, 
+						tiList,
+						Methods.MoveMode.OFF);
+		
+		setListAdapter(aAdapter);
+		
+		this.setSelection(selected_position);
+		
+	}//private void move_mode_true()
 
 }//public class TNActv

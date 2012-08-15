@@ -126,6 +126,20 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 			break;// case dlg_confirm_remove_folder_ok
 
+		case dlg_generic_dismiss_second_dialog: // ----------------------------------------------------
+			
+			vib.vibrate(Methods.vibLength_click);
+			
+			dlg2.dismiss();
+			
+			break;
+
+		case dlg_confirm_move_files_ok: // ----------------------------------------------------
+			
+			Methods.moveFiles(actv, dlg, dlg2);
+			
+			break;
+
 		default: // ----------------------------------------------------
 			break;
 		}//switch (tag_name)

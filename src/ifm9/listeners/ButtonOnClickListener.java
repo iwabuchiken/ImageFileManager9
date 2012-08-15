@@ -1,4 +1,6 @@
 package ifm9.listeners;
+
+import ifm9.main.TNActv;
 import ifm9.utils.Methods;
 
 import java.io.File;
@@ -71,7 +73,87 @@ public class ButtonOnClickListener implements OnClickListener {
 			Methods.upDir(actv);
 			
 			break;
-		
+
+		case tilist_cb://------------------------------------------------------------------------------
+			/*----------------------------
+			 * Steps
+			 * 1. If already checked, unlist from ThumbnailActivity.checkedPositions
+			 * 2. If not yet, enlist into it
+			 * 3. Then, notify to adapter
+				----------------------------*/
+			/*----------------------------
+			 * 1. If already checked, unlist from ThumbnailActivity.checkedPositions
+				----------------------------*/
+			if (TNActv.checkedPositions.contains((int)position)) {
+				// Log
+				Log.d("ButtonOnClickListener.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "position exists => " + position);
+				
+//				TNActv.checkedPositions.add(position);
+//				TNActv.checkedPositions.remove(position);
+				TNActv.checkedPositions.remove((Integer) position);
+				
+				// Log
+				Log.d("ButtonOnClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "position removed => " + position);
+				
+				
+//				// Log
+//				Log.d("TNActv.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]", "New position => " + position +
+//						" / " + "(length=" + TNActv.checkedPositions.size() + ")");
+//	
+//				Log.d("TNActv.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]", 
+//						"tiList(position=" + position + ") => " + 
+//						TNActv.tiList.get(position).getFile_name());
+	
+			} else {//if (TNActv.checkedPositions.contains((int)position))
+				/*----------------------------
+				 * 2. If not yet, enlist into it
+					----------------------------*/
+				
+				TNActv.checkedPositions.add(position);
+				
+				// Log
+				String temp = "new position added => " + String.valueOf(position) +
+						"(size=" + TNActv.checkedPositions.size() + ")" + "[";
+				
+				StringBuilder sb = new StringBuilder();
+				
+				sb.append(temp);
+				for (int i = 0; i < TNActv.checkedPositions.size(); i++) {
+					
+					sb.append(TNActv.checkedPositions.get(i) + ",");
+					
+				}//for (int i = 0; i < TNActv.checkedPositions.size(); i++)
+				sb.append("]");
+				
+				
+				Log.d("ButtonOnClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", sb.toString());
+//								.getLineNumber() + "]", "new position added => " + String.valueOf(position) +
+//								"(size=" + TNActv.checkedPositions.size() + ")" + "[" +);
+				
+				
+			}//if (TNActv.checkedPositions.contains((int)position))
+			
+			/*----------------------------
+			 * 3. Then, notify to adapter
+				----------------------------*/
+			TNActv.aAdapter.notifyDataSetChanged();
+			TNActv.bAdapter.notifyDataSetChanged();
+			
+			break;
+
+			
 		default:
 			break;
 		}//switch (tag)

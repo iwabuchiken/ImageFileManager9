@@ -1,5 +1,6 @@
 package ifm9.listeners;
 
+import ifm9.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -41,17 +42,30 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		 * 3. Switching
 			----------------------------*/
 		
-//		Methods.DialogOnItemClickTags tag = (Methods.DialogOnItemClickTags) parent.getTag();
+		Methods.DialogItemTags tag = (Methods.DialogItemTags) parent.getTag();
 //		
-//		vib.vibrate(Methods.vibLength_click);
+		vib.vibrate(Methods.vibLength_click);
 		
 		/*----------------------------
 		 * 3. Switching
 			----------------------------*/
-//		switch (tag) {
+		switch (tag) {
 		
+		case dlg_move_files:
+
+			String folderPath = (String) parent.getItemAtPosition(position);
 			
-//		}//switch (tag)
+			Methods.dlg_confirm_moveFiles(actv, dlg, folderPath);
+
+//			// debug
+//			Toast.makeText(actv, "Move files to: " + folderPath, 2000)
+//					.show();
+			
+			break;
+			
+		default:
+			break;
+		}//switch (tag)
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 }

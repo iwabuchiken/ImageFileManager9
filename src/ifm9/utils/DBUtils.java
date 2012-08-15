@@ -606,6 +606,14 @@ public class DBUtils extends SQLiteOpenHelper{
 			
 			return false;
 			
+		} else {//if (result == false)
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", 
+					"Data exists in db" + String.valueOf(file_id) + ")");
+			
 		}//if (result == false)
 		
 		
@@ -621,6 +629,10 @@ public class DBUtils extends SQLiteOpenHelper{
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //					+ "]", "Data deleted => file id = " + String.valueOf(file_id));
 			
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Sql executed: " + sql);
 			
 			return true;
 			

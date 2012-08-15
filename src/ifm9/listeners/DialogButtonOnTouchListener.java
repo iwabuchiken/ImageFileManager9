@@ -50,7 +50,9 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 					
 				case dlg_confirm_remove_folder_cancel:
 				case dlg_confirm_remove_folder_ok:
-					
+
+				case dlg_confirm_move_files_ok:
+				case dlg_generic_dismiss_second_dialog:
 					//
 					v.setBackgroundColor(Color.GRAY);
 					
@@ -76,6 +78,9 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 			case dlg_confirm_remove_folder_cancel:
 			case dlg_confirm_remove_folder_ok:
 
+			case dlg_confirm_move_files_ok:
+			case dlg_generic_dismiss_second_dialog:
+				
 				//
 					v.setBackgroundColor(Color.WHITE);
 					

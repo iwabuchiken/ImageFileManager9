@@ -80,8 +80,6 @@ public class MainActv extends ListActivity {
 
 	public static boolean move_mode = false;
 	
-	public static ArrayList<Integer> checkedPositions;
-	
 	/*----------------------------
 	 * DB
 		----------------------------*/

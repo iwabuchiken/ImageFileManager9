@@ -2,9 +2,11 @@ package ifm9.utils;
 
 
 import ifm9.items.TI;
+import ifm9.listeners.CustomOnItemLongClickListener;
 import ifm9.listeners.DialogButtonOnClickListener;
 import ifm9.listeners.DialogButtonOnTouchListener;
 import ifm9.listeners.DialogListener;
+import ifm9.listeners.DialogOnItemClickListener;
 import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.main.TNActv;
@@ -112,6 +114,13 @@ public class Methods {
 		
 		
 	}//public static enum DialogTags
+	
+	public static enum DialogItemTags {
+		// dlg_moveFiles(Activity actv)
+		dlg_move_files,
+		
+	}//public static enum DialogItemTags
+	
 	
 	public static enum ButtonTags {
 		// MainActivity.java
@@ -960,43 +969,14 @@ public class Methods {
 		return tableName;
 	}//public static String convert_path_into_table_name(Activity actv)
 
-	public static String convert_filePath_into_table_name(Activity actv, File file) {
-		/*----------------------------
-		 * Steps
-		 * 1. Get table name => Up to the current path
-		 * 2. Add name => Target folder name
-			----------------------------*/
-		String tableName = null;
-		StringBuilder sb = new StringBuilder();
-
-			
-//		String[] currentPathArray = convert_prefs_into_path_label(actv).split(File.separator);
-		String[] currentPathArray = file.getAbsolutePath().split(File.separator);
+	public static String convert_filePath_into_table_name(Activity actv, String filePath) {
 		
+		String temp = Methods.convert_prefs_into_path_label(actv, filePath);
 		
+		return Methods.convert_path_into_table_name(actv, temp);
 		
-		if (currentPathArray.length > 1) {
-			
-			tableName = StringUtils.join(currentPathArray, "__");
-			
-		} else {//if (currentPathArray.length > 1)
-			
-			sb.append(currentPathArray[0]);
-			
-			tableName = sb.toString();
-			
-		}//if (currentPathArray.length > 1)
-		
-		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "tableName => " + tableName);
-		
-		
-		return tableName;
-	}//public static String convert_path_into_table_name(Activity actv)
-
+	}//public static String convert_filePath_into_table_name(Activity actv, String filePath)
+	
 	public static List<String> getTableList(Activity actv) {
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
 		
@@ -2576,4 +2556,701 @@ public class Methods {
 		return (target.delete());
 	}//public static boolean deleteDirectory(File target)
 
+	public static void sort_tiList(List<TI> tiList) {
+		
+		Collections.sort(tiList, new Comparator<TI>(){
+
+			@Override
+			public int compare(TI lhs, TI rhs) {
+				// TODO 自動生成されたメソッド・スタブ
+				
+//				return (int) (lhs.getDate_added() - rhs.getDate_added());
+				
+				return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
+			}
+			
+		});//Collections.sort()
+
+	}//public static void sort_tiList(List<ThumbnailItem> tiList)
+
+	public static boolean set_pref(Activity actv, String pref_name, String value) {
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * 2. Get editor
+			----------------------------*/
+		SharedPreferences.Editor editor = prefs.edit();
+
+		/*----------------------------
+		 * 3. Set value
+			----------------------------*/
+		editor.putString(pref_name, value);
+		
+		try {
+			editor.commit();
+			
+			return true;
+			
+		} catch (Exception e) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Excption: " + e.toString());
+			
+			return false;
+		}
+
+	}//public static boolean set_pref(String pref_name, String value)
+
+	public static String get_pref(Activity actv, String pref_name, String defValue) {
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * Return
+			----------------------------*/
+		return prefs.getString(pref_name, defValue);
+
+	}//public static boolean set_pref(String pref_name, String value)
+
+	public static boolean set_pref(Activity actv, String pref_name, int value) {
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * 2. Get editor
+			----------------------------*/
+		SharedPreferences.Editor editor = prefs.edit();
+
+		/*----------------------------
+		 * 3. Set value
+			----------------------------*/
+		editor.putInt(pref_name, value);
+		
+		try {
+			editor.commit();
+			
+			return true;
+			
+		} catch (Exception e) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Excption: " + e.toString());
+			
+			return false;
+		}
+
+	}//public static boolean set_pref(String pref_name, String value)
+
+	public static int get_pref(Activity actv, String pref_name, int defValue) {
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * Return
+			----------------------------*/
+		return prefs.getInt(pref_name, defValue);
+
+	}//public static boolean set_pref(String pref_name, String value)
+
+	public static void dlg_moveFiles(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get generic dialog
+		 * 2. Get dir list
+		 * 2-1. Set list to the adapter
+		 * 3. Set adapter to the list view
+		 * 4. Set listener to the view
+		 * 
+		 * 9. Show dialog
+			----------------------------*/
+		
+		Dialog dlg = dlg_template_cancel(
+				// Activity, layout, title
+				actv, R.layout.dlg_move_files, R.string.thumb_actv_menu_move_files,
+				// Ok button, Cancel button
+				R.id.dlg_move_files_bt_cancel,
+				// Ok tag, Cancel tag
+				DialogTags.dlg_generic_dismiss
+							);
+		
+		/*----------------------------
+		 * 2. Get dir list
+			----------------------------*/
+		File[] files = new File(MainActv.dirPath_base).listFiles(new FileFilter(){
+
+			@Override
+			public boolean accept(File pathname) {
+				// TODO 自動生成されたメソッド・スタブ
+				
+				return pathname.isDirectory();
+			}
+			
+		});//File[] files
+		
+		List<String> fileNameList = new ArrayList<String>();
+		
+//		for (String fileName : fileNames) {
+		for (File eachFile : files) {
+			
+//			fileNameList.add(fileName);
+			fileNameList.add(eachFile.getName());
+			
+		}//for (String fileName : fileNames)
+		
+		Collections.sort(fileNameList);
+		
+		/*----------------------------
+		 * 2-1. Set list to the adapter
+			----------------------------*/
+		ArrayAdapter<String> dirListAdapter = new ArrayAdapter<String>(
+												actv,
+												android.R.layout.simple_list_item_1,
+												fileNameList
+											);
+		
+		/*----------------------------
+		 * 3. Set adapter to the list view
+			----------------------------*/
+		//
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_move_files_lv_list);
+		
+		lv.setAdapter(dirListAdapter);
+		
+		/*----------------------------
+		 * 4. Set listener to the view
+		 * 		1. onClick
+		 * 		2. onLongClick
+			----------------------------*/
+		lv.setTag(Methods.DialogItemTags.dlg_move_files);
+		
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		
+		/*----------------------------
+		 * 4.2. onLongClick
+			----------------------------*/
+		lv.setTag(Methods.DialogItemTags.dlg_move_files);
+		
+		lv.setOnItemLongClickListener(
+						new CustomOnItemLongClickListener(
+												actv, 
+												dlg,
+												dirListAdapter, fileNameList));
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+		dlg.show();
+		
+	}//public static void dlg_moveFiles(Activity actv)
+
+	public static Dialog dlg_template_cancel(Activity actv, int layoutId, int titleStringId,
+			int cancelButtonId, DialogTags cancelTag) {
+		/*----------------------------
+		* Steps
+		* 1. Set up
+		* 2. Add listeners => OnTouch
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(layoutId);
+		
+		// Title
+		dlg.setTitle(titleStringId);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_cancel = (Button) dlg.findViewById(cancelButtonId);
+		
+		//
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		//
+		//dlg.show();
+		
+		return dlg;
+	
+	}//public static Dialog dlg_template_okCancel()
+
+	public static void dlg_confirm_moveFiles(Activity actv, Dialog dlg, String folderPath) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get a confirm dialog
+		 * 2. Set a chosen folder name to the view
+		 * 9. Show dialog
+			----------------------------*/
+		/*----------------------------
+		* 1. Get a confirm dialog
+			* 1. Set up
+			* 2. Add listeners => OnTouch
+			* 3. Add listeners => OnClick
+		----------------------------*/
+		
+		// 
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(R.layout.dlg_confirm_move_files);
+		
+		// Title
+		dlg2.setTitle(R.string.generic_tv_confirm);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(R.id.dlg_confirm_move_files_btn_ok);
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_confirm_move_files_btn_cancel);
+		
+		//
+		btn_ok.setTag(DialogTags.dlg_confirm_move_files_ok);
+		btn_cancel.setTag(DialogTags.dlg_generic_dismiss_second_dialog);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+				
+		/*----------------------------
+		 * 2. Set a chosen folder name to the view
+			----------------------------*/
+		TextView tv_folder_name = (TextView) dlg2.findViewById(R.id.dlg_confirm_move_files_tv_table_name);
+		
+		tv_folder_name.setText(folderPath);
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
+	}//public static void dlg_confirm_moveFiles(Activity actv, Dialog dlg)
+
+	public static void moveFiles(Activity actv, Dialog dlg1, Dialog dlg2) {
+		/*----------------------------
+		 * Steps
+		 * 1. Move files
+		 * 2. Update the list view
+		 * 2-2. Update preference for highlighting a chosen item
+		 * 3. Dismiss dialogues
+			----------------------------*/
+		/*----------------------------
+		 * 1. Move files
+		 * 		1.1. Prepare toMoveFiles
+		 * 		1.2. Get target dir path from dlg2
+		 * 		1.3. Insert items in toMoveFiles to the new table
+		 * 		1.4. Delete the items from the source table
+			----------------------------*/
+		List<TI> toMoveFiles = Methods.moveFiles_1_get_toMoveFiles();
+		
+		/*----------------------------
+		 * 1.2. Get target dir path from dlg2
+			----------------------------*/
+		TextView tv = (TextView) dlg2.findViewById(R.id.dlg_confirm_move_files_tv_table_name);
+		
+		String folderPath = tv.getText().toString();
+		
+		String targetTableName = Methods.convert_path_into_table_name(actv, folderPath);
+		
+		String sourceTableName = Methods.convert_path_into_table_name(actv);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "folderPath => " + folderPath);
+
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "targetTableName => " + targetTableName);
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sourceTableName => " + sourceTableName);
+		
+		/*----------------------------
+		 * 1.3. Insert items in toMoveFiles to the new table
+		 * 		1.3.1. Insert data to the new table
+			----------------------------*/
+		/*----------------------------
+		 * 1.3.1. Insert data to the new table
+		 * 		1. Set up db
+		 * 		2. Table exists?
+		 * 		2-2. If no, create one
+		 * 		3. Get item from toMoveFiles
+		 * 
+		 * 		4. Insert data into the new table
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 1.3.1.2. Table exists?
+			----------------------------*/
+		boolean res = moveFiles_2_table_exists(actv, wdb, dbu, targetTableName);
+		
+		if (res == false) {
+			
+			return;
+			
+		}//if (res == false)
+		
+		/*----------------------------
+		 * 1.3.1.3. Get item from toMoveFiles
+			----------------------------*/
+		for (TI ti : toMoveFiles) {
+			
+			/*----------------------------
+			 * 1.3.4. Insert data into the new table
+				----------------------------*/
+			dbu.insertData(wdb, targetTableName, ti);
+			
+			deleteItem_fromTable(actv, sourceTableName, ti);
+			
+		}//for (ThumbnailItem thumbnailItem : toMoveFiles)
+		
+		
+		/*----------------------------
+		 * 1.4. Delete the items from the source table
+		 * 		1. Delete data from the source table
+		 * 		2. Delete the item from tiList
+		 * 
+		 * 		9. Close db
+			----------------------------*/
+//		/*----------------------------
+//		 * 1.4.1. Delete data from the source table
+//			----------------------------*/
+//		for (ThumbnailItem thumbnailItem : toMoveFiles) {
+//			
+//			deleteItem_fromTable(actv, sourceTableName, thumbnailItem);
+//			
+//		}//for (ThumbnailItem thumbnailItem : toMoveFiles)
+		
+		/*----------------------------
+		 * 1.4.2. Delete the item from tiList
+			----------------------------*/
+		for (Integer position : TNActv.checkedPositions) {
+			
+			TNActv.tiList.remove(position);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Removed from tiList at position=" + position);
+			
+			
+		}//for (Integer position : ThumbnailActivity.checkedPositions)
+		
+		/*----------------------------
+		 * 1.4.9. Close wdb
+			----------------------------*/
+		wdb.close();
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "wdb => Closed");
+//		
+//		/*----------------------------
+//		 * 2. Update the list view
+//			----------------------------*/
+//		ThumbnailActivity.checkedPositions.clear();
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "checkedPositions => Cleared");
+//		
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", 
+//				"ThumbnailActivity.checkedPositions.size() => " + 
+//				ThumbnailActivity.checkedPositions.size());
+//		
+//		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+//		
+////		ThumbnailActivity.bAdapter.notifyDataSetChanged();
+//		ThumbnailActivity.bAdapter =
+//				new TIListAdapter(
+//						actv, 
+//						ifm8.main.R.layout.thumb_activity, 
+////						ThumbnailActivity.tiList);
+//						ThumbnailActivity.tiList,
+//						Methods.MoveMode.ON);
+//
+//		((ListActivity) actv).setListAdapter(ThumbnailActivity.bAdapter);
+//		
+//		
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "aAdapter => Notified");
+//		
+//		/*----------------------------
+//		 * 2-2. Update preference for highlighting a chosen item
+//			----------------------------*/
+////		SharedPreferences prefs = 
+////				actv.getSharedPreferences(
+//////						"thumb_actv", 
+////						Methods.PrefenceLabels.thumb_actv.name(),
+////						ThumbnailActivity.MODE_PRIVATE);
+////
+////		SharedPreferences.Editor editor = prefs.edit();
+////
+////		int savedPosition = prefs.getInt(Methods.PrefenceLabels.chosen_list_item.name(), -1);
+//		
+//		/*----------------------------
+//		 * 3. Dismiss dialogues
+//			----------------------------*/
+//		dlg1.dismiss();
+//		dlg2.dismiss();
+		
+	}//public static void moveFiles(Activity actv, Dialog dlg1, Dialog dlg2)
+
+	private static boolean moveFiles_2_table_exists(Activity actv, 
+					SQLiteDatabase wdb, DBUtils dbu, String targetTableName) {
+		
+		boolean result = dbu.tableExists(wdb, targetTableName);
+		
+		if (result == false) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + targetTableName);
+			
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Now I create one");
+			
+			/*----------------------------
+			 * 1.3.2-2. If no, create one
+				----------------------------*/
+			result = dbu.createTable(
+								wdb, targetTableName, 
+								dbu.get_cols(), dbu.get_col_types());
+			
+			if (result == false) {
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Can't create a table: " + targetTableName);
+				
+				wdb.close();
+				
+				return false;
+				
+			} else {//if (result == false)
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: " + targetTableName);
+				
+				return true;
+				
+			}//if (result == false)
+			
+		} else {//if (result == true)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: " + targetTableName);
+			
+			return true;
+			
+		}//if (result == true)
+	}//private static boolean moveFiles_2_table_exists()
+
+	public static List<TI> moveFiles_1_get_toMoveFiles() {
+		/*----------------------------
+		 * 1. Move files
+		 * 		1.1. Prepare toMoveFiles
+		 * 		1.2. Get target dir path from dlg2
+		 * 		1.3. Insert items in toMoveFiles to the new table
+		 * 		1.4. Delete the items from the source table
+			----------------------------*/
+		//
+		List<TI> toMoveFiles = new ArrayList<TI>();
+		
+		for (int position : TNActv.checkedPositions) {
+			
+			toMoveFiles.add(TNActv.tiList.get(position));
+			
+		}//for (int position : ThumbnailActivity.checkedPositions)
+		
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "toMoveFiles.size() => " + toMoveFiles.size());
+		
+		for (TI thumbnailItem : toMoveFiles) {
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "thumbnailItem.getFile_name() => " + thumbnailItem.getFile_name());
+		}
+		
+		return toMoveFiles;
+		
+	}//public static List<TI> moveFiles_1_get_toMoveFiles(Activity actv, Dialog dlg1, Dialog dlg2)
+
+	public static void deleteItem_fromTable(Activity actv, String tableName, TI ti) {
+		/*----------------------------
+		 * 1. db setup
+		 * 2. Delete data
+		 * 3. Close db
+		 * 4. If unsuccesful, toast a message (Not dismiss the dialog)
+		 * 4-2. If successful, delete the item from tiList, as well, and,
+		 * #4-3. Notify adapter
+		 * 5. Dismiss dialog
+			----------------------------*/
+		
+		/*----------------------------
+		 * 1. db setup
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		/*----------------------------
+		 * 2. Delete data
+			----------------------------*/
+		boolean result = dbu.deleteData(
+							actv,
+							wdb, 
+//							Methods.convertPathIntoTableName(actv),
+							tableName,
+							ti.getFileId());
+		
+		/*----------------------------
+		 * 3. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 4. If unsuccesful, toast a message (Not dismiss the dialog)
+			----------------------------*/
+		if (result == false) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Data wasn't deleted: " + ti.getFile_name());
+			
+		} else if (result == true) {//if (result == true)
+			/*----------------------------
+			 * 4-2. If successful, delete the item from tiList, as well
+				----------------------------*/
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Data was deleted: " + ti.getFile_name());
+
+//			ThumbnailActivity.tiList.remove(position);
+			
+//			// Log
+//			Log.d("DialogOnItemClickListener.java"
+//					+ "["
+//					+ Thread.currentThread().getStackTrace()[2]
+//							.getLineNumber() + "]", "Data removed from tiList => " + ti.getFile_name());
+			
+//			/*----------------------------
+//			 * 4-3. Notify adapter
+//				----------------------------*/
+//			ThumbnailActivity.aAdapter.notifyDataSetChanged();
+			
+		}//if (result == true)
+		
+//		/*----------------------------
+//		 * 5. Notify adapter
+//			----------------------------*/
+//		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+//		
+//		/*----------------------------
+//		 * 5. Dismiss dialog
+//			----------------------------*/
+//		dlg.dismiss();
+
+	}//public static void deleteItem_fileId(Activity actv, TI ti, int position)
+
 }//public class Methods
+
+//
+//public static String convert_filePath_into_table_name(Activity actv, File file) {
+//	/*----------------------------
+//	 * Steps
+//	 * 1. Get table name => Up to the current path
+//	 * 2. Add name => Target folder name
+//		----------------------------*/
+//	String tableName = null;
+//	StringBuilder sb = new StringBuilder();
+//
+//		
+////	String[] currentPathArray = convert_prefs_into_path_label(actv).split(File.separator);
+//	String[] currentPathArray = file.getAbsolutePath().split(File.separator);
+//	
+//	
+//	
+//	if (currentPathArray.length > 1) {
+//		
+//		tableName = StringUtils.join(currentPathArray, "__");
+//		
+//	} else {//if (currentPathArray.length > 1)
+//		
+//		sb.append(currentPathArray[0]);
+//		
+//		tableName = sb.toString();
+//		
+//	}//if (currentPathArray.length > 1)
+//	
+//	
+//	// Log
+//	Log.d("Methods.java" + "["
+//			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//			+ "]", "tableName => " + tableName);
+//	
+//	
+//	return tableName;
+//}//public static String convert_path_into_table_name(Activity actv)
+//
+//public static String convert_filePath_into_table_name(Activity actv, String filePath) {
+//	/*----------------------------
+//	 * Steps
+//	 * 1. Get table name => Up to the current path
+//	 * 2. Add name => Target folder name
+//		----------------------------*/
+//	File f = new File(filePath);
+//	
+//	return Methods.convert_filePath_into_table_name(actv, f);
+//}//public static String convert_path_into_table_name(Activity actv)
+//
