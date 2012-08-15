@@ -47,6 +47,10 @@ public class TNActv extends ListActivity {
 
 	public static ArrayList<Integer> checkedPositions;
 
+	public static List<String> fileNameList;
+	
+	public static ArrayAdapter<String> dirListAdapter;
+	
 	/*----------------------------
 	 * Preference names
 		----------------------------*/
@@ -105,10 +109,52 @@ public class TNActv extends ListActivity {
 		checkedPositions = new ArrayList<Integer>();
 
 		//debug
-		get_data_from_table_AAA();
+//		get_data_from_table_AAA();
+		
+//		get_tables_from_db();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "prefs_current_path: " + Methods.get_pref(this, MainActv.prefs_current_path, "NO DATA"));
 		
 	}//public void onCreate(Bundle savedInstanceState)
 
+
+	private void get_tables_from_db() {
+		
+		DBUtils dbu = new DBUtils(this, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		// REF=> http://stackoverflow.com/questions/82875/how-do-i-list-the-tables-in-a-sqlite-database-file
+		String sql = "SELECT * FROM sqlite_master WHERE type='table'";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		startManagingCursor(c);
+		
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Tables: c.getCount()" + c.getCount());
+		
+		c.moveToFirst();
+		
+		for (int i = 0; i < c.getCount(); i++) {
+			
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "name: " + c.getString(1));
+			
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		rdb.close();
+		
+	}//private void get_tables_from_db()
 
 	private void get_data_from_table_AAA() {
 		
@@ -160,7 +206,8 @@ public class TNActv extends ListActivity {
 			----------------------------*/
 		tiList = Methods.getAllData(this, tableName);
 //		
-		if (tiList == null) {
+//		if (tiList == null) {
+		if (tiList == null || tiList.size() < 1) {
 			// Log
 			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()

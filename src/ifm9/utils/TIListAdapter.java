@@ -104,10 +104,10 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 
     	if (moveMode == null || moveMode == Methods.MoveMode.OFF) {
     		
-    		// Log
-			Log.d("TIListAdapter.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "moveMode == null || moveMode == Methods.MoveMode.OFF");
+//    		// Log
+//			Log.d("TIListAdapter.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "moveMode == null || moveMode == Methods.MoveMode.OFF");
 			
     		v = move_mode_off(v, position, convertView);
     		
@@ -328,10 +328,10 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 			
 		}//if (memo)
 		
-		// Log
-		Log.d("TIListAdapter.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "File name, memo => Set");
+//		// Log
+//		Log.d("TIListAdapter.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "File name, memo => Set");
 		
 		/*----------------------------
 		 * 6. Return

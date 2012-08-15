@@ -7,6 +7,7 @@ import ifm9.listeners.DialogButtonOnClickListener;
 import ifm9.listeners.DialogButtonOnTouchListener;
 import ifm9.listeners.DialogListener;
 import ifm9.listeners.DialogOnItemClickListener;
+import ifm9.listeners.DialogOnItemLongClickListener;
 import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.main.TNActv;
@@ -976,7 +977,36 @@ public class Methods {
 		return Methods.convert_path_into_table_name(actv, temp);
 		
 	}//public static String convert_filePath_into_table_name(Activity actv, String filePath)
-	
+
+	public static String convert_filePath_into_path_label(Activity actv, String filePath) {
+		
+		String temp = Methods.convert_prefs_into_path_label(actv, filePath);
+		
+		return temp;
+		
+//		return Methods.convert_path_into_table_name(actv, temp);
+		
+	}//public static String convert_filePath_into_path_label(Activity actv, String filePath)
+
+	public static String convert_filePath_into_path_label_no_base(Activity actv, String filePath) {
+		
+		String temp = Methods.convert_prefs_into_path_label(actv, filePath);
+		
+		String[] a_temp = temp.split(File.separator);
+		
+//		String[] a_temp2 = Arrays.copyOfRange(a_temp, 1, a_temp.length - 1);
+		String[] a_temp2 = Arrays.copyOfRange(a_temp, 1, a_temp.length);
+//		String[] a_temp2 = Arrays.copyOfRange(a_temp, 0, a_temp.length);
+		
+//		return StringUtils.join(a_temp2, MainActv.tableName_separator);
+		return StringUtils.join(a_temp2, File.separator);
+		
+//		return temp;
+		
+//		return Methods.convert_path_into_table_name(actv, temp);
+		
+	}//public static String convert_filePath_into_path_label_no_base(Activity actv, String filePath)
+
 	public static List<String> getTableList(Activity actv) {
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
 		
@@ -2692,25 +2722,25 @@ public class Methods {
 			
 		});//File[] files
 		
-		List<String> fileNameList = new ArrayList<String>();
+		TNActv.fileNameList = new ArrayList<String>();
 		
 //		for (String fileName : fileNames) {
 		for (File eachFile : files) {
 			
 //			fileNameList.add(fileName);
-			fileNameList.add(eachFile.getName());
+			TNActv.fileNameList.add(eachFile.getName());
 			
 		}//for (String fileName : fileNames)
 		
-		Collections.sort(fileNameList);
+		Collections.sort(TNActv.fileNameList);
 		
 		/*----------------------------
 		 * 2-1. Set list to the adapter
 			----------------------------*/
-		ArrayAdapter<String> dirListAdapter = new ArrayAdapter<String>(
+		TNActv.dirListAdapter = new ArrayAdapter<String>(
 												actv,
 												android.R.layout.simple_list_item_1,
-												fileNameList
+												TNActv.fileNameList
 											);
 		
 		/*----------------------------
@@ -2719,7 +2749,7 @@ public class Methods {
 		//
 		ListView lv = (ListView) dlg.findViewById(R.id.dlg_move_files_lv_list);
 		
-		lv.setAdapter(dirListAdapter);
+		lv.setAdapter(TNActv.dirListAdapter);
 		
 		/*----------------------------
 		 * 4. Set listener to the view
@@ -2727,19 +2757,19 @@ public class Methods {
 		 * 		2. onLongClick
 			----------------------------*/
 		lv.setTag(Methods.DialogItemTags.dlg_move_files);
-		
+
 		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
 		
 		/*----------------------------
 		 * 4.2. onLongClick
 			----------------------------*/
-		lv.setTag(Methods.DialogItemTags.dlg_move_files);
+//		lv.setTag(Methods.DialogItemTags.dlg_move_files);
 		
 		lv.setOnItemLongClickListener(
-						new CustomOnItemLongClickListener(
-												actv, 
+						new DialogOnItemLongClickListener(
+												actv,
 												dlg,
-												dirListAdapter, fileNameList));
+												TNActv.dirListAdapter, TNActv.fileNameList));
 		
 		/*----------------------------
 		 * 9. Show dialog
@@ -2874,7 +2904,10 @@ public class Methods {
 		
 		String folderPath = tv.getText().toString();
 		
-		String targetTableName = Methods.convert_path_into_table_name(actv, folderPath);
+		File f = new File(MainActv.dirPath_base, folderPath);
+		
+//		String targetTableName = Methods.convert_path_into_table_name(actv, folderPath);
+		String targetTableName = Methods.convert_filePath_into_table_name(actv, f.getAbsolutePath());
 		
 		String sourceTableName = Methods.convert_path_into_table_name(actv);
 		
@@ -2890,6 +2923,15 @@ public class Methods {
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "sourceTableName => " + sourceTableName);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "prefs_current_path: " + Methods.get_pref(actv, MainActv.prefs_current_path, "NO DATA"));
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "f.getAbsolutePath(): " + f.getAbsolutePath());
 		
 		/*----------------------------
 		 * 1.3. Insert items in toMoveFiles to the new table
@@ -2941,15 +2983,6 @@ public class Methods {
 		 * 
 		 * 		9. Close db
 			----------------------------*/
-//		/*----------------------------
-//		 * 1.4.1. Delete data from the source table
-//			----------------------------*/
-//		for (ThumbnailItem thumbnailItem : toMoveFiles) {
-//			
-//			deleteItem_fromTable(actv, sourceTableName, thumbnailItem);
-//			
-//		}//for (ThumbnailItem thumbnailItem : toMoveFiles)
-		
 		/*----------------------------
 		 * 1.4.2. Delete the item from tiList
 			----------------------------*/
@@ -3024,11 +3057,11 @@ public class Methods {
 ////
 ////		int savedPosition = prefs.getInt(Methods.PrefenceLabels.chosen_list_item.name(), -1);
 //		
-//		/*----------------------------
-//		 * 3. Dismiss dialogues
-//			----------------------------*/
-//		dlg1.dismiss();
-//		dlg2.dismiss();
+		/*----------------------------
+		 * 3. Dismiss dialogues
+			----------------------------*/
+		dlg1.dismiss();
+		dlg2.dismiss();
 		
 	}//public static void moveFiles(Activity actv, Dialog dlg1, Dialog dlg2)
 

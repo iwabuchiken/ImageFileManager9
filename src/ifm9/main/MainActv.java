@@ -86,6 +86,7 @@ public class MainActv extends ListActivity {
 //	public static String dbName = "IFM8";
 	public static String dbName = "ifm9.db";
 	public static String tableName_refreshLog = "refresh_log";
+	public static String tableName_separator = "__";
 	
     /** Called when the activity is first created. */
     @Override
@@ -148,6 +149,14 @@ public class MainActv extends ListActivity {
 			
 			ib_up.setEnabled(false);
 			
+			ib_up.setImageResource(R.drawable.ifm8_up_disenabled);
+			
+		} else {//if (this.currentDirPath == this.baseDirPath)
+		
+			ib_up.setEnabled(true);
+			
+			ib_up.setImageResource(R.drawable.ifm8_up);
+		
 		}//if (this.currentDirPath == this.baseDirPath)
 		
 		/*----------------------------
@@ -157,7 +166,6 @@ public class MainActv extends ListActivity {
 		
 		ib_up.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_up.setOnClickListener(new ButtonOnClickListener(this));
-
 		
 	}//private void set_listeners()
 
@@ -688,8 +696,30 @@ public class MainActv extends ListActivity {
 		Log.d("MainActv.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "prefs: " + Methods.get_currentPath_from_prefs(this));
-	
-	}
+		
+				/*----------------------------
+		 * 2. Set enables
+			----------------------------*/
+		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);
+		
+		String curDirPath = Methods.get_currentPath_from_prefs(this);
+		
+		if (curDirPath.equals(dirPath_base)) {
+			
+			ib_up.setEnabled(false);
+			
+			ib_up.setImageResource(R.drawable.ifm8_up_disenabled);
+			
+		} else {//if (this.currentDirPath == this.baseDirPath)
+		
+			ib_up.setEnabled(true);
+
+			
+			ib_up.setImageResource(R.drawable.ifm8_up);
+		
+		}//if (this.currentDirPath == this.baseDirPath)
+		
+	}//protected void onResume()
 
 	private void copy_db_file() {
 		/*----------------------------
