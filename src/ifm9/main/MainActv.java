@@ -85,7 +85,10 @@ public class MainActv extends ListActivity {
 		----------------------------*/
 //	public static String dbName = "IFM8";
 	public static String dbName = "ifm9.db";
+	
 	public static String tableName_refreshLog = "refresh_log";
+	public static String tableName_memo_patterns = "memo_patterns";
+	
 	public static String tableName_separator = "__";
 	
     /** Called when the activity is first created. */

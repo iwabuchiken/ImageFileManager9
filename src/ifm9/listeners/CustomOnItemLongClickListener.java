@@ -123,9 +123,7 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 			 * 5.1.2. If yes, call a method
 				----------------------------*/
 			Methods.dlg_removeFolder(actv, folderName);
-			
-
-			
+						
 			break;
 		
 		}//switch (tag)

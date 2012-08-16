@@ -3236,6 +3236,358 @@ public class Methods {
 
 	}//public static void deleteItem_fileId(Activity actv, TI ti, int position)
 
+	public static void dlg_addMemo(Activity actv, long file_id, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up
+		 * 1-2. Set text to edit text
+		 * 2. Add listeners => OnTouch
+		 * 3. Add listeners => OnClick
+		 * 
+		 * 4. GridView
+		 * 
+		 * 8. Close db
+		 * 9. Show dialog
+			----------------------------*/
+		Dialog dlg = Methods.dlg_addMemo_1_get_dialog(actv, file_id, tableName);
+
+		/*----------------------------
+		 * 4. GridView
+		 * 	1. Set up db
+		 * 	2. Get cursor
+		 * 	3. Get list
+		 * 	4. Adapter
+		 * 	5. Set adapter to view
+		 * 6. Set listener
+			----------------------------*/
+//		/*----------------------------
+//		 * 4.1. Set up db
+//			----------------------------*/
+		
+		dlg = dlg_addMemo_2_set_gridview(actv, dlg);
+		
+		dlg.show();
+		
+//		GridView gv = (GridView) dlg.findViewById(R.id.dlg_add_memos_gv);
+//		
+//		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+//		
+//		SQLiteDatabase rdb = dbu.getReadableDatabase();
+//
+//		/*----------------------------
+//		 * 4.2. Get cursor
+//			----------------------------*/
+//		String sql = "SELECT * FROM memo_patterns ORDER BY word ASC";
+//		
+//		Cursor c = rdb.rawQuery(sql, null);
+//		
+//		actv.startManagingCursor(c);
+//		
+//		c.moveToFirst();
+//		
+//		/*----------------------------
+//		 * 4.3. Get list
+//			----------------------------*/
+//		List<String> patternList = new ArrayList<String>();
+//		
+//		if (c.getCount() > 0) {
+//			
+//			for (int i = 0; i < c.getCount(); i++) {
+//				
+//				patternList.add(c.getString(1));
+//				
+//				c.moveToNext();
+//				
+//			}//for (int i = 0; i < patternList.size(); i++)
+//			
+//		}//if (c.getCount() > 0)
+//		
+//		
+//		Collections.sort(patternList);
+//
+//		/*----------------------------
+//		 * 4.4. Adapter
+//			----------------------------*/
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//										actv,
+//										R.layout.add_memo_grid_view,
+//										patternList
+//										);
+//		
+//		/*----------------------------
+//		 * 4.5. Set adapter to view
+//			----------------------------*/
+//		gv.setAdapter(adapter);
+//		
+//		/*----------------------------
+//		 * 4.6. Set listener
+//			----------------------------*/
+//		gv.setTag(DialogTags.dlg_add_memos_gv);
+//		
+//		gv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+//		
+//		
+//		/*----------------------------
+//		 * 8. Close db
+//			----------------------------*/
+//		rdb.close();
+//		
+//		/*----------------------------
+//		 * 9. Show dialog
+//			----------------------------*/
+//		dlg.show();
+		
+	}//public static void dlg_addMemo(Activity actv, long file_id, String tableName)
+
+	public static Dialog dlg_addMemo_1_get_dialog(Activity actv, long file_id, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up
+		 * 1-2. Set text to edit text
+		 * 2. Add listeners => OnTouch
+		 * 3. Add listeners => OnClick
+		 * 
+		 * 4. GridView
+		 * 
+		 * 8. Close db
+		 * 9. Show dialog
+			----------------------------*/
+		
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(R.layout.dlg_add_memos);
+		
+		// Title
+		dlg.setTitle(R.string.dlg_add_memos_tv_title);
+		
+		/*----------------------------
+		 * 1-2. Set text to edit text
+			----------------------------*/
+		TI ti = getData(actv, tableName, file_id);
+		
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+		
+		if (ti.getMemo() != null) {
+			
+			et.setText(ti.getMemo());
+			
+			et.setSelection(ti.getMemo().length());
+			
+		} else {//if (ti.getMemo() != null)
+			
+			et.setSelection(0);
+			
+		}//if (ti.getMemo() != null)
+		
+		/*----------------------------
+		 * 2. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_add = (Button) dlg.findViewById(R.id.dlg_add_memos_bt_add);
+		Button btn_cancel = (Button) dlg.findViewById(R.id.dlg_add_memos_cancel);
+		
+		Button btn_patterns = (Button) dlg.findViewById(R.id.dlg_add_memos_bt_patterns);
+		
+		// Tags
+		btn_add.setTag(DialogTags.dlg_add_memos_bt_add);
+		btn_cancel.setTag(DialogTags.dlg_generic_dismiss);
+		
+		btn_patterns.setTag(DialogTags.dlg_add_memos_bt_patterns);
+		
+		//
+		btn_add.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		btn_patterns.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		 * 3. Add listeners => OnClick
+			----------------------------*/
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "file_id => " + file_id);
+		
+		
+		//
+//		btn_add.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		btn_add.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, file_id, tableName));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		btn_patterns.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+
+		
+		return dlg;
+		
+	}//public static Dialog dlg_addMemo(Activity actv, long file_id, String tableName)
+
+	public static Dialog dlg_addMemo_2_set_gridview(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * 4.1. Set up db
+			----------------------------*/
+		GridView gv = (GridView) dlg.findViewById(R.id.dlg_add_memos_gv);
+		
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*----------------------------
+		 * 4.2. Get cursor
+		 * 		1. Table exists?
+		 * 		2. Get cursor
+			----------------------------*/
+		/*----------------------------
+		 * 4.2.1. Table exists?
+			----------------------------*/
+		String tableName = MainActv.tableName_memo_patterns;
+		
+		boolean res = dbu.tableExists(rdb, tableName);
+		
+		if (res == true) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: " + tableName);
+			
+			rdb.close();
+			
+//			return;
+			
+		} else {//if (res == false)
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + tableName);
+			
+			rdb.close();
+			
+			SQLiteDatabase wdb = dbu.getWritableDatabase();
+			
+			res = dbu.createTable(wdb, tableName, DBUtils.cols_memo_patterns, DBUtils.col_types_memo_patterns);
+			
+			if (res == true) {
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: " + tableName);
+				
+			} else {//if (res == true)
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create table failed: " + tableName);
+				
+				wdb.close();
+				
+				return dlg;
+				
+			}//if (res == true)
+
+			
+		}//if (res == false)
+		
+		
+		/*----------------------------
+		 * 4.2.2. Get cursor
+			----------------------------*/
+		rdb = dbu.getReadableDatabase();
+		
+		String sql = "SELECT * FROM " + tableName + " ORDER BY word ASC";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		actv.startManagingCursor(c);
+		
+		c.moveToFirst();
+		
+		/*----------------------------
+		 * 4.3. Get list
+			----------------------------*/
+		List<String> patternList = new ArrayList<String>();
+		
+		if (c.getCount() > 0) {
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				
+				patternList.add(c.getString(1));
+				
+				c.moveToNext();
+				
+			}//for (int i = 0; i < patternList.size(); i++)
+			
+		} else {//if (c.getCount() > 0)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "!c.getCount() > 0");
+			
+		}//if (c.getCount() > 0)
+		
+		
+		Collections.sort(patternList);
+
+		/*----------------------------
+		 * 4.4. Adapter
+			----------------------------*/
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+										actv,
+										R.layout.add_memo_grid_view,
+										patternList
+										);
+		
+		/*----------------------------
+		 * 4.5. Set adapter to view
+			----------------------------*/
+		gv.setAdapter(adapter);
+		
+		/*----------------------------
+		 * 4.6. Set listener
+			----------------------------*/
+		gv.setTag(DialogTags.dlg_add_memos_gv);
+		
+		gv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "GridView setup => Done");
+		
+		/*----------------------------
+		 * 8. Close db
+			----------------------------*/
+		rdb.close();
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+//		dlg.show();
+		
+		return dlg;
+		
+	}//public static Dialog dlg_addMemo(Activity actv, long file_id, String tableName)
+
+	public static TI getData(Activity actv, String tableName, long file_id) {
+
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		TI ti = dbu.getData(actv, rdb, tableName, file_id);
+		
+		rdb.close();
+		
+		return ti;
+		
+	}//public ThumbnailItem getData(Activity actv, String tableName, long file_id)
+
+	
 }//public class Methods
 
 //

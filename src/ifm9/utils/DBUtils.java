@@ -94,6 +94,8 @@ public class DBUtils extends SQLiteOpenHelper{
 	};
 
 	static String[] cols_memo_patterns = {"word", "table_name"};
+	static String[] col_types_memo_patterns = {"TEXT", "TEXT"};
+	
 	static String table_name_memo_patterns = "memo_patterns";
 	
 	/*****************************************************************

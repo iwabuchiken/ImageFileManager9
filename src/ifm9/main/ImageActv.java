@@ -169,8 +169,13 @@ public class ImageActv extends Activity {
 			
 			
 //			Methods.dlg_addMemo(this, file_id, Methods.convertPathIntoTableName(this));
+			Methods.dlg_addMemo(this, file_id, Methods.convert_path_into_table_name(this));
 			
-//			Methods.addMemo(this, file_id, Methods.convertPathIntoTableName(this));
+			// Log
+			Log.d("ImageActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Methods.convert_path_into_table_name(this): " + Methods.convert_path_into_table_name(this));
+			
 			
 			break;
 			
