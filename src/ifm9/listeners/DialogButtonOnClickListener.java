@@ -140,6 +140,25 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 			break;
 
+		case dlg_add_memos_bt_add: // ----------------------------------------------------
+			
+			// Log
+			Log.d("DialogButtonOnClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "file_id => " + file_id);
+			
+			
+			// Log
+			Log.d("DialogButtonOnClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Calling => Methods.addMemo()");
+			
+			vib.vibrate(Methods.vibLength_click);
+			
+			Methods.addMemo(actv, dlg, file_id, tableName);
+			
+			break;// case dlg_add_memos_bt_add
+
 		default: // ----------------------------------------------------
 			break;
 		}//switch (tag_name)

@@ -444,7 +444,7 @@ public class Methods {
 		 * 
 		 * 
 		 * 
-		 * 5. Update image buttons
+		 * 6. Update image buttons
 			----------------------------*/
 		/*----------------------------
 		 * 1. Get currentPath
@@ -517,7 +517,24 @@ public class Methods {
 		/*----------------------------
 		 * 6. Update image buttons
 			----------------------------*/
-		update_image_buttons(actv, currentPath);
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "actv.getClass().getName(): " + actv.getClass().getName());
+		
+//		08-17 08:09:32.187: D/Methods.java[522](8638): actv.getClass().getName(): ifm9.main.ImageActv
+		// Add memo, then the program refreshes the list in TNActv, using this method.
+		// However, the caller, Methods.addMemo() calls this method handing the parameters, in which
+		//	the "actv" contains an instance of ImageActv, which does not has a button "Up", apparently
+		//	=> Hence, I workaround this null pointer error by adding an if sentence, in which, if the actv
+		//		variable is an instance of ImageActv, the method update_image_buttons(actv, currentPath)
+		//		will not be executed, as coded below.
+		if (!actv.getClass().getName().equals("ifm9.main.ImageActv")) {
+			
+			update_image_buttons(actv, currentPath);
+			
+		}//if (!actv.getClass().getName().equals("ifm9.main.ImageActv"))
+//		update_image_buttons(actv, currentPath);
 		
 		
 	}//private static void refreshListView()
@@ -3260,85 +3277,14 @@ public class Methods {
 		 * 	5. Set adapter to view
 		 * 6. Set listener
 			----------------------------*/
-//		/*----------------------------
-//		 * 4.1. Set up db
-//			----------------------------*/
-		
 		dlg = dlg_addMemo_2_set_gridview(actv, dlg);
 		
 		dlg.show();
 		
-//		GridView gv = (GridView) dlg.findViewById(R.id.dlg_add_memos_gv);
-//		
-//		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
-//		
-//		SQLiteDatabase rdb = dbu.getReadableDatabase();
-//
-//		/*----------------------------
-//		 * 4.2. Get cursor
-//			----------------------------*/
-//		String sql = "SELECT * FROM memo_patterns ORDER BY word ASC";
-//		
-//		Cursor c = rdb.rawQuery(sql, null);
-//		
-//		actv.startManagingCursor(c);
-//		
-//		c.moveToFirst();
-//		
-//		/*----------------------------
-//		 * 4.3. Get list
-//			----------------------------*/
-//		List<String> patternList = new ArrayList<String>();
-//		
-//		if (c.getCount() > 0) {
-//			
-//			for (int i = 0; i < c.getCount(); i++) {
-//				
-//				patternList.add(c.getString(1));
-//				
-//				c.moveToNext();
-//				
-//			}//for (int i = 0; i < patternList.size(); i++)
-//			
-//		}//if (c.getCount() > 0)
-//		
-//		
-//		Collections.sort(patternList);
-//
-//		/*----------------------------
-//		 * 4.4. Adapter
-//			----------------------------*/
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//										actv,
-//										R.layout.add_memo_grid_view,
-//										patternList
-//										);
-//		
-//		/*----------------------------
-//		 * 4.5. Set adapter to view
-//			----------------------------*/
-//		gv.setAdapter(adapter);
-//		
-//		/*----------------------------
-//		 * 4.6. Set listener
-//			----------------------------*/
-//		gv.setTag(DialogTags.dlg_add_memos_gv);
-//		
-//		gv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
-//		
-//		
-//		/*----------------------------
-//		 * 8. Close db
-//			----------------------------*/
-//		rdb.close();
-//		
-//		/*----------------------------
-//		 * 9. Show dialog
-//			----------------------------*/
-//		dlg.show();
-		
 	}//public static void dlg_addMemo(Activity actv, long file_id, String tableName)
 
+	
+	
 	public static Dialog dlg_addMemo_1_get_dialog(Activity actv, long file_id, String tableName) {
 		/*----------------------------
 		 * Steps
@@ -3587,7 +3533,96 @@ public class Methods {
 		
 	}//public ThumbnailItem getData(Activity actv, String tableName, long file_id)
 
-	
+	public static void addMemo(Activity actv, Dialog dlg, long file_id, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get tuhumbnail item
+		 * 1-2. Get text from edit text
+		 * 2. Set memo
+		 * 3. Update db
+		 * 
+		 * 4. Refresh thumbnails list
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		TI ti = dbu.getData(actv, rdb, tableName, file_id);
+		
+		rdb.close();
+		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "DB => closed");
+//		
+//		toastAndLog(actv, ti.getFile_name() + "/" + "memo=" + ti.getMemo(), 2000);
+		
+		/*----------------------------
+		 * 1-2. Get text from edit text
+			----------------------------*/
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+		
+		/*----------------------------
+		 * 2. Set memo
+			----------------------------*/
+//		ti.setMemo("abcdefg");
+//		ti.setMemo("123456");
+//		ti.setMemo("WHERE句を省略した場合はテーブルに含まれる全てのデータの指定のカラムの値が指定の値で更新されます。");
+		
+		ti.setMemo(et.getText().toString());
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "New memo => " + et.getText().toString());
+		
+		/*----------------------------
+		 * 3. Update db
+			----------------------------*/
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		boolean result = dbu.updateData_memos(actv, wdb, tableName, ti);
+		
+		wdb.close();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "wdb => Closed");
+		
+		if (result) {
+			
+			dlg.dismiss();
+
+			// debug
+			Toast.makeText(actv, "Memo => Stored", 3000).show();
+
+		} else {//if (result)
+			
+			return;
+			
+		}//if (result)
+		
+		/*----------------------------
+		 * 4. Refresh thumbnails list
+			----------------------------*/
+//		refreshTIList(actv);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Calling: Methods.refreshListView(actv)");
+		
+		Methods.refreshListView(actv);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "TIList => Refreshed");
+		
+	}//public static void addMemo()
+
 }//public class Methods
 
 //
