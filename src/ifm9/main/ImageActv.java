@@ -56,14 +56,6 @@ public class ImageActv extends Activity {
 		
 
 		initial_setup();
-//		//
-//		Intent i = getIntent();
-//		
-//		String file_path = i.getStringExtra("file_path");
-//		long file_id = i.getLongExtra("file_id", -1);
-//		
-//		Methods.toastAndLog(this, file_path, 2000);
-		
 		
 	}//public void onCreate(Bundle savedInstanceState)
 
@@ -181,7 +173,7 @@ public class ImageActv extends Activity {
 			
 		case R.id.image_actv_menu_add_patterns://------------------------------------
 			
-//			Methods.dlg_register_patterns(this);
+			Methods.dlg_register_patterns(this);
 			
 			break;
 		}//switch (item.getItemId())

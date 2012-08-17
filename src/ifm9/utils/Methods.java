@@ -120,6 +120,9 @@ public class Methods {
 		// dlg_moveFiles(Activity actv)
 		dlg_move_files,
 		
+		// dlg_add_memos.xml
+		dlg_add_memos_gv,
+		
 	}//public static enum DialogItemTags
 	
 	
@@ -276,16 +279,22 @@ public class Methods {
 		/*----------------------------
 		 * 3. "Up" button => Enable
 			----------------------------*/
-		ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
+		String currentPath = MainActv.dirPath_current;
 		
-		if (!ib.isEnabled()) {
-			
-			ib.setEnabled(true);
-			
-			ib.setImageResource(R.drawable.ifm8_up);
-			
-			
-		}//if (!ib.isEnabled())
+		Methods.update_image_buttons(actv, currentPath);
+		
+//		update_image_buttons(actv, currentPath)ÅG
+		
+//		ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
+//		
+//		if (!ib.isEnabled()) {
+//			
+//			ib.setEnabled(true);
+//			
+//			ib.setImageResource(R.drawable.ifm8_up);
+//			
+//			
+//		}//if (!ib.isEnabled())
 		
 		/*----------------------------
 		 * 3. Update path view
@@ -529,11 +538,11 @@ public class Methods {
 		//	=> Hence, I workaround this null pointer error by adding an if sentence, in which, if the actv
 		//		variable is an instance of ImageActv, the method update_image_buttons(actv, currentPath)
 		//		will not be executed, as coded below.
-		if (!actv.getClass().getName().equals("ifm9.main.ImageActv")) {
-			
-			update_image_buttons(actv, currentPath);
-			
-		}//if (!actv.getClass().getName().equals("ifm9.main.ImageActv"))
+//		if (!actv.getClass().getName().equals("ifm9.main.ImageActv")) {
+//			
+//			update_image_buttons(actv, currentPath);
+//			
+//		}//if (!actv.getClass().getName().equals("ifm9.main.ImageActv"))
 //		update_image_buttons(actv, currentPath);
 		
 		
@@ -541,17 +550,17 @@ public class Methods {
 
 	private static void update_image_buttons(Activity actv, String currentPath) {
 		
-		ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
+		ImageButton ib_up = (ImageButton) actv.findViewById(R.id.v1_bt_up);
 		
 		if (currentPath.equals(MainActv.dirPath_base)) {
 			
-			ib.setImageResource(R.drawable.ifm8_up_disenabled);
-			ib.setEnabled(false);
+			ib_up.setImageResource(R.drawable.ifm8_up_disenabled);
+			ib_up.setEnabled(false);
 			
 		} else {//if (currentPath.equals(MainActv.dirPath_base))
 
-			ib.setImageResource(R.drawable.ifm8_up);
-			ib.setEnabled(true);
+			ib_up.setImageResource(R.drawable.ifm8_up);
+			ib_up.setEnabled(true);
 			
 		}//if (currentPath.equals(MainActv.dirPath_base))
 		
@@ -677,7 +686,9 @@ public class Methods {
 		 * 2. Is the current path "roof"?
 		 * 3. Go up the path
 		 * 3-2. New path => Equal to base dir path?
+		 * 
 		 * 4. Refresh list
+		 * 4-2. Update buttons
 		 * 5. Update path view
 			----------------------------*/
 		/*----------------------------
@@ -719,6 +730,18 @@ public class Methods {
 		 * 4. Refresh list
 			----------------------------*/
 		Methods.refreshListView(actv);
+		
+		/*----------------------------
+		 * 4-2. Update buttons
+			----------------------------*/
+		currentPath = Methods.get_pref(actv, MainActv.prefs_current_path, null);
+		
+		if (currentPath != null) {
+			
+			Methods.update_image_buttons(actv, currentPath);
+			
+		}//if (currentPath != null)
+//			Methods.update_image_buttons(actv, currentPath);
 		
 		/*----------------------------
 		 * 5. Update path view
@@ -1718,6 +1741,63 @@ public class Methods {
 		
 	}//private static int insertDataIntoDB(Activity actv, Cursor c)
 
+	private static boolean insertDataIntoDB(
+			Activity actv, String tableName, String[] types, String[] values) {
+		/*----------------------------
+		* Steps
+		* 1. Set up db
+		* 2. Insert data
+		* 3. Show message
+		* 4. Close db
+		----------------------------*/
+		/*----------------------------
+		* 1. Set up db
+		----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		/*----------------------------
+		* 2. Insert data
+		----------------------------*/
+		boolean result = dbu.insertData(wdb, tableName, types, values);
+		
+		/*----------------------------
+		* 3. Show message
+		----------------------------*/
+		if (result == true) {
+		
+			// debug
+			Toast.makeText(actv, "Data stored", 2000).show();
+			
+			/*----------------------------
+			* 4. Close db
+			----------------------------*/
+			wdb.close();
+			
+			return true;
+			
+		} else {//if (result == true)
+		
+			// debug
+			Toast.makeText(actv, "Store data => Failed", 200).show();
+			
+			/*----------------------------
+			* 4. Close db
+			----------------------------*/
+			wdb.close();
+			
+			return false;
+		
+		}//if (result == true)
+		
+		/*----------------------------
+		* 4. Close db
+		----------------------------*/
+	
+	}//private static int insertDataIntoDB()
+
+	
 	/****************************************
 	 *		insertDataIntoDB()
 	 * 
@@ -2838,6 +2918,53 @@ public class Methods {
 	
 	}//public static Dialog dlg_template_okCancel()
 
+	public static Dialog dlg_template_okCancel(Activity actv, int layoutId, int titleStringId,
+			int okButtonId, int cancelButtonId, DialogTags okTag, DialogTags cancelTag) {
+		/*----------------------------
+		* Steps
+		* 1. Set up
+		* 2. Add listeners => OnTouch
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(layoutId);
+		
+		// Title
+		dlg.setTitle(titleStringId);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_ok = (Button) dlg.findViewById(okButtonId);
+		Button btn_cancel = (Button) dlg.findViewById(cancelButtonId);
+		
+		//
+		btn_ok.setTag(okTag);
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		//
+		//dlg.show();
+		
+		return dlg;
+	
+	}//public static Dialog dlg_template_okCancel()
+
 	public static void dlg_confirm_moveFiles(Activity actv, Dialog dlg, String folderPath) {
 		/*----------------------------
 		 * Steps
@@ -3496,9 +3623,11 @@ public class Methods {
 		/*----------------------------
 		 * 4.6. Set listener
 			----------------------------*/
-		gv.setTag(DialogTags.dlg_add_memos_gv);
+//		gv.setTag(DialogTags.dlg_add_memos_gv);
+		gv.setTag(Methods.DialogItemTags.dlg_add_memos_gv);
 		
 		gv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		
 		
 		// Log
 		Log.d("Methods.java" + "["
@@ -3612,9 +3741,12 @@ public class Methods {
 		// Log
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "Calling: Methods.refreshListView(actv)");
+//				+ "]", "Calling: Methods.refreshListView(actv)");
+				+ "]", "Calling: Methods.refresh_tilist(actv)");
 		
-		Methods.refreshListView(actv);
+		
+//		Methods.refreshListView(actv);
+		Methods.refresh_tilist(actv);
 		
 		// Log
 		Log.d("Methods.java" + "["
@@ -3623,54 +3755,153 @@ public class Methods {
 		
 	}//public static void addMemo()
 
-}//public class Methods
+	private static void refresh_tilist(Activity actv) {
+		/*----------------------------
+		 * 1. Get table name
+		 * 2. Clear tiList
+		 * 3. Get data to list
+		 * 
+		 * 4. Sort list
+		 * 5. Notify to adapter
+			----------------------------*/
+		
+		String currentPath = Methods.get_currentPath_from_prefs(actv);
+		
+		String tableName = Methods.convert_filePath_into_table_name(actv, currentPath);
 
-//
-//public static String convert_filePath_into_table_name(Activity actv, File file) {
-//	/*----------------------------
-//	 * Steps
-//	 * 1. Get table name => Up to the current path
-//	 * 2. Add name => Target folder name
-//		----------------------------*/
-//	String tableName = null;
-//	StringBuilder sb = new StringBuilder();
-//
-//		
-////	String[] currentPathArray = convert_prefs_into_path_label(actv).split(File.separator);
-//	String[] currentPathArray = file.getAbsolutePath().split(File.separator);
-//	
-//	
-//	
-//	if (currentPathArray.length > 1) {
-//		
-//		tableName = StringUtils.join(currentPathArray, "__");
-//		
-//	} else {//if (currentPathArray.length > 1)
-//		
-//		sb.append(currentPathArray[0]);
-//		
-//		tableName = sb.toString();
-//		
-//	}//if (currentPathArray.length > 1)
-//	
-//	
-//	// Log
-//	Log.d("Methods.java" + "["
-//			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//			+ "]", "tableName => " + tableName);
-//	
-//	
-//	return tableName;
-//}//public static String convert_path_into_table_name(Activity actv)
-//
-//public static String convert_filePath_into_table_name(Activity actv, String filePath) {
-//	/*----------------------------
-//	 * Steps
-//	 * 1. Get table name => Up to the current path
-//	 * 2. Add name => Target folder name
-//		----------------------------*/
-//	File f = new File(filePath);
-//	
-//	return Methods.convert_filePath_into_table_name(actv, f);
-//}//public static String convert_path_into_table_name(Activity actv)
-//
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "currentPath: " + currentPath);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName: " + tableName);
+		
+		
+		/*----------------------------
+		 * 2. Clear tiList
+			----------------------------*/
+		TNActv.tiList.clear();
+		
+		/*----------------------------
+		 * 3. Get data to list
+			----------------------------*/
+		if (TNActv.long_searchedItems == null) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "TNActv.long_searchedItems == null");
+			
+			
+//			TNActv.tiList = Methods.getAllData(actv, tableName);
+			TNActv.tiList.addAll(Methods.getAllData(actv, tableName));
+			
+		} else {//if (long_searchedItems == null)
+
+//			tiList = Methods.convert_fileIdArray2tiList(actv, "IFM8", long_searchedItems);
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "TNActv.long_searchedItems != null");
+			
+		}//if (long_searchedItems == null)
+
+		/*----------------------------
+		 * 4. Sort list
+			----------------------------*/
+		Methods.sort_tiList(TNActv.tiList);
+		
+		
+		/*----------------------------
+		 * 5. Notify to adapter
+			----------------------------*/
+		TNActv.aAdapter.notifyDataSetChanged();
+		
+	}//private static void refresh_tilist(Activity actv)
+
+	public static void dlg_register_patterns(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Dialog
+		 * 9. Show
+			----------------------------*/
+		Dialog dlg = dlg_template_okCancel(
+					actv, R.layout.dlg_register_patterns, R.string.dlg_register_patterns_title,
+				R.id.dlg_register_patterns_btn_create, R.id.dlg_register_patterns_btn_cancel, 
+				DialogTags.dlg_register_patterns_register, DialogTags.dlg_generic_dismiss);
+		
+		
+		/*----------------------------
+		 * 9. Show
+			----------------------------*/
+		dlg.show();
+	}//public static void dlg_register_patterns(Activity actv)
+
+	public static void dlg_register_patterns_isInputEmpty(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get views
+		 * 2. Prepare data
+		 * 3. Register data
+		 * 4. Dismiss dialog
+			----------------------------*/
+		// Get views
+		EditText et_word = (EditText) dlg.findViewById(R.id.dlg_register_patterns_et_word);
+		EditText et_table_name = 
+					(EditText) dlg.findViewById(R.id.dlg_register_patterns_et_table_name);
+		
+		if (et_word.getText().length() == 0) {
+			// debug
+			Toast.makeText(actv, "åÍãÂÇì¸ÇÍÇƒÇ≠ÇæÇ≥Ç¢", 3000).show();
+			
+			return;
+		}// else {//if (et_column_name.getText().length() == 0)
+		
+		/*----------------------------
+		 * 2. Prepare data
+			----------------------------*/
+		//
+		String word = et_word.getText().toString();
+		String table_name = et_table_name.getText().toString();
+		
+		/*----------------------------
+		 * 3. Register data
+			----------------------------*/
+		boolean result = insertDataIntoDB(actv, DBUtils.table_name_memo_patterns, 
+								DBUtils.cols_memo_patterns, new String[]{word, table_name});
+		
+		/*----------------------------
+		 * 4. Dismiss dialog
+			----------------------------*/
+		if (result == true) {
+		
+			dlg.dismiss();
+			
+		} else {//if (result == true)
+
+			// debug
+			Toast.makeText(actv, "ÉÅÉÇÇï€ä«Ç≈Ç´Ç‹ÇπÇÒÇ≈ÇµÇΩ", 3000).show();
+
+		}//if (result == true)
+		
+		
+	}//public static void dlg_register_patterns_isInputEmpty(Activity actv, Dialog dlg)
+
+	public static void add_pattern_to_text(Dialog dlg, int position, String word) {
+		
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+		
+		String content = et.getText().toString();
+		
+		content += word + " ";
+		
+		et.setText(content);
+		
+		et.setSelection(et.getText().toString().length());
+		
+	}//public static void add_pattern_to_text(Dialog dlg, int position, String word)
+
+}//public class Methods

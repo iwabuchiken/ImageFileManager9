@@ -477,6 +477,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		}//try
 	}//public insertData(SQLiteDatabase db, String tableName, ThumbnailItem ti)
 
+	
 	public TI getData(Activity actv, SQLiteDatabase rdb, String tableName, long file_id) {
 		/*----------------------------
 		 * Steps

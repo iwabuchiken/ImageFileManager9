@@ -1,5 +1,6 @@
 package ifm9.listeners;
 
+import ifm9.main.R;
 import ifm9.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
@@ -51,7 +52,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			----------------------------*/
 		switch (tag) {
 		
-		case dlg_move_files:
+		case dlg_move_files://----------------------------------------------
 
 			String folderPath = (String) parent.getItemAtPosition(position);
 			
@@ -61,8 +62,31 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 //			Toast.makeText(actv, "Move files to: " + folderPath, 2000)
 //					.show();
 			
-			break;
+			break;// case dlg_move_files
+
+		case dlg_add_memos_gv://----------------------------------------------
 			
+			String word = (String) parent.getItemAtPosition(position);
+			
+			Methods.add_pattern_to_text(dlg, position, word);
+			
+//			String word = (String) parent.getItemAtPosition(position);
+//			
+//			EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+//			
+//			String content = et.getText().toString();
+//			
+//			content += word + " ";
+//			
+//			et.setText(content);
+//			
+//			et.setSelection(et.getText().toString().length());
+			
+//			// debug
+//			Toast.makeText(actv, word, 2000).show();
+			
+			break;
+
 		default:
 			break;
 		}//switch (tag)

@@ -53,6 +53,11 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 
 				case dlg_confirm_move_files_ok:
 				case dlg_generic_dismiss_second_dialog:
+
+				case dlg_search_ok:
+					
+				case dlg_register_patterns_register:
+					
 					//
 					v.setBackgroundColor(Color.GRAY);
 					
@@ -80,6 +85,10 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 
 			case dlg_confirm_move_files_ok:
 			case dlg_generic_dismiss_second_dialog:
+				
+			case dlg_search_ok:
+				
+			case dlg_register_patterns_register:
 				
 				//
 					v.setBackgroundColor(Color.WHITE);
