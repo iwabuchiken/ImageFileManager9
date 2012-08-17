@@ -40,28 +40,59 @@ public class ButtonOnTouchListener implements OnTouchListener {
 			
 			switch (tag) {
 			
-			case ib_up:
+			case ib_up://----------------------------------------------------
 				
 				ImageButton ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_up_disenabled);
 				
 //				v.setBackgroundColor(Color.GRAY);
 				
-				break;
+				break;// case ib_up
+				
+			case thumb_activity_ib_bottom://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_thumb_bottom_50x50_disenabled);
+						
+				break;// case thumb_activity_ib_bottom
+
+			case thumb_activity_ib_top://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_thumb_top_50x50_disenabled);
+				
+				break;// case thumb_activity_ib_top
+				
 			}//switch (tag)
 			
 			break;//case MotionEvent.ACTION_DOWN:
 			
+			
 		case MotionEvent.ACTION_UP:
 			switch (tag) {
-			case ib_up:
+			case ib_up://----------------------------------------------------
 				
 				ImageButton ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_up);
 				
 //				v.setBackgroundColor(Color.WHITE);
 				
-				break;
+				break;// case ib_up
+				
+			case thumb_activity_ib_bottom://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_thumb_bottom_50x50);
+
+				break;// case thumb_activity_ib_bottom
+				
+			case thumb_activity_ib_top://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_thumb_top_50x50);
+				
+				break;// case thumb_activity_ib_top
+				
 			}//switch (tag)
 			
 			break;//case MotionEvent.ACTION_UP:
