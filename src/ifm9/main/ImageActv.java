@@ -173,7 +173,9 @@ public class ImageActv extends Activity {
 			
 		case R.id.image_actv_menu_add_patterns://------------------------------------
 			
-			Methods.dlg_register_patterns(this);
+//			Methods.dlg_register_patterns(this);
+			
+			Methods.dlg_patterns(this);
 			
 			break;
 		}//switch (item.getItemId())

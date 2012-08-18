@@ -38,7 +38,9 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 				switch (tag_name) {
 				
 				case dlg_generic_dismiss:
-				
+				case dlg_generic_dismiss_third_dialog:
+				case dlg_generic_dismiss_second_dialog:
+					
 				case dlg_create_folder_ok:
 				case dlg_create_folder_cancel:
 				
@@ -52,12 +54,12 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 				case dlg_confirm_remove_folder_ok:
 
 				case dlg_confirm_move_files_ok:
-				case dlg_generic_dismiss_second_dialog:
 
 				case dlg_search_ok:
 					
 				case dlg_register_patterns_register:
-					
+
+				case dlg_confirm_delete_patterns_ok:
 					//
 					v.setBackgroundColor(Color.GRAY);
 					
@@ -70,6 +72,8 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 			switch (tag_name) {
 
 			case dlg_generic_dismiss:
+			case dlg_generic_dismiss_second_dialog:
+			case dlg_generic_dismiss_third_dialog:
 
 			case dlg_create_folder_ok:
 			case dlg_create_folder_cancel:
@@ -84,11 +88,12 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 			case dlg_confirm_remove_folder_ok:
 
 			case dlg_confirm_move_files_ok:
-			case dlg_generic_dismiss_second_dialog:
 				
 			case dlg_search_ok:
 				
 			case dlg_register_patterns_register:
+				
+			case dlg_confirm_delete_patterns_ok:
 				
 				//
 					v.setBackgroundColor(Color.WHITE);

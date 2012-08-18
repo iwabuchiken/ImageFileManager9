@@ -34,6 +34,16 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		
 	}//public DialogOnItemClickListener(Activity actv, Dialog dlg)
 
+	public DialogOnItemClickListener(Activity actv, Dialog dlg, Dialog dlg2) {
+		// 
+		this.actv = actv;
+		this.dlg = dlg;
+		this.dlg2 = dlg2;
+		
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
+		
+	}//public DialogOnItemClickListener(Activity actv, Dialog dlg)
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		/*----------------------------
@@ -111,6 +121,45 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			
 			break;// case dlg_add_memos_gv
 
+		case dlg_admin_patterns_lv://----------------------------------------------
+			/*----------------------------
+			 * 1. Get chosen item name
+			 * 2. Switching
+				----------------------------*/
+			
+			item = (String) parent.getItemAtPosition(position);
+			
+//			// debug
+//			Toast.makeText(actv, item, 2000).show();
+			
+			/*----------------------------
+			 * 2. Switching
+				----------------------------*/
+			if (item.equals(actv.getString(R.string.generic_tv_register))) {
+				
+				Methods.dlg_register_patterns(actv, dlg);
+				
+			} else if (item.equals(actv.getString(R.string.generic_tv_delete))) {
+
+				Methods.dlg_delete_patterns(actv, dlg);
+				
+			} else if (item.equals(actv.getString(R.string.generic_tv_edit))) {
+				
+			}
+			
+			break;// case dlg_admin_patterns_lv
+
+		case dlg_delete_patterns_gv://----------------------------------------------
+			
+			item = (String) parent.getItemAtPosition(position);
+			
+//			// debug
+//			Toast.makeText(actv, item, 2000).show();
+			
+			Methods.dlg_confirm_delete_patterns(actv, dlg, dlg2, item);
+			
+			break;// case dlg_delete_patterns_gv
+			
 		default:
 			break;
 		}//switch (tag)

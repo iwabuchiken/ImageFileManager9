@@ -7,6 +7,8 @@
     <string name="generic_tv_confirm">確認</string>
     <string name="generic_tv_menu">メニュー</string>
     <string name="generic_tv_register">登録</string>
+    <string name="generic_tv_edit">編集</string>
+    <string name="generic_tv_delete">削除</string>
     
     <string name="hello">Hello World, IFM9Activity!</string>
     <string name="app_name">IFM9</string>
@@ -88,5 +90,11 @@
     <!-- dlg_db_admin.xml -->
     	<string name="dlg_db_admin_title">DB Admin</string>
     	<string name="dlg_db_admin_item_backup_db">Backup DB</string>
+    
+    <!-- dlg_delete_patterns.xml -->
+    	<string name="dlg_delete_patterns_title">定型句　削除</string>
+    	
+    <!-- dlg_confirm_delete_patterns.xml -->
+    	<string name="dlg_confirm_delete_patterns_message">この定型句を削除しますか？</string>
     
 </resources>

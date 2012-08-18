@@ -39,6 +39,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
@@ -72,7 +73,7 @@ public class Methods {
 	 ****************************************/
 	public static enum DialogTags {
 		// Generics
-		dlg_generic_dismiss, dlg_generic_dismiss_second_dialog,
+		dlg_generic_dismiss, dlg_generic_dismiss_second_dialog, dlg_generic_dismiss_third_dialog,
 		
 		
 		// dlg_create_folder.xml
@@ -117,7 +118,11 @@ public class Methods {
 
 		// dlg_search.xml
 		dlg_search, dlg_search_ok,
-		
+
+		// dlg_admin_patterns.xml
+
+		// dlg_confirm_delete_patterns.xml
+		dlg_confirm_delete_patterns_ok,
 		
 	}//public static enum DialogTags
 	
@@ -130,6 +135,12 @@ public class Methods {
 
 		// dlg_db_admin.xml
 		dlg_db_admin_lv,
+
+		// dlg_admin_patterns.xml
+		dlg_admin_patterns_lv,
+
+		// dlg_delete_patterns.xml
+		dlg_delete_patterns_gv,
 		
 	}//public static enum DialogItemTags
 	
@@ -3557,6 +3568,8 @@ public class Methods {
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "Table created: " + tableName);
 				
+				wdb.close();
+				
 			} else {//if (res == true)
 				// Log
 				Log.d("Methods.java"
@@ -3848,6 +3861,54 @@ public class Methods {
 		dlg.show();
 	}//public static void dlg_register_patterns(Activity actv)
 
+	public static void dlg_register_patterns(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Dialog
+		 * 9. Show
+			----------------------------*/
+//		Dialog dlg2 = dlg_template_okCancel(
+//					actv, , ,
+//				, , 
+//				, );
+		
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(R.layout.dlg_register_patterns);
+		
+		// Title
+		dlg2.setTitle(R.string.dlg_register_patterns_title);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(R.id.dlg_register_patterns_btn_create);
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_register_patterns_btn_cancel);
+		
+		//
+		btn_ok.setTag(DialogTags.dlg_register_patterns_register);
+		btn_cancel.setTag(DialogTags.dlg_generic_dismiss_second_dialog);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		
+		/*----------------------------
+		 * 9. Show
+			----------------------------*/
+		dlg2.show();
+		
+	}//public static void dlg_register_patterns(Activity actv)
+
 	public static void dlg_register_patterns_isInputEmpty(Activity actv, Dialog dlg) {
 		/*----------------------------
 		 * Steps
@@ -3892,6 +3953,60 @@ public class Methods {
 
 			// debug
 			Toast.makeText(actv, "メモを保管できませんでした", 3000).show();
+
+		}//if (result == true)
+		
+		
+	}//public static void dlg_register_patterns_isInputEmpty(Activity actv, Dialog dlg)
+
+	public static void dlg_register_patterns_isInputEmpty(Activity actv, Dialog dlg, Dialog dlg2) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get views
+		 * 2. Prepare data
+		 * 3. Register data
+		 * 4. Dismiss dialog
+			----------------------------*/
+		// Get views
+		EditText et_word = (EditText) dlg2.findViewById(R.id.dlg_register_patterns_et_word);
+		EditText et_table_name = 
+					(EditText) dlg2.findViewById(R.id.dlg_register_patterns_et_table_name);
+		
+		if (et_word.getText().length() == 0) {
+			// debug
+			Toast.makeText(actv, "語句を入れてください", 3000).show();
+			
+			return;
+		}// else {//if (et_column_name.getText().length() == 0)
+		
+		/*----------------------------
+		 * 2. Prepare data
+			----------------------------*/
+		//
+		String word = et_word.getText().toString();
+		String table_name = et_table_name.getText().toString();
+		
+		/*----------------------------
+		 * 3. Register data
+			----------------------------*/
+		boolean result = insertDataIntoDB(actv, DBUtils.table_name_memo_patterns, 
+								DBUtils.cols_memo_patterns, new String[]{word, table_name});
+		
+		/*----------------------------
+		 * 4. Dismiss dialog
+			----------------------------*/
+		if (result == true) {
+		
+			dlg.dismiss();
+			dlg2.dismiss();
+			
+			// debug
+			Toast.makeText(actv, "定型句を保管しました", 3000).show();
+			
+		} else {//if (result == true)
+
+			// debug
+			Toast.makeText(actv, "定型句を保管できませんでした", 3000).show();
 
 		}//if (result == true)
 		
@@ -4110,4 +4225,407 @@ public class Methods {
 		return sdf1.format(new Date(millSec));
 		
 	}//public static String get_TimeLabel(long millSec)
+
+	public static void dlg_patterns(Activity actv) {
+		/*----------------------------
+		 * memo
+			----------------------------*/
+		Dialog dlg = Methods.dlg_template_cancel(
+													actv, R.layout.dlg_admin_patterns, 
+													R.string.dlg_memo_patterns_title, 
+													R.id.dlg_admin_patterns_bt_cancel, 
+													Methods.DialogTags.dlg_generic_dismiss);
+		
+		/*----------------------------
+		 * 2. Prep => List
+			----------------------------*/
+		String[] choices = {
+				actv.getString(R.string.generic_tv_register),
+				actv.getString(R.string.generic_tv_edit),
+				actv.getString(R.string.generic_tv_delete)
+		};
+		
+		List<String> list = new ArrayList<String>();
+		
+		for (String item : choices) {
+			
+			list.add(item);
+			
+		}
+		
+		/*----------------------------
+		 * 3. Adapter
+			----------------------------*/
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+				actv,
+//				R.layout.dlg_db_admin,
+				android.R.layout.simple_list_item_1,
+				list
+				);
+
+		/*----------------------------
+		 * 4. Set adapter
+			----------------------------*/
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_admin_patterns_lv);
+		
+		lv.setAdapter(adapter);
+
+		/*----------------------------
+		 * 5. Set listener to list
+			----------------------------*/
+		lv.setTag(Methods.DialogItemTags.dlg_admin_patterns_lv);
+		
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		
+		/*----------------------------
+		 * 6. Show dialog
+			----------------------------*/
+		dlg.show();
+		
+	}//public static void dlg_patterns(Activity actv)
+
+	
+	public static void dlg_delete_patterns(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * 1. Set up
+		 * 2. Add listeners => OnTouch
+		 * 3. Add listeners => OnClick
+		 * 
+		 * 4. Prep => List
+		 * 5. Prep => Adapter
+		 * 6. Set adapter
+		 * 
+		 * 7. Show dialog
+			----------------------------*/
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(R.layout.dlg_delete_patterns);
+		
+		// Title
+		dlg2.setTitle(R.string.dlg_delete_patterns_title);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_delete_patterns_bt_cancel);
+		
+		//
+		btn_cancel.setTag(Methods.DialogTags.dlg_generic_dismiss_second_dialog);
+		
+		//
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		
+		/*----------------------------
+		 * 4. Prep => List
+		 * 5. Prep => Adapter
+		 * 6. Set adapter
+			----------------------------*/
+		GridView gv = dlg_delete_patterns_2_grid_view(actv, dlg, dlg2);
+
+		/*----------------------------
+		 * 7. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
+	}//public static void dlg_delete_patterns(Activity actv, Dialog dlg)
+
+	private static GridView dlg_delete_patterns_2_grid_view(Activity actv, Dialog dlg, Dialog dlg2) {
+		/*----------------------------
+		 * 1. Set up db
+		 * 1-1. Get grid view
+		 * 2. Table exists?
+		 * 3. Get cursor
+		 * 
+		 * 4. Get list
+		 * 5. Prep => Adapter
+		 * 6. Set adapter to view
+		 * 
+		 * 7. Set listener
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*----------------------------
+		 * 1-1. Get grid view
+			----------------------------*/
+		GridView gv = (GridView) dlg2.findViewById(R.id.dlg_delete_patterns_gv);
+		
+		/*----------------------------
+		 * 2. Table exists?
+			----------------------------*/
+		String tableName = MainActv.tableName_memo_patterns;
+		
+		boolean res = dbu.tableExists(rdb, tableName);
+		
+		if (res == true) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: " + tableName);
+			
+			rdb.close();
+			
+//			return;
+			
+		} else {//if (res == false)
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + tableName);
+			
+			rdb.close();
+			
+			SQLiteDatabase wdb = dbu.getWritableDatabase();
+			
+			res = dbu.createTable(wdb, tableName, DBUtils.cols_memo_patterns, DBUtils.col_types_memo_patterns);
+			
+			if (res == true) {
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: " + tableName);
+				
+				wdb.close();
+				
+			} else {//if (res == true)
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create table failed: " + tableName);
+				
+				wdb.close();
+				
+				return gv;
+				
+			}//if (res == true)
+
+			
+		}//if (res == false)
+		
+		/*----------------------------
+		 * 3. Get cursor
+			----------------------------*/
+		rdb = dbu.getReadableDatabase();
+		
+		String sql = "SELECT * FROM " + tableName + " ORDER BY word ASC";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		actv.startManagingCursor(c);
+		
+		c.moveToFirst();
+		
+		/*----------------------------
+		 * 4. Get list
+			----------------------------*/
+		List<String> patternList = new ArrayList<String>();
+		
+		if (c.getCount() > 0) {
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				
+				patternList.add(c.getString(1));
+				
+				c.moveToNext();
+				
+			}//for (int i = 0; i < patternList.size(); i++)
+			
+		} else {//if (c.getCount() > 0)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "!c.getCount() > 0");
+			
+		}//if (c.getCount() > 0)
+		
+		
+		Collections.sort(patternList);
+
+		/*----------------------------
+		 * 5. Prep => Adapter
+			----------------------------*/
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+										actv,
+										R.layout.add_memo_grid_view,
+										patternList
+										);
+		
+		/*----------------------------
+		 * 6. Set adapter to view
+			----------------------------*/
+		gv.setAdapter(adapter);
+		
+		/*----------------------------
+		 * 7. Set listener
+			----------------------------*/
+//		gv.setTag(DialogTags.dlg_add_memos_gv);
+		gv.setTag(Methods.DialogItemTags.dlg_delete_patterns_gv);
+		
+		gv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg, dlg2));
+		
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "GridView setup => Done");
+		
+		/*----------------------------
+		 * 8. Close db
+			----------------------------*/
+		rdb.close();
+
+		return gv;
+	}//private static GridView dlg_delete_patterns_2_grid_view(Activity actv, Dialog dlg, Dialog dlg2)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. 
+	 * 
+	 * <Desc> 
+	 * 1. dlg	=> 「定型」
+	 * 2. dlg2	=> 「定型句　削除」
+	 * 3. dlg3	=> 「確認」
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void dlg_confirm_delete_patterns(Activity actv, Dialog dlg,
+			Dialog dlg2, String item) {
+		/*----------------------------
+		 * 1. Set up dialog
+		 * 2. Add listeners => OnTouch
+		 * 3. Add listeners => OnClick
+		 * 
+		 * 4. Set pattern name
+		 * 5. Show dialog
+			----------------------------*/
+		/*----------------------------
+		 * 1. Set up dialog
+			----------------------------*/
+		Dialog dlg3 = new Dialog(actv);
+		
+		//
+		dlg3.setContentView(R.layout.dlg_confirm_delete_patterns);
+		
+		// Title
+		dlg3.setTitle(R.string.generic_tv_confirm);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_ok = (Button) dlg3.findViewById(R.id.dlg_confirm_delete_patterns_btn_ok);
+		Button btn_cancel = (Button) dlg3.findViewById(R.id.dlg_confirm_delete_patterns_btn_cancel);
+		
+		//
+		btn_ok.setTag(Methods.DialogTags.dlg_confirm_delete_patterns_ok);
+		btn_cancel.setTag(Methods.DialogTags.dlg_generic_dismiss_third_dialog);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg3));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg3));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2, dlg3));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2, dlg3));
+		
+		/*----------------------------
+		 * 4. Set pattern name
+			----------------------------*/
+		TextView tv = (TextView) dlg3.findViewById(R.id.dlg_confirm_delete_patterns_tv_pattern_name);
+		
+		tv.setText(item);
+		
+		/*----------------------------
+		 * 5. Show dialog
+			----------------------------*/
+		dlg3.show();
+		
+	}//public static void dlg_confirm_delete_patterns()
+
+	public static void delete_patterns(Activity actv, Dialog dlg, Dialog dlg2,
+			Dialog dlg3) {
+		/*----------------------------
+		 * 0. Get pattern name
+		 * 1. Set up db
+		 * 2. Query
+		 * 3. Dismiss dialogues
+			----------------------------*/
+		/*----------------------------
+		 * 0. Get pattern name
+			----------------------------*/
+		TextView tv = (TextView) dlg3.findViewById(R.id.dlg_confirm_delete_patterns_tv_pattern_name);
+		
+		String item = tv.getText().toString();
+		
+		/*----------------------------
+		 * 1. Set up db
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 2. Query
+			----------------------------*/
+		String sql = "DELETE FROM " + MainActv.tableName_memo_patterns +
+							" WHERE word='" + item + "'";
+		
+		try {
+			wdb.execSQL(sql);
+		
+			
+			// debug
+			Toast.makeText(actv, "Pattern deleted", 3000).show();
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Pattern deleted: " + item);
+
+			/*----------------------------
+			 * 3. Dismiss dialogues
+				----------------------------*/
+			dlg3.dismiss();
+			dlg2.dismiss();
+			dlg.dismiss();
+			
+		} catch (SQLException e) {
+			
+			// debug
+			Toast.makeText(actv, "パターン削除　=>　できませんでした", 3000).show();
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Pattern deletion => Failed:  " + item);
+			
+		} finally {
+			
+			wdb.close();
+			
+		}
+		
+	}//public static void delete_patterns()
+	
 }//public class Methods
