@@ -86,6 +86,30 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 //			Toast.makeText(actv, word, 2000).show();
 			
 			break;
+			
+		case dlg_db_admin_lv://----------------------------------------------
+			/*----------------------------
+			 * 1. Get chosen item name
+			 * 2. Switching
+				----------------------------*/
+			
+			String item = (String) parent.getItemAtPosition(position);
+			
+//			// debug
+//			Toast.makeText(actv, item, 2000).show();
+			
+			/*----------------------------
+			 * 2. Switching
+				----------------------------*/
+			if (item.equals(actv.getString(R.string.dlg_db_admin_item_backup_db))) {
+				
+				Methods.db_backup(actv, dlg);
+				
+			} else {
+
+			}
+			
+			break;// case dlg_add_memos_gv
 
 		default:
 			break;

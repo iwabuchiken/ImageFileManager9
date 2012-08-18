@@ -127,6 +127,12 @@ public class TNActv extends ListActivity {
 		
 		SQLiteDatabase rdb = dbu.getReadableDatabase();
 
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "rdb.getPath(): " + rdb.getPath());
+		
+		
 		// REF=> http://stackoverflow.com/questions/82875/how-do-i-list-the-tables-in-a-sqlite-database-file
 		String sql = "SELECT * FROM sqlite_master WHERE type='table'";
 		

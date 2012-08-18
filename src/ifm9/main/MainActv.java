@@ -91,6 +91,15 @@ public class MainActv extends ListActivity {
 	
 	public static String tableName_separator = "__";
 	
+	public static String dirPath_db = "/data/data/ifm9.main/databases";
+	
+	public static String fileName_db = "ifm9.db";
+
+	public static String dirPath_db_backup = dirName_ExternalStorage + "/IFM9_backup";
+	
+	public static String fileName_db_backup_trunk = "ifm9_backup";
+	public static String fileName_db_backup_ext = ".bk";
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,9 +141,23 @@ public class MainActv extends ListActivity {
 		
 		//debug
 //		copy_db_file();
+		test_simple_format();
         
     }//public void onCreate(Bundle savedInstanceState)
 
+    private void test_simple_format() {
+    	
+    	long t = Methods.getMillSeconds_now();
+    	
+    	String time_label = Methods.get_TimeLabel(t);
+    	
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "time_label: " + time_label);
+		
+    }//private void test_simple_format()
+    
 	private void set_listeners() {
 		/*----------------------------
 		 * 1. Get view
@@ -663,6 +686,12 @@ public class MainActv extends ListActivity {
 			
 			break;// case R.id.main_opt_menu_create_folder
 			
+		case R.id.main_opt_menu_db_activity://----------------------------------
+			
+			Methods.dlg_db_activity(this);
+			
+			break;// case R.id.main_opt_menu_db_activity
+
 		}//switch (item.getItemId())
 		
 		return super.onOptionsItemSelected(item);

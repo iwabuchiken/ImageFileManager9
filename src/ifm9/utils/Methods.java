@@ -15,8 +15,13 @@ import ifm9.main.TNActv;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -122,6 +127,9 @@ public class Methods {
 		
 		// dlg_add_memos.xml
 		dlg_add_memos_gv,
+
+		// dlg_db_admin.xml
+		dlg_db_admin_lv,
 		
 	}//public static enum DialogItemTags
 	
@@ -3904,4 +3912,197 @@ public class Methods {
 		
 	}//public static void add_pattern_to_text(Dialog dlg, int position, String word)
 
+	public static void dlg_db_activity(Activity actv) {
+		/*----------------------------
+		 * 1. Dialog
+		 * 2. Prep => List
+		 * 3. Adapter
+		 * 4. Set adapter
+		 * 
+		 * 5. Set listener to list
+		 * 6. Show dialog
+			----------------------------*/
+		Dialog dlg = Methods.dlg_template_cancel(
+									actv, R.layout.dlg_db_admin, 
+									R.string.dlg_db_admin_title, 
+									R.id.dlg_db_admin_bt_cancel, 
+									Methods.DialogTags.dlg_generic_dismiss);
+		
+		/*----------------------------
+		 * 2. Prep => List
+			----------------------------*/
+		String[] choices = {actv.getString(R.string.dlg_db_admin_item_backup_db)};
+		
+		List<String> list = new ArrayList<String>();
+		
+		for (String item : choices) {
+			
+			list.add(item);
+			
+		}
+		
+		/*----------------------------
+		 * 3. Adapter
+			----------------------------*/
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+				actv,
+//				R.layout.dlg_db_admin,
+				android.R.layout.simple_list_item_1,
+				list
+				);
+
+		/*----------------------------
+		 * 4. Set adapter
+			----------------------------*/
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_db_admin_lv);
+		
+		lv.setAdapter(adapter);
+		
+		/*----------------------------
+		 * 5. Set listener to list
+			----------------------------*/
+		lv.setTag(Methods.DialogItemTags.dlg_db_admin_lv);
+		
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		
+		/*----------------------------
+		 * 6. Show dialog
+			----------------------------*/
+		dlg.show();
+		
+		
+	}//public static void dlg_db_activity(Activity actv)
+
+	public static void db_backup(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * 1. Prep => File names
+		 * 2. Prep => Files
+		 * 2-2. Folder exists?
+		 * 3. Copy
+			----------------------------*/
+		String time_label = Methods.get_TimeLabel(Methods.getMillSeconds_now());
+		
+		String db_src = StringUtils.join(new String[]{MainActv.dirPath_db, MainActv.fileName_db}, File.separator);
+		
+		String db_dst = StringUtils.join(new String[]{MainActv.dirPath_db_backup, MainActv.fileName_db_backup_trunk}, File.separator);
+		db_dst = db_dst + "_" + time_label + MainActv.fileName_db_backup_ext;
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "db_src: " + db_src + " * " + "db_dst: " + db_dst);
+		
+		/*----------------------------
+		 * 2. Prep => Files
+			----------------------------*/
+		File src = new File(db_src);
+		File dst = new File(db_dst);
+		
+		/*----------------------------
+		 * 2-2. Folder exists?
+			----------------------------*/
+		File db_backup = new File(MainActv.dirPath_db_backup);
+		
+		if (!db_backup.exists()) {
+			
+			try {
+				db_backup.mkdir();
+				
+				// Log
+				Log.d("Methods.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Folder created: " + db_backup.getAbsolutePath());
+			} catch (Exception e) {
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create folder => Failed");
+				
+				return;
+				
+			}
+			
+		} else {//if (!db_backup.exists())
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Folder exists: ");
+			
+		}//if (!db_backup.exists())
+		
+		/*----------------------------
+		 * 3. Copy
+			----------------------------*/
+//		try {
+//			FileChannel iChannel = new FileInputStream(src).getChannel();
+//			FileChannel oChannel = new FileOutputStream(dst).getChannel();
+//			iChannel.transferTo(0, iChannel.size(), oChannel);
+//			iChannel.close();
+//			oChannel.close();
+//			
+//			// Log
+//			Log.d("ThumbnailActivity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "File copied");
+//			
+//		} catch (FileNotFoundException e) {
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Exception: " + e.toString());
+//			
+//		} catch (IOException e) {
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Exception: " + e.toString());
+//		}//try
+
+		
+	}//public static void db_backup(Activity actv, Dialog dlg, String item)
+
+	public static long getMillSeconds(int year, int month, int date) {
+		// Calendar
+		Calendar cal = Calendar.getInstance();
+		
+		// Set time
+		cal.set(year, month, date);
+		
+		// Date
+		Date d = cal.getTime();
+		
+		return d.getTime();
+		
+	}//private long getMillSeconds(int year, int month, int date)
+
+	/****************************************
+	 *	getMillSeconds_now()
+	 * 
+	 * <Caller> 
+	 * 1. ButtonOnClickListener # case main_bt_start
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static long getMillSeconds_now() {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		return cal.getTime().getTime();
+		
+	}//private long getMillSeconds_now(int year, int month, int date)
+
+	public static String get_TimeLabel(long millSec) {
+		
+		 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		 
+		return sdf1.format(new Date(millSec));
+		
+	}//public static String get_TimeLabel(long millSec)
 }//public class Methods
