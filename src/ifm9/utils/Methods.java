@@ -4036,30 +4036,35 @@ public class Methods {
 		/*----------------------------
 		 * 3. Copy
 			----------------------------*/
-//		try {
-//			FileChannel iChannel = new FileInputStream(src).getChannel();
-//			FileChannel oChannel = new FileOutputStream(dst).getChannel();
-//			iChannel.transferTo(0, iChannel.size(), oChannel);
-//			iChannel.close();
-//			oChannel.close();
-//			
-//			// Log
-//			Log.d("ThumbnailActivity.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "File copied");
-//			
-//		} catch (FileNotFoundException e) {
-//			// Log
-//			Log.d("MainActv.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "Exception: " + e.toString());
-//			
-//		} catch (IOException e) {
-//			// Log
-//			Log.d("MainActv.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "Exception: " + e.toString());
-//		}//try
+		try {
+			FileChannel iChannel = new FileInputStream(src).getChannel();
+			FileChannel oChannel = new FileOutputStream(dst).getChannel();
+			iChannel.transferTo(0, iChannel.size(), oChannel);
+			iChannel.close();
+			oChannel.close();
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "File copied");
+			
+			// debug
+			Toast.makeText(actv, "DB backup => Done", 3000).show();
+
+			dlg.dismiss();
+			
+		} catch (FileNotFoundException e) {
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+			
+		} catch (IOException e) {
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+		}//try
 
 		
 	}//public static void db_backup(Activity actv, Dialog dlg, String item)
