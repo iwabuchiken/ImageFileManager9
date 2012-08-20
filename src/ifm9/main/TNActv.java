@@ -210,7 +210,8 @@ public class TNActv extends ListActivity {
 		/*----------------------------
 		 * 2. Prep list
 			----------------------------*/
-		tiList = Methods.getAllData(this, tableName);
+		tiList = prep_list();
+//		tiList = Methods.getAllData(this, tableName);
 //		
 //		if (tiList == null) {
 		if (tiList == null || tiList.size() < 1) {
@@ -293,6 +294,79 @@ public class TNActv extends ListActivity {
 //		setListAdapter(adp);
 		
 	}//private void set_list()
+
+
+	private List<TI> prep_list() {
+		/*----------------------------
+		 * Get ThumbnailItem list
+		 * 1. Get intent data
+		 * 2. Build tiList
+			----------------------------*/
+		/*----------------------------
+		 * 1. Get intent data
+			----------------------------*/
+		Intent i = this.getIntent();
+		
+//		long[] long_searchedItems = i.getLongArrayExtra("long_searchedItems");
+		long_searchedItems = i.getLongArrayExtra("long_searchedItems");
+		
+//		if (long_searchedItems == null) {
+//			
+//			Log.d("ThumbnailActivity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "long_searchedItems => null");
+//			
+//		} else {//if (long_searchedItems == null)
+//
+//			Log.d("ThumbnailActivity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "long_searchedItems.length => " + long_searchedItems.length);
+//			
+//		}//if (long_searchedItems == null)
+		
+		/*----------------------------
+		 * 2. Build tiList
+			----------------------------*/
+		String tableName = Methods.convert_path_into_table_name(this);
+		
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName: " + tableName);
+		
+		
+		if (long_searchedItems == null) {
+
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Calling: Methods.getAllData(this, tableName)");
+			
+			tiList = Methods.getAllData(this, tableName);
+//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			
+		} else {//if (long_searchedItems == null)
+
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "long_searchedItems.length: " + long_searchedItems.length);
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Calling: Methods.convert_fileIdArray2tiList()");
+			
+//			tiList = Methods.getAllData(this, tableName);
+//			tiList = Methods.convert_fileIdArray2tiList(this, MainActv.dirName_base, long_searchedItems);
+			tiList = Methods.convert_fileIdArray2tiList(this, tableName, long_searchedItems);
+			
+		}//if (long_searchedItems == null)
+
+		
+		
+		return tiList;
+	}//private List<TI> prep_list()
 
 
 	private void set_listeners() {

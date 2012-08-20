@@ -4184,6 +4184,23 @@ public class Methods {
 		
 	}//public static void db_backup(Activity actv, Dialog dlg, String item)
 
+	public static void dlg_seratchItem(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Dialog
+		 * 9. Show
+			----------------------------*/
+		Dialog dlg = dlg_template_okCancel(
+								actv, R.layout.dlg_search, R.string.dlg_search_title,
+				R.id.dlg_search_bt_ok, R.id.dlg_search_cancel, DialogTags.dlg_search_ok, DialogTags.dlg_generic_dismiss);
+		
+		/*----------------------------
+		 * 9. Show
+			----------------------------*/
+		dlg.show();
+		
+	}//public static void dlg_seratchItem(Activity actv)
+
 	public static long getMillSeconds(int year, int month, int date) {
 		// Calendar
 		Calendar cal = Calendar.getInstance();
@@ -4627,5 +4644,155 @@ public class Methods {
 		}
 		
 	}//public static void delete_patterns()
+
+	public static void searchItem(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get search words
+		 * 2. Format words
+		 * 
+		 * 2-2. Get table name from current path
+		 * 3. Search task
+		 * 
+		 * 9. Dismiss dialog
+			----------------------------*/
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_search_et);
+		
+		String words = et.getText().toString();
+		
+		if (words.equals("")) {
+			
+			// debug
+			Toast.makeText(actv, "Œê‹å‚ð“ü‚ê‚Ä‚È‚¢‚æ", 2000).show();
+			
+			return;
+			
+		}//if (words.equals(""))
+		
+		/*----------------------------
+		 * 2. Format words
+			----------------------------*/
+		words = words.replace('@', ' ');
+		
+		String[] a_words = words.split(" ");
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "a_words.length => " + a_words.length);
+		
+		/*----------------------------
+		 * 2-2. Get table name from current path
+			----------------------------*/
+		String tableName = Methods.convert_path_into_table_name(actv);
+		
+		/*----------------------------
+		 * 3. Search task
+			----------------------------*/
+		SearchTask st = new SearchTask(actv);
+		
+		
+		
+//		st.execute(a_words);
+//		st.execute(a_words, new String[]{"aaa", "bbb", "ccc"});
+		st.execute(a_words, new String[]{tableName});
+		
+		/*----------------------------
+		 * 9. Dismiss dialog
+			----------------------------*/
+		dlg.dismiss();
+		
+	}//public static void searchItem(Activity actv, Dialog dlg)
+
+	public static List<TI> convert_fileIdArray2tiList(
+			Activity actv, String tableName, long[] long_file_id) {
+		/*----------------------------
+		* Steps
+		* 1. DB setup
+		* 2. Get ti list
+		* 3. Close db
+		* 4. Return
+		----------------------------*/
+		/*----------------------------
+		* 1. DB setup
+		----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		/*----------------------------
+		* 2. Get ti list
+		----------------------------*/
+		List<TI> tilist = new ArrayList<TI>();
+		
+		for (long file_id : long_file_id) {
+			
+			String sql = "SELECT * FROM " + tableName + " WHERE file_id = '" + String.valueOf(file_id) + "'";
+			
+			Cursor c = rdb.rawQuery(sql, null);
+			
+			if (c.getCount() > 0) {
+			
+				c.moveToFirst();
+				
+				tilist.add(Methods.convertCursorToThumbnailItem(c));
+				
+				c.moveToNext();
+				
+			}//if (c.getCount() > 0)
+		}
+		
+		// Log
+		Log.d("Methods.java" + "["
+		+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+		+ "]", "tilist.size() => " + tilist.size());
+		
+		/*----------------------------
+		* 3. Close db
+		----------------------------*/
+		rdb.close();
+		
+		
+		/*----------------------------
+		* 4. Return
+		----------------------------*/
+//		return tilist.size() > 0 ? tilist : null;
+		return tilist;
 	
+	}//public static List<ThumbnailItem> convert_fileIdArray2tiList(Activity actv, String tableName, long[] long_file_id)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. 
+	 * 
+	 * <Desc> 
+	 * 1. Originally, SearchTask.java was calling this method.
+	 * 		But I changed the starategy, ending up not using this method (20120723_145553) 
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static TI convertCursorToThumbnailItem(Cursor c) {
+		/*----------------------------
+		 * Steps
+		 * 1. 
+			----------------------------*/
+		return new TI(
+				c.getLong(1),	// file_id
+				c.getString(2),	// file_path
+				c.getString(3),	// file_name
+				c.getLong(4),	// date_added
+//				c.getLong(5)		// date_modified
+				c.getLong(5),		// date_modified
+				c.getString(6),	// memos
+				c.getString(7)	// tags
+		);
+		
+		
+	}//public static TI convertCursorToThumbnailItem(Cursor c)
+
 }//public class Methods

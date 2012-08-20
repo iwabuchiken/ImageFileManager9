@@ -196,6 +196,14 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 			break;// case dlg_confirm_delete_patterns_ok
 			
+		case dlg_search_ok:// ---------------------------------------------------------------------
+			
+			vib.vibrate(Methods.vibLength_click);
+			
+			Methods.searchItem(actv, dlg);
+			
+			break;// case dlg_search_ok
+			
 		default: // ----------------------------------------------------
 			break;
 		}//switch (tag_name)

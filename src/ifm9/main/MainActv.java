@@ -692,6 +692,12 @@ public class MainActv extends ListActivity {
 			
 			break;// case R.id.main_opt_menu_db_activity
 
+		case R.id.main_opt_menu_search://-----------------------------------------------
+			
+			Methods.dlg_seratchItem(this);
+			
+			break;// case R.id.main_opt_menu_search
+			
 		}//switch (item.getItemId())
 		
 		return super.onOptionsItemSelected(item);
