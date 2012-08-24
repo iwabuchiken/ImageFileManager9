@@ -782,7 +782,12 @@ public class TNActv extends ListActivity {
 			
 		} else {//if (long_searchedItems == null)
 
-//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "long_searchedItems != null");
+			
+			tiList = Methods.convert_fileIdArray2tiList(this, tableName, long_searchedItems);
 			
 		}//if (long_searchedItems == null)
 
