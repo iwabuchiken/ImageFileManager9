@@ -90,6 +90,7 @@
     <!-- dlg_db_admin.xml -->
     	<string name="dlg_db_admin_title">DB Admin</string>
     	<string name="dlg_db_admin_item_backup_db">Backup DB</string>
+    	<string name="dlg_db_admin_item_refresh_db">DBリフレッシュ</string>
     
     <!-- dlg_delete_patterns.xml -->
     	<string name="dlg_delete_patterns_title">定型句　削除</string>

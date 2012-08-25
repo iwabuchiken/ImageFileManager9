@@ -198,9 +198,10 @@ public final class R {
         public static final int list_row_checked_box=0x7f030018;
         public static final int main=0x7f030019;
         public static final int main_original=0x7f03001a;
-        public static final int row_dlg_item_menu=0x7f03001b;
-        public static final int thumb_activity=0x7f03001c;
-        public static final int v2_2=0x7f03001d;
+        public static final int main_pref=0x7f03001b;
+        public static final int row_dlg_item_menu=0x7f03001c;
+        public static final int thumb_activity=0x7f03001d;
+        public static final int v2_2=0x7f03001e;
     }
     public static final class menu {
         public static final int image_actv_menu=0x7f070000;
@@ -223,7 +224,7 @@ public final class R {
         public static final int dlg_confirm_create_folder_tv_message=0x7f050015;
         /**  dlg_confirm_delete_patterns.xml 
          */
-        public static final int dlg_confirm_delete_patterns_message=0x7f050033;
+        public static final int dlg_confirm_delete_patterns_message=0x7f050034;
         /**  dlg_confirm_drop_table.xml 
          */
         public static final int dlg_confirm_drop_table_tv_message_drop=0x7f05001b;
@@ -245,12 +246,13 @@ public final class R {
          */
         public static final int dlg_create_table_title=0x7f050026;
         public static final int dlg_db_admin_item_backup_db=0x7f050031;
+        public static final int dlg_db_admin_item_refresh_db=0x7f050032;
         /**  dlg_db_admin.xml 
          */
         public static final int dlg_db_admin_title=0x7f050030;
         /**  dlg_delete_patterns.xml 
          */
-        public static final int dlg_delete_patterns_title=0x7f050032;
+        public static final int dlg_delete_patterns_title=0x7f050033;
         /**  dlg_drop_table.xml 
          */
         public static final int dlg_drop_table_title=0x7f05001a;

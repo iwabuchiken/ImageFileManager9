@@ -2,6 +2,7 @@ package ifm9.listeners;
 
 import ifm9.main.R;
 import ifm9.utils.Methods;
+import ifm9.utils.RefreshDBTask;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -115,8 +116,27 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				
 				Methods.db_backup(actv, dlg);
 				
-			} else {
+			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_refresh_db))){
+				
+				RefreshDBTask task_ = new RefreshDBTask(actv);
+				
+				// debug
+				Toast.makeText(actv, "Starting a task...", 2000)
+						.show();
+				
+				task_.execute("Start");
 
+				
+				
+//				// Log
+//				Log.d("DialogOnItemClickListener.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "DB refresh");
+				
+				
+//				Methods.refreshMainDB(actv, dlg);
+				
 			}
 			
 			break;// case dlg_add_memos_gv

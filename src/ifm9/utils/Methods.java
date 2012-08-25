@@ -1160,6 +1160,89 @@ public class Methods {
 		 * 		2. backupTableName
 			----------------------------*/
 		boolean res = refreshMainDB_1_set_up_table(wdb, dbu);
+
+		if (res == false) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Can't  create table");
+			
+			wdb.close();
+			
+			return false;
+			
+		}//if (res == false)
+		/*----------------------------
+		 * 3. Execute query for image files
+			----------------------------*/
+		Cursor c = refreshMainDB_2_exec_query(actv, wdb, dbu);
+		
+		/*----------------------------
+		 * 4. Insert data into db
+			----------------------------*/
+		int numOfItemsAdded;
+		
+		if (c.getCount() < 1) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Query result: 0");
+			
+			numOfItemsAdded = 0;
+			
+//			// debug
+//			Toast.makeText(actv, "新規のファイルはありません", 2000).show();
+			
+		} else {//if (c.getCount() < 1)
+			
+			numOfItemsAdded = refreshMainDB_3_insert_data(actv, wdb, dbu, c);
+			
+		}//if (c.getCount() < 1)
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 10. Return
+			----------------------------*/
+		return true;
+		
+	}//public static boolean refreshMainDB(Activity actv)
+
+	public static boolean refreshMainDB(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up DB(writable)
+		 * 2. Table exists?
+		 * 2-1. If no, then create one
+		 * 3. Execute query for image files
+
+		 * 4. Insert data into db
+		 * 5. Update table "refresh_log"
+		 * 
+		 * 9. Close db
+		 * 10. Return
+			----------------------------*/
+		/*----------------------------
+		 * 1. Set up DB(writable)
+			----------------------------*/
+		//
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		//
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 2. Table exists?
+		 * 2-1. If no, then create one
+		 * 		1. baseDirName
+		 * 		2. backupTableName
+			----------------------------*/
+		boolean res = refreshMainDB_1_set_up_table(wdb, dbu);
 		
 		/*----------------------------
 		 * 3. Execute query for image files
@@ -1179,6 +1262,9 @@ public class Methods {
 					+ "]", "Query result: 0");
 			
 			numOfItemsAdded = 0;
+			
+			// debug
+			Toast.makeText(actv, "新規のファイルはありません", 2000).show();
 			
 		} else {//if (c.getCount() < 1)
 			
@@ -1340,6 +1426,17 @@ public class Methods {
 		
 	}//private static Cursor refreshMainDB_2_exec_query()
 
+	/****************************************
+	 *	refreshMainDB_1_set_up_table(SQLiteDatabase wdb, DBUtils dbu)
+	 * 
+	 * <Caller> 1. <Desc> 1. <Params> 1.
+	 * 
+	 * <Return>
+	 *  false		=> Can't create table
+	 * 	true		=> Either (1) New table created, or, (2) Table exists
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
 	private static boolean refreshMainDB_1_set_up_table(SQLiteDatabase wdb, DBUtils dbu) {
 		/*----------------------------
 		 * 2-1.1. baseDirName
@@ -4046,7 +4143,10 @@ public class Methods {
 		/*----------------------------
 		 * 2. Prep => List
 			----------------------------*/
-		String[] choices = {actv.getString(R.string.dlg_db_admin_item_backup_db)};
+		String[] choices = {
+										actv.getString(R.string.dlg_db_admin_item_backup_db),
+										actv.getString(R.string.dlg_db_admin_item_refresh_db)
+										};
 		
 		List<String> list = new ArrayList<String>();
 		
