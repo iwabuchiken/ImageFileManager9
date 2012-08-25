@@ -9,6 +9,7 @@ import ifm9.listeners.DialogListener;
 import ifm9.listeners.DialogOnItemClickListener;
 import ifm9.listeners.DialogOnItemLongClickListener;
 import ifm9.main.MainActv;
+import ifm9.main.PrefActv;
 import ifm9.main.R;
 import ifm9.main.TNActv;
 
@@ -796,6 +797,31 @@ public class Methods {
 		
 	}//public static void startThumbnailActivity(Activity actv, File target)
 
+
+	public static void start_PrefActv(Activity actv) {
+		
+		Intent i = new Intent();
+		
+		i.setClass(actv, PrefActv.class);
+		
+//		i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		
+		actv.startActivity(i);
+		
+	}//public static void start_PrefActv(Activity actv)
+
+	public static void start_refreshDB(Activity actv) {
+		
+		RefreshDBTask task_ = new RefreshDBTask(actv);
+		
+		// debug
+		Toast.makeText(actv, "Starting a task...", 2000)
+				.show();
+		
+		task_.execute("Start");
+
+	}//public static void start_refreshDB(Activity actv)
+
 	public static void confirm_quit(Activity actv, int keyCode) {
 		
 		// TODO 自動生成されたメソッド・スタブ
@@ -1130,7 +1156,18 @@ public class Methods {
 		return tableList;
 	}//public static List<String> getTableList()
 
-	public static boolean refreshMainDB(Activity actv) {
+	/****************************************
+	 *	refreshMainDB(Activity actv)
+	 * 
+	 * <Caller> 1. <Desc> 1. <Params> 1.
+	 * 
+	 * <Return>
+	 *  -1		Can't create a table
+	 *  0~	Number of items added
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static int refreshMainDB(Activity actv) {
 		/*----------------------------
 		 * Steps
 		 * 1. Set up DB(writable)
@@ -1170,7 +1207,7 @@ public class Methods {
 			
 			wdb.close();
 			
-			return false;
+			return -1;
 			
 		}//if (res == false)
 		/*----------------------------
@@ -1209,9 +1246,9 @@ public class Methods {
 		/*----------------------------
 		 * 10. Return
 			----------------------------*/
-		return true;
+		return numOfItemsAdded;
 		
-	}//public static boolean refreshMainDB(Activity actv)
+	}//public static int refreshMainDB(Activity actv)
 
 	public static boolean refreshMainDB(Activity actv, Dialog dlg) {
 		/*----------------------------
@@ -4894,5 +4931,6 @@ public class Methods {
 		
 		
 	}//public static TI convertCursorToThumbnailItem(Cursor c)
+
 
 }//public class Methods

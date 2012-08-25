@@ -2,10 +2,11 @@ package ifm9.main;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PrefActv extends ListActivity {
+public class PrefActv extends PreferenceActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -13,6 +14,8 @@ public class PrefActv extends ListActivity {
 		 * Steps
 		 * 1. Super
 		 * 2. Set content
+		 * 
+		 * 3. Set preferences
 		----------------------------*/
 		super.onCreate(savedInstanceState);
 
@@ -20,6 +23,13 @@ public class PrefActv extends ListActivity {
 		setContentView(R.layout.main_pref);
 
 		this.setTitle(this.getClass().getName());
+		
+		/*----------------------------
+		 * 3. Set preferences
+			----------------------------*/
+		getPreferenceManager().setSharedPreferencesName(this.getString(R.string.prefs_shared_prefs_name));
+		
+		addPreferencesFromResource(R.xml.preferences);
 		
 	}//public void onCreate(Bundle savedInstanceState)
 

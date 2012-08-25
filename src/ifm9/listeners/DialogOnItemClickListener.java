@@ -118,7 +118,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				
 			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_refresh_db))){
 				
-				RefreshDBTask task_ = new RefreshDBTask(actv);
+				RefreshDBTask task_ = new RefreshDBTask(actv, dlg);
 				
 				// debug
 				Toast.makeText(actv, "Starting a task...", 2000)
@@ -126,7 +126,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				
 				task_.execute("Start");
 
-				
+				dlg.dismiss();
 				
 //				// Log
 //				Log.d("DialogOnItemClickListener.java"

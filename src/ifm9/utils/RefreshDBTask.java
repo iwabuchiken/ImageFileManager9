@@ -1,6 +1,7 @@
 package ifm9.utils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -10,6 +11,7 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 
 	//
 	Activity actv;
+	Dialog dlg;
 	
 	public RefreshDBTask(Activity actv) {
 		
@@ -17,11 +19,18 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 		
 	}//public RefreshDBTask(Activity actv)
 	
+	public RefreshDBTask(Activity actv, Dialog dlg) {
+		// 
+		this.actv = actv;
+		this.dlg = dlg;
+	}
+
 	@Override
 	protected String doInBackground(String... params) {
 		// TODO 自動生成されたメソッド・スタブ
 		
-		boolean result = Methods.refreshMainDB((ListActivity) actv);
+		int result = Methods.refreshMainDB((ListActivity) actv);
+//		boolean result = Methods.refreshMainDB((ListActivity) actv);
 //		boolean result = Methods.refreshMainDB_async((ListActivity) actv);
 //		boolean result = Methods.refreshMainDB_async((ListActivity) actv, this);
 		
@@ -31,13 +40,21 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 				+ "]", "result => " + result);
 		
 		
-		if (result == true) {
+		if (result > 0) {
 			
 			return "DB refreshed";
 			
-		} else {//if (result == true)
+		} else if (result == -1){//if (result == true)
 
-			return "failed";
+			return "テーブルがなく、また、作ることもできませんでした";
+			
+		} else if (result == 0){//if (result == true)
+			
+			return "新規のファイルはありません";
+			
+		} else {//if (result == true)
+			
+			return "なにか不明の結果が生じました";
 			
 		}//if (result == true)
 		
@@ -51,6 +68,8 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 
 		// debug
 		Toast.makeText(actv, result, 2000).show();
+		
+//		dlg.dismiss();
 		
 	}//protected void onPostExecute(String result)
 

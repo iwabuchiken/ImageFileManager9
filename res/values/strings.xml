@@ -19,7 +19,14 @@
     <string name="main_opt_menu_refresh_db">DBリフレッシュ</string>
     <string name="main_opt_menu_db_activity">データベース</string>
     <string name="main_opt_menu_search">探す</string>
+    <string name="main_opt_menu_preferences">カスタマイズ</string>
 
+    <!-- preferences.xml -->
+    <string name="prefs_shared_prefs_name">IFM9_prefs</string>
+    <string name="prefs_db_refresh_key">db_refresh</string>
+    <string name="prefs_db_refresh_title">DBリフレッシュを、毎回行う</string>
+    
+    <!-- Dialogues ================================ -->
     <!-- dlg_create_folder.xml -->
     <string name="dlg_create_folder_title">フォルダ作成</string>
     <string name="dlg_create_folder_tv_message">フォルダ名を入れてください</string>
@@ -97,5 +104,6 @@
     	
     <!-- dlg_confirm_delete_patterns.xml -->
     	<string name="dlg_confirm_delete_patterns_message">この定型句を削除しますか？</string>
+    
     
 </resources>

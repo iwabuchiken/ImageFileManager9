@@ -658,27 +658,28 @@ public class MainActv extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 
-		case R.id.main_opt_menu_refresh_db://---------------------------------------
-			/*----------------------------
-			 * Steps
-			 * 1. Vibrate
-			 * 2. Task
-				----------------------------*/
-			
-			vib.vibrate(Methods.vibLength_click);
-			
-			/*----------------------------
-			 * 2. Task
-				----------------------------*/
-			RefreshDBTask task_ = new RefreshDBTask(this);
-			
-			// debug
-			Toast.makeText(this, "Starting a task...", 2000)
-					.show();
-			
-			task_.execute("Start");
-			
-			break;// case R.id.main_opt_menu_refresh_db
+//		case R.id.main_opt_menu_refresh_db://---------------------------------------
+//			/*----------------------------
+//			 * Steps
+//			 * 1. Vibrate
+//			 * 2. Task
+//				----------------------------*/
+//			
+//			vib.vibrate(Methods.vibLength_click);
+//			
+//			/*----------------------------
+//			 * 2. Task
+//				----------------------------*/
+////			RefreshDBTask task_ = new RefreshDBTask(this);
+//			RefreshDBTask task_ = new RefreshDBTask(this);
+//			
+//			// debug
+//			Toast.makeText(this, "Starting a task...", 2000)
+//					.show();
+//			
+//			task_.execute("Start");
+//			
+//			break;// case R.id.main_opt_menu_refresh_db
 		
 		case R.id.main_opt_menu_create_folder://----------------------------------
 			
@@ -695,6 +696,12 @@ public class MainActv extends ListActivity {
 		case R.id.main_opt_menu_search://-----------------------------------------------
 			
 			Methods.dlg_seratchItem(this);
+			
+			break;// case R.id.main_opt_menu_search
+			
+		case R.id.main_opt_menu_preferences://-----------------------------------------------
+			
+			Methods.start_PrefActv(this);
 			
 			break;// case R.id.main_opt_menu_search
 			
@@ -820,5 +827,34 @@ public class MainActv extends ListActivity {
 		}//try
 
 	}//copy_db_file()
+
+	@Override
+	protected void onStart() {
+		/*----------------------------
+		 * 1. Refresh DB
+			----------------------------*/
+		SharedPreferences prefs =
+							this.getSharedPreferences(this.getString(R.string.prefs_shared_prefs_name), 0);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "prefs: db_refresh => " + prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false));
+		
+		if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false)) {
+			
+			Methods.start_refreshDB(this);
+			
+		} else {//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
+			
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Prefs: db_refresh => " + false);
+			
+		}//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
+		
+		super.onStart();
+	}//protected void onStart()
 
 }//public class MainActv extends Activity
