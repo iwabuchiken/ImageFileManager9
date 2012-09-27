@@ -63,7 +63,7 @@ public class DialogOnItemLongClickListener implements OnItemLongClickListener {
 	/****************************************
 	 * Methods
 	 ****************************************/
-	@Override
+//	@Override
 	public boolean onItemLongClick(
 										AdapterView<?> parent, View v,
 										int position, long id) {
@@ -141,7 +141,7 @@ public class DialogOnItemLongClickListener implements OnItemLongClickListener {
 			
 			File[] files = new File(targetFile.getAbsolutePath()).listFiles(new FileFilter(){
 
-				@Override
+//				@Override
 				public boolean accept(File pathname) {
 					// TODO 自動生成されたメソッド・スタブ
 					

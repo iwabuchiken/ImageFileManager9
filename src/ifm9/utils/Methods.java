@@ -2840,7 +2840,7 @@ public class Methods {
 		
 		Collections.sort(tiList, new Comparator<TI>(){
 
-			@Override
+//			@Override
 			public int compare(TI lhs, TI rhs) {
 				// TODO 自動生成されたメソッド・スタブ
 				
@@ -2963,7 +2963,7 @@ public class Methods {
 			----------------------------*/
 		File[] files = new File(MainActv.dirPath_base).listFiles(new FileFilter(){
 
-			@Override
+//			@Override
 			public boolean accept(File pathname) {
 				// TODO 自動生成されたメソッド・スタブ
 				

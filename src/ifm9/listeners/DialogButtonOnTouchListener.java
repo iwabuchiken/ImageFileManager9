@@ -28,7 +28,7 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 		this.actv = actv;
 	}
 
-	@Override
+//	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
 		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();

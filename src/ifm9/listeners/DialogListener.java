@@ -19,7 +19,7 @@ public class DialogListener implements OnClickListener {
 		this.type = type;
 	}
 	
-	@Override
+//	@Override
 	public void onClick(DialogInterface dialog, int which) {
 		/*----------------------------
 		 * Steps

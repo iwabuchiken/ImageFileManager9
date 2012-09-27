@@ -242,7 +242,7 @@ public class TNActv extends ListActivity {
 			----------------------------*/
 		Collections.sort(tiList, new Comparator<TI>(){
 
-			@Override
+//			@Override
 			public int compare(TI lhs, TI rhs) {
 				// TODO 自動生成されたメソッド・スタブ
 				

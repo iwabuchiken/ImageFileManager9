@@ -30,7 +30,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
-	@Override
+//	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
 		Methods.ButtonTags tag = (Methods.ButtonTags) v.getTag();
