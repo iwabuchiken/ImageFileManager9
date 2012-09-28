@@ -4307,13 +4307,13 @@ public class Methods {
 			
 		} catch (FileNotFoundException e) {
 			// Log
-			Log.d("MainActv.java" + "["
+			Log.d("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 			
 		} catch (IOException e) {
 			// Log
-			Log.d("MainActv.java" + "["
+			Log.d("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 		}//try
@@ -4932,5 +4932,78 @@ public class Methods {
 		
 	}//public static TI convertCursorToThumbnailItem(Cursor c)
 
+	public static boolean restore_db(Activity actv, String dbName,
+				String src, String dst) {
+		/*********************************
+		 * 1. Setup db
+		 * 2. Setup: File paths
+		 * 3. Setup: File objects
+		 * 4. Copy file
+		 * 
+		 *********************************/
+    	// Setup db
+		DBUtils dbu = new DBUtils(actv, dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		wdb.close();
+
+		/*********************************
+		 * 2. Setup: File paths
+		 *********************************/
+//    	String src = 
+//    			"/mnt/sdcard-ext/ShoppingList_backup/shoppinglist_backup_20120906_201402.bk";
+//    			"/mnt/sdcard-ext/CR4_backup/cr4_backup_20120907_184555.bk";
+
+    	
+//    	String dst =
+////    			"/data/data/test.main/databases/shoppinglist.db";
+//    			"/data/data/cr4.main/databases/cr4.db";
+
+    	/*********************************
+		 * 3. Setup: File objects
+		 *********************************/
+		File f_src = new File(src);
+		File f_dst = new File(dst);
+
+		/*********************************
+		 * 4. Copy file
+		 *********************************/
+		try {
+			FileChannel iChannel = new FileInputStream(src).getChannel();
+			FileChannel oChannel = new FileOutputStream(dst).getChannel();
+			iChannel.transferTo(0, iChannel.size(), oChannel);
+			iChannel.close();
+			oChannel.close();
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "File copied");
+			
+			// debug
+			Toast.makeText(actv, "DB restoration => Done", 3000).show();
+			
+			return true;
+
+		} catch (FileNotFoundException e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+			
+			return false;
+			
+		} catch (IOException e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+			
+			return false;
+			
+		}//try
+		
+	}//private boolean restore_db()
 
 }//public class Methods

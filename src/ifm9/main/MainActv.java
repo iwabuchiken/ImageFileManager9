@@ -52,6 +52,10 @@ public class MainActv extends ListActivity {
 //	public static String prefs_current_path = "current_path";
 	public static String prefs_current_path = "ifm9_master_current_path";
 	
+	public static String prefName_tnActv = "pref_tn_actv";
+	
+	public static String prefName_tnActv_current_image_position = "pref_tn_actv_current_image_position";
+	
 	/*----------------------------
 	 * Paths and names
 		----------------------------*/
@@ -141,11 +145,79 @@ public class MainActv extends ListActivity {
 		
 		//debug
 //		copy_db_file();
-		test_simple_format();
+//		test_simple_format();
+//		restore_db();
+//		check_db();
         
     }//public void onCreate(Bundle savedInstanceState)
 
-    private void test_simple_format() {
+    private void check_db() {
+    	/*********************************
+		 * 1. Clear preferences
+		 *********************************/
+		prefs = 
+				this.getSharedPreferences(prefs_current_path, MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = prefs.edit();
+
+		editor.clear();
+		editor.commit();
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Prefs cleared");
+
+		
+    	String dst = "/data/data/ifm9.main/databases" + MainActv.dbName;
+    	
+    	File f = new File(dst);
+    	
+    	File db_dir = new File("/data/data/ifm9.main/databases");
+    	
+    	for (String name : db_dir.list()) {
+			
+    		// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "file name=" + name);
+    		
+		}//for (String name : db_dir.list())
+    	
+//    	boolean res = f.exists();
+//    	
+//    	// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "res=" + res);
+//
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "f.getAbsolutePath(): " + f.getAbsolutePath());
+	}
+
+	private void restore_db() {
+    	
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting: restore_db()");
+    	
+		String src = "/mnt/sdcard-ext/IFM9_backup/ifm9_backup_20120929_075009.bk";
+		String dst = StringUtils.join(new String[]{"/data/data/ifm9.main/databases", MainActv.dbName}, File.separator);
+		
+//		String dst = "/data/data/ifm9.main/databases" + MainActv.dbName;
+		boolean res = Methods.restore_db(this, MainActv.dbName, src, dst);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "res=" + res);
+		
+	}//private void restore_db()
+
+	private void test_simple_format() {
     	
     	long t = Methods.getMillSeconds_now();
     	

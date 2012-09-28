@@ -6,6 +6,7 @@ import java.util.List;
 import ifm9.items.TI;
 import ifm9.listeners.ButtonOnClickListener;
 import ifm9.listeners.CustomOnLongClickListener;
+import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.main.TNActv;
 
@@ -260,8 +261,12 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 		 * 1. Set layout
 		 * 2. Get view
 		 * 3. Get item
+		 * 
+		 * 3-2. Set background
+		 * 
 		 * 4. Get bitmap
 		 * 5. Get memo, or, file name
+		 * 
 		 * 6. Return
 			----------------------------*/
 		
@@ -281,11 +286,59 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 			----------------------------*/
     	ImageView iv = (ImageView) v.findViewById(R.id.iv_thumbnail);
 
+    	TextView tv = (TextView) v.findViewById(R.id.textView1);
+    	
     	/*----------------------------
 		 * 3. Get item
 			----------------------------*/
     	TI ti = (TI) getItem(position);
 
+    	/*********************************
+		 * 3-2. Set background
+		 *********************************/
+		SharedPreferences prefs = ((Activity) con)
+						.getSharedPreferences(
+							MainActv.prefName_tnActv,
+							con.MODE_PRIVATE);
+
+
+		//Methods.PrefenceLabels.thumb_actv.name()
+		
+		//int savedPosition = prefs.getInt("chosen_list_item", -1);
+		int savedPosition = prefs.getInt(
+							MainActv.prefName_tnActv_current_image_position,
+							-1);
+		
+		// Log
+		Log.d("TIListAdapter.java"
+				+ "["
+				+ Thread.currentThread().getStackTrace()[2]
+						.getLineNumber() + "]", "savedPosition: " + savedPosition);
+		
+		
+		if (savedPosition == position) {
+			
+			// Log
+			Log.d("TIListAdapter.java"
+					+ "["
+					+ Thread.currentThread().getStackTrace()[2]
+							.getLineNumber() + "]", "savedPosition == position");
+			
+		//	tv.setBackgroundColor(Color.GREEN);
+			tv.setBackgroundResource(R.color.gold2);
+			tv.setTextColor(Color.BLACK);
+			
+		} else if (savedPosition == -1) {//if (savedPosition == position)
+			
+		} else {//if (savedPosition == position)
+			
+			tv.setBackgroundColor(Color.BLACK);
+			tv.setTextColor(Color.WHITE);
+			
+		}//if (savedPosition == position)
+
+    	
+    	
     	/*----------------------------
 		 * 4. Get bitmap
 			----------------------------*/
@@ -305,7 +358,7 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 		 * 		1. File name
 		 * 		2. Memo
 			----------------------------*/
-		TextView tv = (TextView) v.findViewById(R.id.textView1);
+//		TextView tv = (TextView) v.findViewById(R.id.textView1);
 		
 		tv.setText(ti.getFile_name());
 

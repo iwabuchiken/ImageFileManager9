@@ -452,6 +452,8 @@ public class TNActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onResume()");
 		
+		TNActv.aAdapter.notifyDataSetChanged();
+		
 	}
 
 	@Override
@@ -505,6 +507,19 @@ public class TNActv extends ListActivity {
 					+ "]", "move_mode => Now false");
 			
 		}//if (move_mode == true)
+
+		SharedPreferences prefs = 
+				this.getSharedPreferences(MainActv.prefName_tnActv, MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = prefs.edit();
+
+		editor.clear();
+		editor.commit();
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Prefs cleared: " + MainActv.prefName_tnActv);
 
 	}//protected void onDestroy()
 
@@ -582,29 +597,27 @@ public class TNActv extends ListActivity {
 			
 			i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			
-//			SharedPreferences preference = 
-//					getSharedPreferences(
-////							"thumb_actv", 
-//							Methods.PrefenceLabels.thumb_actv.name(),
-//							MODE_PRIVATE);
-//
-//			SharedPreferences.Editor editor = preference.edit();
-//			
-////			editor.putInt("chosen_list_item", position);
-//			editor.putInt(Methods.PrefenceLabels.chosen_list_item.name(), position);
-//			editor.commit();
-//
-//			// Log
-//			Log.d("TNActv.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "Prefs set");
-//			
-////			aAdapter.notifyDataSetChanged();
-//			
-//			// Log
-//			Log.d("TNActv.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "aAdapter notified");
+			SharedPreferences preference = 
+					getSharedPreferences(
+							MainActv.prefName_tnActv,
+							MODE_PRIVATE);
+
+			SharedPreferences.Editor editor = preference.edit();
+			
+			editor.putInt(MainActv.prefName_tnActv_current_image_position, position);
+			editor.commit();
+
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Prefs set");
+			
+//			aAdapter.notifyDataSetChanged();
+			
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "aAdapter notified");
 			
 			this.startActivity(i);
 			
