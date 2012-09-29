@@ -174,6 +174,9 @@ public class DBUtils extends SQLiteOpenHelper{
 		sb.append(android.provider.BaseColumns._ID +
 							" INTEGER PRIMARY KEY AUTOINCREMENT, ");
 		
+		// created_at, modified_at
+		sb.append("created_at INTEGER, modified_at INTEGER, ");
+		
 		int i = 0;
 		for (i = 0; i < columns.length - 1; i++) {
 			sb.append(columns[i] + " " + types[i] + ", ");

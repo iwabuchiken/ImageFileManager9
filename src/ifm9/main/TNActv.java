@@ -321,7 +321,7 @@ public class TNActv extends ListActivity {
 //			Log.d("ThumbnailActivity.java" + "["
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //					+ "]", "long_searchedItems.length => " + long_searchedItems.length);
-//			
+//			 
 //		}//if (long_searchedItems == null)
 		
 		/*----------------------------

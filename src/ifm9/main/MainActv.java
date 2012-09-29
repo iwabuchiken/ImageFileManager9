@@ -45,6 +45,12 @@ public class MainActv extends ListActivity {
 	
 	public static Vibrator vib;
 
+	/*********************************
+	 * Intent data labels
+	 *********************************/
+	public static String intent_label_file_ids = "file_ids";		// Methods.show_history()
+	
+	public static String intent_label_table_names = "table_names";	// Methods.show_history()
 	
 	/*----------------------------
 	 * Preference labels
@@ -93,6 +99,8 @@ public class MainActv extends ListActivity {
 	public static String tableName_refreshLog = "refresh_log";
 	public static String tableName_memo_patterns = "memo_patterns";
 	
+	public static String tableName_show_history = "show_history";
+	
 	public static String tableName_separator = "__";
 	
 	public static String dirPath_db = "/data/data/ifm9.main/databases";
@@ -104,6 +112,15 @@ public class MainActv extends ListActivity {
 	public static String fileName_db_backup_trunk = "ifm9_backup";
 	public static String fileName_db_backup_ext = ".bk";
 
+	public static String[] cols_show_history = {
+		"file_id", "table_name"
+	};
+	
+	public static String[] col_types_show_history = {
+		"INTEGER", "TEXT"
+	};
+
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -776,6 +793,12 @@ public class MainActv extends ListActivity {
 			Methods.start_PrefActv(this);
 			
 			break;// case R.id.main_opt_menu_search
+			
+		case R.id.main_opt_menu_history://-----------------------------------------------
+			
+			Methods.show_history(this);
+			
+			break;// case R.id.main_opt_menu_history
 			
 		}//switch (item.getItemId())
 		

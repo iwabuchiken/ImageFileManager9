@@ -17,4 +17,11 @@
 	    
 	</item>
 	
+	<item 
+	    android:id="@+id/main_opt_menu_history" 
+	    android:title="@string/main_opt_menu_history" 
+	    android:icon="@android:drawable/ic_menu_my_calendar">
+	    
+	</item>
+	
 </menu>

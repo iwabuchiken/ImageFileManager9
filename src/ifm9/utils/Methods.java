@@ -5006,4 +5006,202 @@ public class Methods {
 		
 	}//private boolean restore_db()
 
+	public static void show_history(Activity actv) {
+		/*********************************
+		 * 1. Set up db
+		 * 2. Table exists?
+		 * 3. Get all data
+		 * 
+		 * 4. Set data to intent
+		 * 4-2. Close db
+		 * 5. Start activity
+		 *********************************/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		//
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*********************************
+		 * 2. Table exists?
+		 *********************************/
+		boolean result = dbu.tableExists(wdb, MainActv.tableName_show_history);
+		
+		if (result == false) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + MainActv.tableName_show_history);
+			
+			// Create one
+			result = dbu.createTable(
+											wdb, 
+											MainActv.tableName_show_history, 
+											MainActv.cols_show_history, 
+											MainActv.col_types_show_history);
+			
+			if (result == true) {
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: " + MainActv.tableName_show_history);
+				
+			} else {//if (result == true)
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create table failed: " + MainActv.tableName_show_history);
+				
+				// debug
+				Toast.makeText(actv, 
+						"Create table failed: " + MainActv.tableName_show_history,
+						Toast.LENGTH_SHORT).show();
+
+				wdb.close();
+				
+				return;
+				
+			}//if (result == true)
+		}//if (result == false)
+		
+		/*********************************
+		 * 3. Get all data
+		 *********************************/
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Table exists: " + MainActv.tableName_show_history);
+		
+		
+		// REF=> http://www.accessclub.jp/sql/10.html
+		String sql = "SELECT * FROM " + MainActv.tableName_show_history;
+		
+		Cursor c = wdb.rawQuery(sql, null);
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getCount() => " + c.getCount());
+
+		if (c.getCount() < 1) {
+			
+			// Log
+			Log.d("Methods.java"
+					+ "["
+					+ Thread.currentThread().getStackTrace()[2]
+							.getLineNumber() + "]", "No history data");
+			
+			// debug
+			Toast.makeText(actv, "No history data", Toast.LENGTH_SHORT).show();
+			
+			wdb.close();
+			
+			return;
+			
+		} else if (c.getCount() > 0) {//if (tempC.getCount() > 0)
+			
+			// debug
+			Toast.makeText(actv, 
+					"Num of history data: " + c.getCount(),
+					Toast.LENGTH_SHORT).show();
+			
+		}//if (tempC.getCount() > 0)
+		
+		/*********************************
+		 * 4. Set data to intent
+		 * 	1. Set up intent
+		 * 	2. Get data => File ids
+		 * 	3. Get data => Table names
+		 * 	4. Put data to intent
+		 * 	5. Start activity
+		 *********************************/
+		Intent i = new Intent();
+		
+		i.setClass(actv, TNActv.class);
+		
+		i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		
+		c.moveToFirst();
+		
+		/*********************************
+		 * 4.2. Get data => File ids
+		 * 4.3. Get data => Table names
+		 *********************************/
+		int data_length = c.getCount();
+		
+		long[] file_ids = new long[data_length];
+		
+		String[] table_names = new String[data_length];
+		
+		for (int j = 0; j < data_length; j++) {
+			
+			file_ids[j] = c.getLong(3);
+			
+			table_names[j] = c.getString(4);
+			
+			c.moveToNext();
+			
+		}//for (int j = 0; j < data_length; j++)
+		
+		/*********************************
+		 * 4-2. Close db
+		 *********************************/
+		wdb.close();
+		
+		/*********************************
+		 * 4.4. Put data to intent
+		 *********************************/
+		i.putExtra(MainActv.intent_label_file_ids, file_ids);
+		
+		i.putExtra(MainActv.intent_label_table_names, table_names);
+		
+		/*********************************
+		 * 5. Start activity
+		 *********************************/
+		actv.startActivity(i);
+
+			
+//		} else {//if (result != false)
+			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Table doesn't exist: " + MainActv.tableName_show_history);
+//			
+//			// Create one
+//			result = dbu.createTable(
+//											wdb, 
+//											MainActv.tableName_show_history, 
+//											MainActv.cols_show_history, 
+//											MainActv.col_types_show_history);
+//			
+//			if (result == true) {
+//				// Log
+//				Log.d("Methods.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "Table created: " + MainActv.tableName_show_history);
+//				
+//			} else {//if (result == true)
+//				// Log
+//				Log.d("Methods.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "Create table failed: " + MainActv.tableName_show_history);
+//				
+//				// debug
+//				Toast.makeText(actv, 
+//						"Create table failed: " + MainActv.tableName_show_history,
+//						Toast.LENGTH_SHORT).show();
+//
+//				return;
+//				
+//			}//if (result == true)
+			
+//		}//if (result != false)
+		
+
+		
+	}//public static void show_history(Activity actv)
+
 }//public class Methods
