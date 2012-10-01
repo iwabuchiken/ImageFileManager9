@@ -208,10 +208,11 @@ public class MainActv extends ListActivity {
 		 *********************************/
 //		copy_db_file();
 //		test_simple_format();
-//		restore_db();
+//		restore_db("ifm9_backup_20121001_140224.bk");
 //		check_db();
-//		show_column_list();
-    	
+		show_column_list("IFM9__Android");
+//		10-01 15:05:54.408: D/MainActv.java[260](14946): New col added to: IFM9__Android
+
     	/*********************************
 		 * 6. Drop table
 		 *********************************/
@@ -220,7 +221,7 @@ public class MainActv extends ListActivity {
     	/*********************************
 		 * 7. Add new col => "last_viewed_at"
 		 *********************************/
-    	add_new_col_last_viewed_at();
+//    	add_new_col_last_viewed_at();
     	
     	
 	}//private void do_debug()
@@ -230,7 +231,17 @@ public class MainActv extends ListActivity {
 		 * 1. Get table list
 		 * 2. Add new col
 		 *********************************/
-		List<String> table_list = Methods.get_table_list(this);
+		List<String> table_list = Methods.get_table_list(this, "IFM9");
+		
+//		//debug
+//		for (String name : table_list) {
+//			
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "t_name=" + name);
+//			
+//		}//for (String name : table_list)
 		
 		/*********************************
 		 * 2. Add new col
@@ -251,7 +262,7 @@ public class MainActv extends ListActivity {
 								.getLineNumber() + "]", "New col added to: " + t_name);
 			} else {//if (res == true)
 				// Log
-				Log.d("MainActv.java"
+				Log.e("MainActv.java"
 						+ "["
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "Add new col => Failed: " + t_name);
@@ -347,6 +358,28 @@ public class MainActv extends ListActivity {
 		
 	}
 
+	private void show_column_list(String table_name) {
+		/*********************************
+		 * memo
+		 *********************************/
+    	String[] col_names = Methods.get_column_list(this, MainActv.dbName, table_name);
+    	
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Table: " + table_name);
+		
+    	for (String name : col_names) {
+			
+    		// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "col=" + name);
+    		
+		}//for (String name : col_names)
+		
+	}
+
 	private void check_db() {
     	/*********************************
 		 * 1. Clear preferences
@@ -410,6 +443,26 @@ public class MainActv extends ListActivity {
 		Log.d("MainActv.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "res=" + res);
+		
+	}//private void restore_db()
+
+	private void restore_db(String dbFile_name) {
+    	
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting: restore_db()");
+    	
+		String src = "/mnt/sdcard-ext/IFM9_backup/" + dbFile_name;
+		String dst = StringUtils.join(new String[]{"/data/data/ifm9.main/databases", MainActv.dbName}, File.separator);
+		
+//		String dst = "/data/data/ifm9.main/databases" + MainActv.dbName;
+		boolean res = Methods.restore_db(this, MainActv.dbName, src, dst);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "[restore_db()] res=" + res);
 		
 	}//private void restore_db()
 
@@ -493,7 +546,7 @@ public class MainActv extends ListActivity {
 		File file = create_root_dir();
 		
 		if (file == null) {
-			Log.d("MainActv.java" + "["
+			Log.e("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "file == null");
 			
@@ -506,7 +559,7 @@ public class MainActv extends ListActivity {
 		boolean res = create_list_file(file);
 		
 		if (res == false) {
-			Log.d("MainActv.java" + "["
+			Log.e("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "res == false");
 			
@@ -630,7 +683,7 @@ public class MainActv extends ListActivity {
 		if (files == null) {
 			
 			// Log
-			Log.d("MainActv.java" + "["
+			Log.e("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "files => null");
 			
@@ -723,7 +776,7 @@ public class MainActv extends ListActivity {
 				
 			} catch (IOException e) {
 				// Log
-				Log.d("MainActv.java"
+				Log.e("MainActv.java"
 						+ "["
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "BufferedWriter: Exception => " + e.toString());
@@ -756,7 +809,7 @@ public class MainActv extends ListActivity {
 				
 			} catch (Exception e) {
 				// Log
-				Log.d("MainActv.java"
+				Log.e("MainActv.java"
 				+ "["
 				+ Thread.currentThread().getStackTrace()[2]
 						.getLineNumber() + "]", "Exception => " + e.toString());
@@ -806,7 +859,7 @@ public class MainActv extends ListActivity {
 					.show();
 			
 			// Log
-			Log.d("MainActv.java" + "["
+			Log.e("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", 
 					"This item doesn't exist in the directory: " + itemName);
@@ -1094,13 +1147,13 @@ public class MainActv extends ListActivity {
 			
 		} catch (FileNotFoundException e) {
 			// Log
-			Log.d("MainActv.java" + "["
+			Log.e("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 			
 		} catch (IOException e) {
 			// Log
-			Log.d("MainActv.java" + "["
+			Log.e("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 		}//try

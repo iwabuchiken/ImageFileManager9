@@ -31,6 +31,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -5027,7 +5029,7 @@ public class Methods {
 			// Log
 			Log.d("ThumbnailActivity.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "File copied");
+					+ "]", "File copied: " + src);
 			
 			// debug
 			Toast.makeText(actv, "DB restoration => Done", 3000).show();
@@ -5474,6 +5476,8 @@ public class Methods {
 		 * 
 		 * 3. Build sql
 		 * 4. Exec sql
+		 * 
+		 * 5. Close db
 		 *********************************/
 		/*********************************
 		 * 1. Column already exists?
@@ -5523,6 +5527,8 @@ public class Methods {
 		/*********************************
 		 * 3. Build sql
 		 *********************************/
+		// REF[20121001_140817] => http://stackoverflow.com/questions/8291673/how-to-add-new-column-to-android-sqlite-database
+		
 		String sql = "ALTER TABLE " + tableName + 
 					" ADD COLUMN " + column_name + 
 					" " + data_type;
@@ -5539,7 +5545,11 @@ public class Methods {
 					"["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Column added => " + column_name);
-			
+
+			/*********************************
+			 * 5. Close db
+			 *********************************/
+			wdb.close();
 			
 			return true;
 			
@@ -5549,12 +5559,114 @@ public class Methods {
 					"[" + Thread.currentThread().getStackTrace()[2].getLineNumber() + "]", 
 					"Exception => " + e.toString());
 			
+			/*********************************
+			 * 5. Close db
+			 *********************************/
+			wdb.close();
+
 			return false;
 		}//try
+
+		/*********************************
+		 * 5. Close db
+		 *********************************/
 
 
 		
 	}//public static boolean add_column_to_table()
+
+	public static List<String> get_table_list(Activity actv, String key_word) {
+		/*********************************
+		 * 1. Set up db
+		 * 2. Query
+		 * 
+		 * 3. Build list
+		 *********************************/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*********************************
+		 * 2. Query
+		 *********************************/
+		//=> source: http://stackoverflow.com/questions/4681744/android-get-list-of-tables : "Just had to do the same. This seems to work:"
+		String q = "SELECT name FROM " + "sqlite_master"+
+						" WHERE type = 'table' ORDER BY name";
+		
+		Cursor c = null;
+		try {
+			c = rdb.rawQuery(q, null);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount(): " + c.getCount());
+
+		} catch (Exception e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+		}
+		
+		// Table names list
+		List<String> tableList = new ArrayList<String>();
+		
+		/*********************************
+		 * 3. Build list
+		 *********************************/
+		// Log
+		if (c != null) {
+			c.moveToFirst();
+			
+//			String t_name = c.getString(0);
+			
+			String reg = "IFM9.*";
+			
+			Pattern p = Pattern.compile(reg);
+			Matcher m;// = p.matcher(t_name);
+
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				//
+				String t_name = c.getString(0);
+				
+				m = p.matcher(t_name);
+				
+				if (m.find()) {
+					
+					tableList.add(c.getString(0));
+					
+				}//if (variable == condition)
+//				tableList.add(c.getString(0));
+				
+//				// Log
+//				Log.d("Methods.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "c.getString(0): " + c.getString(0));
+				
+				
+				// Next
+				c.moveToNext();
+				
+			}//for (int i = 0; i < c.getCount(); i++)
+
+		} else {//if (c != null)
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c => null");
+		}//if (c != null)
+
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "c.getCount(): " + c.getCount());
+//		
+		rdb.close();
+		
+		return tableList;
+	}//public static List<String> get_table_list(Activity actv, String key_word)
 
 	
 }//public class Methods
