@@ -309,20 +309,20 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 							MainActv.prefName_tnActv_current_image_position,
 							-1);
 		
-		// Log
-		Log.d("TIListAdapter.java"
-				+ "["
-				+ Thread.currentThread().getStackTrace()[2]
-						.getLineNumber() + "]", "savedPosition: " + savedPosition);
+//		// Log
+//		Log.d("TIListAdapter.java"
+//				+ "["
+//				+ Thread.currentThread().getStackTrace()[2]
+//						.getLineNumber() + "]", "savedPosition: " + savedPosition);
 		
 		
 		if (savedPosition == position) {
 			
-			// Log
-			Log.d("TIListAdapter.java"
-					+ "["
-					+ Thread.currentThread().getStackTrace()[2]
-							.getLineNumber() + "]", "savedPosition == position");
+//			// Log
+//			Log.d("TIListAdapter.java"
+//					+ "["
+//					+ Thread.currentThread().getStackTrace()[2]
+//							.getLineNumber() + "]", "savedPosition == position");
 			
 		//	tv.setBackgroundColor(Color.GREEN);
 			tv.setBackgroundResource(R.color.gold2);

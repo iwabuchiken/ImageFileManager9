@@ -43,8 +43,18 @@ public class TNActv extends ListActivity {
 
 	public static boolean move_mode = false;
 
+	/*********************************
+	 * Special intent data
+	 *********************************/
 	public static long[] long_searchedItems; //=> Used in initial_setup()
-
+	
+	public static long[] history_file_ids = null;
+	
+	public static String[] history_table_names = null;
+	
+	/*********************************
+	 * List-related
+	 *********************************/
 	public static ArrayList<Integer> checkedPositions;
 
 	public static List<String> fileNameList;
@@ -113,10 +123,10 @@ public class TNActv extends ListActivity {
 		
 //		get_tables_from_db();
 		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "prefs_current_path: " + Methods.get_pref(this, MainActv.prefs_current_path, "NO DATA"));
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "prefs_current_path: " + Methods.get_pref(this, MainActv.prefs_current_path, "NO DATA"));
 		
 	}//public void onCreate(Bundle savedInstanceState)
 
@@ -258,9 +268,9 @@ public class TNActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "tiList => Sort done");
 		
-		Log.d("TNActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "After sort => tiList.size(): " + tiList.size());
+//		Log.d("TNActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "After sort => tiList.size(): " + tiList.size());
 		
 		/*----------------------------
 		 * 4. Prep adapter
@@ -307,22 +317,11 @@ public class TNActv extends ListActivity {
 			----------------------------*/
 		Intent i = this.getIntent();
 		
-//		long[] long_searchedItems = i.getLongArrayExtra("long_searchedItems");
 		long_searchedItems = i.getLongArrayExtra("long_searchedItems");
 		
-//		if (long_searchedItems == null) {
-//			
-//			Log.d("ThumbnailActivity.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "long_searchedItems => null");
-//			
-//		} else {//if (long_searchedItems == null)
-//
-//			Log.d("ThumbnailActivity.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "long_searchedItems.length => " + long_searchedItems.length);
-//			 
-//		}//if (long_searchedItems == null)
+		history_file_ids = i.getLongArrayExtra(MainActv.intent_label_file_ids);
+		
+		history_table_names = i.getStringArrayExtra(MainActv.intent_label_table_names);
 		
 		/*----------------------------
 		 * 2. Build tiList
@@ -335,17 +334,7 @@ public class TNActv extends ListActivity {
 				+ "]", "tableName: " + tableName);
 		
 		
-		if (long_searchedItems == null) {
-
-			// Log
-			Log.d("ThumbnailActivity.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "Calling: Methods.getAllData(this, tableName)");
-			
-			tiList = Methods.getAllData(this, tableName);
-//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
-			
-		} else {//if (long_searchedItems == null)
+		if (long_searchedItems != null) {
 
 			// Log
 			Log.d("TNActv.java" + "["
@@ -353,13 +342,46 @@ public class TNActv extends ListActivity {
 					+ "]", "long_searchedItems.length: " + long_searchedItems.length);
 			
 			// Log
-			Log.d("ThumbnailActivity.java" + "["
+			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Calling: Methods.convert_fileIdArray2tiList()");
 			
 //			tiList = Methods.getAllData(this, tableName);
 //			tiList = Methods.convert_fileIdArray2tiList(this, MainActv.dirName_base, long_searchedItems);
 			tiList = Methods.convert_fileIdArray2tiList(this, tableName, long_searchedItems);
+
+			
+		} else if (history_file_ids != null) {//if (long_searchedItems == null)
+
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "history_file_ids != null");
+			
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", 
+					"file_ids: length=" + history_file_ids.length + 
+					"/" + "history_table_names: length=" + history_table_names.length);
+			
+			tiList = Methods.get_all_data_history(this, history_file_ids, history_table_names);
+			
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "tiList.size()=" + tiList.size());
+			
+//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			
+		} else {//if (long_searchedItems == null)
+			
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Calling => Methods.getAllData");
+			
+			tiList = Methods.getAllData(this, tableName);
 			
 		}//if (long_searchedItems == null)
 
@@ -451,8 +473,13 @@ public class TNActv extends ListActivity {
 		Log.d("TNActv.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onResume()");
-		
-		TNActv.aAdapter.notifyDataSetChanged();
+
+		if (TNActv.aAdapter != null) {
+					
+			TNActv.aAdapter.notifyDataSetChanged();
+			
+		}
+//		TNActv.aAdapter.notifyDataSetChanged();
 		
 	}
 
@@ -482,10 +509,12 @@ public class TNActv extends ListActivity {
 
 	@Override
 	protected void onDestroy() {
-		/*----------------------------
+		/*********************************
 		 * 1. super
 		 * 2. move_mode => falsify
-			----------------------------*/
+		 * 
+		 * 3. History mode => Off
+		 *********************************/
 		
 		super.onDestroy();
 		
@@ -521,6 +550,40 @@ public class TNActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "Prefs cleared: " + MainActv.prefName_tnActv);
 
+		/*********************************
+		 * 3. History mode => Off
+		 *********************************/
+		int current_move_mode = Methods.get_pref(
+							this, 
+							MainActv.prefName_mainActv, 
+							MainActv.prefName_mainActv_history_mode,
+							-1);
+		
+		if (current_move_mode == MainActv.HISTORY_MODE_ON) {
+			
+			boolean result = Methods.set_pref(
+					this, 
+					MainActv.prefName_mainActv, 
+					MainActv.prefName_mainActv_history_mode,
+					MainActv.HISTORY_MODE_OFF);
+
+			if (result == true) {
+				// Log
+				Log.d("TNActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Pref set: " + MainActv.HISTORY_MODE_OFF);
+			} else {//if (result == true)
+				// Log
+				Log.d("TNActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Set pref => Failed");
+				
+			}//if (result == true)
+			
+		}//if (current_move_mode == 1)
+		
 	}//protected void onDestroy()
 
 	@Override
@@ -570,6 +633,10 @@ public class TNActv extends ListActivity {
 		 * 1. Get item
 		 * 2. Intent
 		 * 		2.1. Set data
+		 * 
+		 * 2-2. Record history
+		 * 2-3. Save preferences
+		 * 
 		 * 3. Start intent
 			----------------------------*/
 		/*----------------------------
@@ -597,6 +664,20 @@ public class TNActv extends ListActivity {
 			
 			i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			
+			/*********************************
+			 * 2-2. Record history
+			 *********************************/
+//			// Log
+//			Log.d("TNActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Table name=" + Methods.convert_path_into_table_name(this));
+			
+			Methods.save_history(this, ti.getFileId(), Methods.convert_path_into_table_name(this));
+			
+			
+			/*********************************
+			 * 2-3. Save preferences
+			 *********************************/
 			SharedPreferences preference = 
 					getSharedPreferences(
 							MainActv.prefName_tnActv,
@@ -607,6 +688,7 @@ public class TNActv extends ListActivity {
 			editor.putInt(MainActv.prefName_tnActv_current_image_position, position);
 			editor.commit();
 
+			
 			// Log
 			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()

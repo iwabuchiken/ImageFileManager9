@@ -650,9 +650,9 @@ public class Methods {
 		
 		String s_newPath = StringUtils.join(newPath, File.separator);
 		
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "s_newPath => " + s_newPath);
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "s_newPath => " + s_newPath);
 		
 		return s_newPath;
 		
@@ -866,7 +866,11 @@ public class Methods {
 		 * 9. Close db
 		 * 10. Return value
 			----------------------------*/
-		
+
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "getAllData() => Starts");
 		/*----------------------------
 		 * 1. DB setup
 			----------------------------*/
@@ -892,10 +896,10 @@ public class Methods {
 			
 		}//if (res == false)
 		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "rdb.getPath(): " + rdb.getPath());
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "rdb.getPath(): " + rdb.getPath());
 		
 		
 		
@@ -924,10 +928,10 @@ public class Methods {
 			return null;
 		}
 		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "c.getCount() => " + c.getCount());
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "c.getCount() => " + c.getCount());
 
 		/*----------------------------
 		 * 2.2. Add to list
@@ -968,6 +972,8 @@ public class Methods {
 		/*----------------------------
 		 * 10. Return value
 			----------------------------*/
+		
+		
 		return tiList;
 		
 	}//public static List<ThumbnailItem> getAllData
@@ -986,9 +992,9 @@ public class Methods {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "convert_prefs_into_path_label(actv): " + convert_prefs_into_path_label(actv));
 		
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "MainActv.dbName: " + MainActv.dbName);
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "MainActv.dbName: " + MainActv.dbName);
 		
 //		if(convert_prefs_into_path_label(actv).equals(MainActv.dbName)) {
 		if(convert_prefs_into_path_label(actv).equals(MainActv.dirName_base)) {
@@ -1011,10 +1017,10 @@ public class Methods {
 			
 		}//if(getCurrentPathLabel(actv).equals(ImageFileManager8Activity.baseDirName))
 		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "tableName => " + tableName);
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "tableName => " + tableName);
 		
 		
 		return tableName;
@@ -2926,6 +2932,37 @@ public class Methods {
 
 	}//public static boolean set_pref(String pref_name, String value)
 
+	public static boolean set_pref(Activity actv, String pref_name, String pref_key, int value) {
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * 2. Get editor
+			----------------------------*/
+		SharedPreferences.Editor editor = prefs.edit();
+
+		/*----------------------------
+		 * 3. Set value
+			----------------------------*/
+		editor.putInt(pref_key, value);
+		
+		try {
+			editor.commit();
+			
+			return true;
+			
+		} catch (Exception e) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Excption: " + e.toString());
+			
+			return false;
+		}
+
+	}//public static boolean set_pref(String pref_name, String value)
+
 	public static int get_pref(Activity actv, String pref_name, int defValue) {
 		SharedPreferences prefs = 
 				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
@@ -2934,6 +2971,17 @@ public class Methods {
 		 * Return
 			----------------------------*/
 		return prefs.getInt(pref_name, defValue);
+
+	}//public static boolean set_pref(String pref_name, String value)
+
+	public static int get_pref(Activity actv, String pref_name, String pref_key, int defValue) {
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
+
+		/*----------------------------
+		 * Return
+			----------------------------*/
+		return prefs.getInt(pref_key, defValue);
 
 	}//public static boolean set_pref(String pref_name, String value)
 
@@ -5012,6 +5060,8 @@ public class Methods {
 		 * 2. Table exists?
 		 * 3. Get all data
 		 * 
+		 * 3-2. Set pref value => 1
+		 * 
 		 * 4. Set data to intent
 		 * 4-2. Close db
 		 * 5. Start activity
@@ -5106,6 +5156,32 @@ public class Methods {
 					Toast.LENGTH_SHORT).show();
 			
 		}//if (tempC.getCount() > 0)
+		
+		/*********************************
+		 * 3-2. Set pref value => 1
+		 *********************************/
+		result = Methods.set_pref(
+							actv, 
+							MainActv.prefName_mainActv, 
+							MainActv.prefName_mainActv_history_mode,
+							MainActv.HISTORY_MODE_ON);
+
+		if (result == true) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Pref => Set: " + MainActv.HISTORY_MODE_ON);
+			
+		} else {//if (result == true)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Set pref => Failed");
+			
+		}//if (result == true)
+		
 		
 		/*********************************
 		 * 4. Set data to intent
@@ -5203,5 +5279,174 @@ public class Methods {
 
 		
 	}//public static void show_history(Activity actv)
+
+	public static void save_history(Activity actv, long fileId,
+			String table_name) {
+		/*********************************
+		 * 1. Build data
+		 * 2. Set up db
+		 * 
+		 * 3. Insert data
+		 * 4. Close db
+		 *********************************/
+		Object[] data = {fileId, table_name};
+		
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		//
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		
+		boolean res = DBUtils.insertData_history(actv, wdb, data);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "res=" + res);
+		
+		/*********************************
+		 * 4. Close db
+		 *********************************/
+		wdb.close();
+		
+	}//public static void save_history()
+
+	public static List<TI> get_all_data_history(Activity actv,
+			long[] history_file_ids, String[] history_table_names) {
+		/*********************************
+		 * 1. DB setup
+		 * 2. Build list
+		 *
+		 * 2-2. Close db
+		 * 
+		 * 3. Sort list
+		 * 4. Return list
+		 *********************************/
+		/*********************************
+		 * 1. DB setup
+		 *********************************/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*********************************
+		 * 2. Build list
+		 *********************************/
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Build list");
+		
+		List<TI> tiList = dbu.get_all_data_history(
+									actv,
+									rdb,
+									history_file_ids,
+									history_table_names);
+		
+		/*********************************
+		 * 2-2. Close db
+		 *********************************/
+		rdb.close();
+		
+		/*********************************
+		 * 3. Sort list
+		 *********************************/
+		if (tiList != null) {
+			
+			Methods.sort_tiList(tiList);
+			
+		}//if (tiList == null)
+//		Methods.sort_tiList(tiList);
+		
+		return tiList;
+		
+	}//public static List<TI> get_all_data_history()
+
+	public static String[] get_column_list(Activity actv, String dbName, String tableName) {
+		/*********************************
+		 * 1. Set up db
+		 * 2. Cursor null?
+		 * 3. Get names
+		 * 
+		 * 4. Close db
+		 * 5. Return
+		 *********************************/
+		DBUtils dbu = new DBUtils(actv, dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		//=> source: http://stackoverflow.com/questions/4681744/android-get-list-of-tables : "Just had to do the same. This seems to work:"
+		String q = "SELECT * FROM " + tableName;
+		
+		/*********************************
+		 * 2. Cursor null?
+		 *********************************/
+		Cursor c = null;
+		
+		try {
+			c = rdb.rawQuery(q, null);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount(): " + c.getCount());
+
+		} catch (Exception e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			rdb.close();
+			
+			return null;
+		}
+		
+		/*********************************
+		 * 3. Get names
+		 *********************************/
+		String[] column_names = c.getColumnNames();
+		
+		/*********************************
+		 * 4. Close db
+		 *********************************/
+		rdb.close();
+		
+		/*********************************
+		 * 5. Return
+		 *********************************/
+		return column_names;
+		
+//		return null;
+	}//public static String[] get_column_list(Activity actv, String tableName)
+
+    private void drop_table(Activity actv, String dbName, String tableName) {
+    	// Setup db
+		DBUtils dbu = new DBUtils(actv, dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		boolean res = 
+				dbu.dropTable(actv, wdb, tableName);
+		
+		if (res == true) {
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table dropped: " + tableName);
+		} else {//if (res == true)
+
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Drop table => Failed: " + tableName);
+			
+		}//if (res == true)
+		
+
+		wdb.close();
+		
+		
+	}//private void drop_table(String tableName)
 
 }//public class Methods

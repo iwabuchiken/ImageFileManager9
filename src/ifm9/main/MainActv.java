@@ -51,16 +51,26 @@ public class MainActv extends ListActivity {
 	public static String intent_label_file_ids = "file_ids";		// Methods.show_history()
 	
 	public static String intent_label_table_names = "table_names";	// Methods.show_history()
-	
-	/*----------------------------
-	 * Preference labels
-		----------------------------*/
+
+	/*********************************
+	 * Prefs
+	 *********************************/
 //	public static String prefs_current_path = "current_path";
 	public static String prefs_current_path = "ifm9_master_current_path";
 	
 	public static String prefName_tnActv = "pref_tn_actv";
 	
 	public static String prefName_tnActv_current_image_position = "pref_tn_actv_current_image_position";
+	
+	// MainActv
+	// history
+	public static String prefName_mainActv = "pref_main_actv";
+	
+	public static String prefName_mainActv_history_mode = "history_mode";
+	
+	public static final int HISTORY_MODE_ON = 1;
+	
+	public static final int HISTORY_MODE_OFF = 0;
 	
 	/*----------------------------
 	 * Paths and names
@@ -96,11 +106,21 @@ public class MainActv extends ListActivity {
 //	public static String dbName = "IFM8";
 	public static String dbName = "ifm9.db";
 	
+	// Table names
 	public static String tableName_refreshLog = "refresh_log";
 	public static String tableName_memo_patterns = "memo_patterns";
-	
+
+	// show_history
 	public static String tableName_show_history = "show_history";
 	
+	public static String[] cols_show_history = {
+		"file_id", "table_name"
+	};
+	
+	public static String[] col_types_show_history = {
+		"INTEGER", "TEXT"
+	};
+
 	public static String tableName_separator = "__";
 	
 	public static String dirPath_db = "/data/data/ifm9.main/databases";
@@ -111,14 +131,6 @@ public class MainActv extends ListActivity {
 	
 	public static String fileName_db_backup_trunk = "ifm9_backup";
 	public static String fileName_db_backup_ext = ".bk";
-
-	public static String[] cols_show_history = {
-		"file_id", "table_name"
-	};
-	
-	public static String[] col_types_show_history = {
-		"INTEGER", "TEXT"
-	};
 
 	
     /** Called when the activity is first created. */
@@ -165,10 +177,29 @@ public class MainActv extends ListActivity {
 //		test_simple_format();
 //		restore_db();
 //		check_db();
+//		show_column_list();
+		
         
     }//public void onCreate(Bundle savedInstanceState)
 
-    private void check_db() {
+    private void show_column_list() {
+		/*********************************
+		 * memo
+		 *********************************/
+    	String[] col_names = Methods.get_column_list(this, MainActv.dbName, "IFM9");
+    	
+    	for (String name : col_names) {
+			
+    		// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "col=" + name);
+    		
+		}//for (String name : col_names)
+		
+	}
+
+	private void check_db() {
     	/*********************************
 		 * 1. Clear preferences
 		 *********************************/
@@ -388,24 +419,24 @@ public class MainActv extends ListActivity {
 
 		this.setListAdapter(adapter);
 		
-		// Log
-		Log.d("MainActv.java" + "["
-		+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-		+ "]", "adapter => set");
+//		// Log
+//		Log.d("MainActv.java" + "["
+//		+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//		+ "]", "adapter => set");
 		
 		if (adapter == null) {
-			// Log
-			Log.d("Methods.java" + "["
-			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-			+ "]", "adapter => null");
+//			// Log
+//			Log.d("MainActv.java" + "["
+//			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//			+ "]", "adapter => null");
 			
 			return false;
 			
 		} else {//if (adapter == null)
-			// Log
-			Log.d("Methods.java" + "["
-			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-			+ "]", "adapter => Not null");
+//			// Log
+//			Log.d("MainActv.java" + "["
+//			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//			+ "]", "adapter => Not null");
 			
 			return true;
 			
@@ -422,10 +453,10 @@ public class MainActv extends ListActivity {
 		 * 3. Return
 			----------------------------*/
 		
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "file path: " + file.getAbsolutePath());
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "file path: " + file.getAbsolutePath());
 		
 		File[] files = null;
 		
@@ -498,7 +529,7 @@ public class MainActv extends ListActivity {
 			// Log
 			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "Prefs alread set: " + temp);
+					+ "]", "Prefs already set: " + temp);
 			
 			return;
 			
@@ -528,10 +559,10 @@ public class MainActv extends ListActivity {
 		File list_file = new File(file, listFileName);
 		
 		if (list_file.exists()) {
-			// Log
-			Log.d("MainActv.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "\"list.txt\" => Exists");
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "\"list.txt\" => Exists");
 			
 			return true;
 			
@@ -587,10 +618,10 @@ public class MainActv extends ListActivity {
 			
 		} else {//if (file.exists())
 			// Log
-			Log.d("MainActv.java"
-			+ "["
-			+ Thread.currentThread().getStackTrace()[2]
-				.getLineNumber() + "]", "Dir exists => " + file.getAbsolutePath());
+//			Log.d("MainActv.java"
+//			+ "["
+//			+ Thread.currentThread().getStackTrace()[2]
+//				.getLineNumber() + "]", "Dir exists => " + file.getAbsolutePath());
 			
 			return file;
 		}//if (file.exists())
@@ -648,6 +679,11 @@ public class MainActv extends ListActivity {
 		} else if (target.isFile()) {//if (target.isDirectory())
 			
 			Methods.startThumbnailActivity(this, target.getName());
+			
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "target.getName()=" + target.getName());
 			
 //			Methods.toastAndLog(this, "This is a file: " + itemName, 2000);
 			
@@ -931,10 +967,10 @@ public class MainActv extends ListActivity {
 		SharedPreferences prefs =
 							this.getSharedPreferences(this.getString(R.string.prefs_shared_prefs_name), 0);
 		
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "prefs: db_refresh => " + prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false));
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "prefs: db_refresh => " + prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false));
 		
 		if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false)) {
 			
@@ -942,10 +978,10 @@ public class MainActv extends ListActivity {
 			
 		} else {//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
 			
-			// Log
-			Log.d("MainActv.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "Prefs: db_refresh => " + false);
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Prefs: db_refresh => " + false);
 			
 		}//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
 		

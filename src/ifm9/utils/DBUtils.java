@@ -2,8 +2,10 @@ package ifm9.utils;
 
 
 import ifm9.items.TI;
+import ifm9.main.MainActv;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -480,6 +482,56 @@ public class DBUtils extends SQLiteOpenHelper{
 		}//try
 	}//public insertData(SQLiteDatabase db, String tableName, ThumbnailItem ti)
 
+	public static boolean insertData_history(
+							Activity actv, 
+							SQLiteDatabase wdb, 
+							Object[] data) {
+		/*********************************
+		 * memo
+		 *********************************/
+		
+		
+		/*----------------------------
+		* 1. Insert data
+		----------------------------*/
+		try {
+			// Start transaction
+			wdb.beginTransaction();
+			
+			// ContentValues
+			ContentValues val = new ContentValues();
+
+//			"file_id", "table_name"
+			
+			val.put("file_id", (Long) data[0]);
+			
+			val.put("table_name", (String) data[1]);
+
+			// Insert data
+			wdb.insert(MainActv.tableName_show_history, null, val);
+			
+			// Set as successful
+			wdb.setTransactionSuccessful();
+			
+			// End transaction
+			wdb.endTransaction();
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Data inserted => " + "(file_name => " + val.getAsString("file_name") + "), and others");
+			
+			return true;
+		} catch (Exception e) {
+			// Log
+			Log.e("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception! => " + e.toString());
+			
+			return false;
+		}//try
+	}//public static boolean insertData_history(Activity actv, SQLiteDatabase wdb, Object[] data)
+
 	
 	public TI getData(Activity actv, SQLiteDatabase rdb, String tableName, long file_id) {
 		/*----------------------------
@@ -694,5 +746,117 @@ public class DBUtils extends SQLiteOpenHelper{
 //		return false;
 		
 	}//public boolean isInDB_long(SQLiteDatabase db, String tableName, long file_id)
+
+
+	public List<TI> get_all_data_history(Activity actv,
+			SQLiteDatabase rdb, long[] history_file_ids, String[] history_table_names) {
+		/*********************************
+		 * 1. Declare tiList
+		 * 2. Query
+		 * 
+		 * 2-1. Record exists?
+		 * 2-2. Create a TI object
+		 * 3. Add to list
+		 *********************************/
+		List<TI> tiList = new ArrayList<TI>();
+		
+//		for (String name : history_table_names) {
+//			
+//			// Log
+//			Log.d("DBUtils.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "history: name=" + name);
+//			
+//		}//for (String name : history_table_names)
+		
+		for (int i = 0; i < history_file_ids.length; i++) {
+			
+			/*********************************
+			 * 2. Query
+			 *********************************/
+			String sql = "SELECT * FROM " + history_table_names[i]
+						+ " WHERE file_id='" + history_file_ids[i] + "'";
+			
+			Cursor c = null;
+			
+			try {
+				
+				c = rdb.rawQuery(sql, null);
+				
+//				// Log
+//				Log.d("DBUtils.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "Query => Done");
+				
+			} catch (Exception e) {
+				// Log
+				Log.d("Methods.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Exception => " + e.toString()
+						+ "(i=" + i + ")");
+				
+				continue;
+				
+//				rdb.close();
+//				
+//				return null;
+			}
+			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "c.getCount() => " + c.getCount());
+
+			/*********************************
+			 * 2-1. Record exists?
+			 *********************************/
+			if (c.getCount() < 1) {
+				
+				// Log
+				Log.d("DBUtils.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "c.getCount() < 1");
+				
+				continue;
+				
+			}
+			
+			
+			/*********************************
+			 * 2-2. Create a TI object
+			 *********************************/
+			c.moveToFirst();
+			
+			TI ti = new TI(
+					c.getLong(1),	// file_id
+					c.getString(2),	// file_path
+					c.getString(3),	// file_name
+					c.getLong(4),	// date_added
+//					c.getLong(5)		// date_modified
+					c.getLong(5),		// date_modified
+					c.getString(6),	// memos
+					c.getString(7));	// tags
+
+			tiList.add(ti);
+					
+			/*----------------------------
+			 * 2.2. Add to list
+				----------------------------*/
+//			c.moveToNext();
+
+			
+		}//for (int i = 0; i < history_file_ids.length; i++)
+		
+		
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tiList.size()=" + tiList.size());
+		
+		return tiList;
+		
+	}//public List<TI> get_all_data_history()
 }//public class DBUtils
 
