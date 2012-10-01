@@ -58,17 +58,20 @@ public class DBUtils extends SQLiteOpenHelper{
 				{	"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
 					"INTEGER",		"TEXT",	"TEXT"};
 
+	// Main data
 	public static String[] cols = 
-		{"file_id", 		"file_path", "file_name", "date_added",
-			"date_modified", "memos", "tags"};
+		{"file_id", "file_path", "file_name", 	"date_added",
+		"date_modified",	"memos", "tags", 	"last_viewed_at"};
+//	"date_modified", "memos", "tags"};
+
+	public static String[] col_types =
+		{"INTEGER", "TEXT", 	"TEXT",			"INTEGER",
+		"INTEGER",			"TEXT",	"TEXT",		"INTEGER"};
 
 	static String[] cols_for_insert_data = 
 		{"file_id", 		"file_path", "file_name", "date_added", "date_modified"};
 
-	public static String[] col_types =
-		{"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
-			"INTEGER",		"TEXT",	"TEXT"};
-
+	// Proj
 	static String[] proj = {
 		MediaStore.Images.Media._ID, 
 		MediaStore.Images.Media.DATA,
