@@ -77,10 +77,10 @@ public class MyView extends ImageView {
 		int action = event.getAction() & MotionEvent.ACTION_MASK;
 		int count = event.getPointerCount();
 		
-		// Log
-		Log.d("MyView.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "count => " + count);
+//		// Log
+//		Log.d("MyView.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "count => " + count);
 		
 		// Switch
 		switch (action) {

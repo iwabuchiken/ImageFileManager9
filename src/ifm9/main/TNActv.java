@@ -671,8 +671,29 @@ public class TNActv extends ListActivity {
 //			Log.d("TNActv.java" + "["
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //					+ "]", "Table name=" + Methods.convert_path_into_table_name(this));
-			
-			Methods.save_history(this, ti.getFileId(), Methods.convert_path_into_table_name(this));
+			int current_history_mode = Methods.get_pref(
+					this, 
+					MainActv.prefName_mainActv, 
+					MainActv.prefName_mainActv_history_mode,
+					-1);
+
+			if (current_history_mode == MainActv.HISTORY_MODE_OFF) {
+				
+				Methods.save_history(
+						this,
+						ti.getFileId(),
+						Methods.convert_path_into_table_name(this));
+				
+			} else {//if (current_move_mode == MainActv.HISTORY_MODE_OFF)
+				
+				// Log
+				Log.d("TNActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "History not saved");
+				
+			}//if (current_move_mode == MainActv.HISTORY_MODE_OFF)
+//			Methods.save_history(this, ti.getFileId(), Methods.convert_path_into_table_name(this));
 			
 			
 			/*********************************

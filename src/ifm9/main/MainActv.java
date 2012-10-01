@@ -145,6 +145,8 @@ public class MainActv extends ListActivity {
 		 *  4. Set list
 		 *  5. Set listener => Image buttons
 		 *  6. Set path label
+		 *  
+		 *  7. Initialize preferences
 			----------------------------*/
 		
         super.onCreate(savedInstanceState);
@@ -172,6 +174,21 @@ public class MainActv extends ListActivity {
 			----------------------------*/
 		Methods.updatePathLabel(this);
 		
+		/*********************************
+		 * 7. Initialize preferences
+		 *********************************/
+		init_prefs();
+//		int current_history_mode = Methods.get_pref(
+//				this, 
+//				MainActv.prefName_mainActv, 
+//				MainActv.prefName_mainActv_history_mode,
+//				-1);
+//
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "onCreate: current_history_mode=" + current_history_mode);
+		
 		//debug
 //		copy_db_file();
 //		test_simple_format();
@@ -182,7 +199,37 @@ public class MainActv extends ListActivity {
         
     }//public void onCreate(Bundle savedInstanceState)
 
-    private void show_column_list() {
+    private void init_prefs() {
+    	/*********************************
+		 * 1. history_mode
+		 *********************************/
+//		int current_history_mode = Methods.get_pref(
+//				this, 
+//				MainActv.prefName_mainActv, 
+//				MainActv.prefName_mainActv_history_mode,
+//				-1);
+//
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "onCreate: current_history_mode=" + current_history_mode);
+		
+		boolean res = Methods.set_pref(
+				this, 
+				MainActv.prefName_mainActv, 
+				MainActv.prefName_mainActv_history_mode,
+				MainActv.HISTORY_MODE_OFF);
+
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", 
+				"history_mode set => MainActv.HISTORY_MODE_OFF"
+				+ "(" + MainActv.HISTORY_MODE_OFF + ")");
+		
+	}//private void init_prefs()
+
+	private void show_column_list() {
 		/*********************************
 		 * memo
 		 *********************************/

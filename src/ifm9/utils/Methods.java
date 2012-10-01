@@ -5299,10 +5299,27 @@ public class Methods {
 		
 		boolean res = DBUtils.insertData_history(actv, wdb, data);
 		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "res=" + res);
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "res=" + res);
+		
+		if (res == true) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "History saved: fileId=" + fileId);
+			
+		} else {//if (res == true)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Save history => Failed: " + fileId);
+			
+		}//if (res == true)
+		
 		
 		/*********************************
 		 * 4. Close db
