@@ -122,7 +122,8 @@ public class MainActv extends ListActivity {
 	};
 
 	public static String tableName_separator = "__";
-	
+
+	// Backup
 	public static String dirPath_db = "/data/data/ifm9.main/databases";
 	
 	public static String fileName_db = "ifm9.db";
@@ -190,6 +191,7 @@ public class MainActv extends ListActivity {
 //				+ "]", "onCreate: current_history_mode=" + current_history_mode);
 		
 		//debug
+		do_debug();
 //		copy_db_file();
 //		test_simple_format();
 //		restore_db();
@@ -199,7 +201,106 @@ public class MainActv extends ListActivity {
         
     }//public void onCreate(Bundle savedInstanceState)
 
-    private void init_prefs() {
+    private void do_debug() {
+		/*********************************
+		 * 6. Drop table
+		 * 7. Add new col => "last_viewed_at"
+		 *********************************/
+//		copy_db_file();
+//		test_simple_format();
+//		restore_db();
+//		check_db();
+//		show_column_list();
+    	
+    	/*********************************
+		 * 6. Drop table
+		 *********************************/
+//    	Methods.drop_table(this, MainActv.dbName, MainActv.tableName_show_history);
+    	
+    	/*********************************
+		 * 7. Add new col => "last_viewed_at"
+		 *********************************/
+    	add_new_col_last_viewed_at();
+    	
+    	
+	}//private void do_debug()
+
+	private void add_new_col_last_viewed_at() {
+		/*********************************
+		 * 1. Get table list
+		 * 2. Add new col
+		 *********************************/
+		List<String> table_list = Methods.get_table_list(this);
+		
+		/*********************************
+		 * 2. Add new col
+		 *********************************/
+		for (String t_name : table_list) {
+			
+			boolean res = Methods.add_column_to_table(
+									this,
+									MainActv.dbName,
+									t_name,
+									"last_viewed_at",
+									"INTEGER");
+			if (res == true) {
+				// Log
+				Log.d("MainActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "New col added to: " + t_name);
+			} else {//if (res == true)
+				// Log
+				Log.d("MainActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Add new col => Failed: " + t_name);
+			}//if (res == true)
+			
+			
+		}//for (String t_name : table_list)
+		
+		
+//		for (String name : table_list) {
+//			
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "table name=" + name);
+//			
+//		}
+		
+//		String table_5 = table_list.get(5);
+//		
+//		String[] col_names = Methods.get_column_list(this, MainActv.dbName, table_5);
+//		
+//		for (String name : col_names) {
+//		
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "col name=" + name);
+//		
+//		}
+//
+//		String table_6 = table_list.get(6);
+//		
+//		String[] col_names_6 = Methods.get_column_list(this, MainActv.dbName, table_6);
+//		
+//		for (String name_6 : col_names_6) {
+//		
+//			// Log
+//			Log.d("MainActv.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "col name=" + name_6);
+//
+//		}
+		
+				
+		
+	}//private void add_new_col_last_viewed_at()
+
+	private void init_prefs() {
     	/*********************************
 		 * 1. history_mode
 		 *********************************/
