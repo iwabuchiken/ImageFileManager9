@@ -24,6 +24,8 @@ public class TI {
 	
 	// Tags
 	String tags;
+	
+	long last_viewed_at;
 
 	/*----------------------------
 	 * Constructor
@@ -62,6 +64,25 @@ public class TI {
 		this.tags = tags;
 		
 	}//public ThumbnailItem()
+
+	public TI(long fileId, String file_path, String file_name, 
+			long date_added, long date_modified, String memo, String tags, long last_viewed_at) {
+		//
+		this.fileId = fileId;
+		
+		this.file_path = file_path;
+		this.file_name = file_name;
+				
+		this.date_added = date_added;
+		this.date_modified = date_modified;
+		
+		this.memo = memo;
+		this.tags = tags;
+		
+		this.last_viewed_at = last_viewed_at;
+		
+	}//public ThumbnailItem()
+
 
 	public long getFileId() {
 		return fileId;
@@ -113,6 +134,16 @@ public class TI {
 
 	public String getFile_name() {
 		return file_name;
+	}
+
+
+	public long getLast_viewed_at() {
+		return last_viewed_at;
+	}
+
+	
+	public void setLast_viewed_at(long last_viewed_at) {
+		this.last_viewed_at = last_viewed_at;
 	}
 
 }//public class ThumbnailItem

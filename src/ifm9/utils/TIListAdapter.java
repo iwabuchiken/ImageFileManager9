@@ -267,6 +267,8 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 		 * 4. Get bitmap
 		 * 5. Get memo, or, file name
 		 * 
+		 * 5-2. Get => last viewed
+		 * 
 		 * 6. Return
 			----------------------------*/
 		
@@ -385,6 +387,11 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 //		Log.d("TIListAdapter.java" + "["
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //				+ "]", "File name, memo => Set");
+		
+		/*********************************
+		 * 5-2. Get => last viewed
+		 *********************************/
+		
 		
 		/*----------------------------
 		 * 6. Return

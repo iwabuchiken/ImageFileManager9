@@ -250,18 +250,55 @@ public class TNActv extends ListActivity {
 		/*----------------------------
 		 * 3. Sort list
 			----------------------------*/
-		Collections.sort(tiList, new Comparator<TI>(){
+		int current_history_mode = Methods.get_pref(
+				this, 
+				MainActv.prefName_mainActv, 
+				MainActv.prefName_mainActv_history_mode,
+				-1);
 
-//			@Override
-			public int compare(TI lhs, TI rhs) {
-				// TODO 自動生成されたメソッド・スタブ
-				
-//				return (int) (lhs.getDate_added() - rhs.getDate_added());
-				
-				return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
-			}
+		if (current_history_mode == MainActv.HISTORY_MODE_OFF) {
+
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "MainActv.HISTORY_MODE => OFF");
 			
-		});
+			Collections.sort(tiList, new Comparator<TI>(){
+
+//				@Override
+				public int compare(TI lhs, TI rhs) {
+					// TODO 自動生成されたメソッド・スタブ
+					
+//					return (int) (lhs.getDate_added() - rhs.getDate_added());
+					
+					return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
+				}
+				
+			});
+			
+		} else if (current_history_mode == MainActv.HISTORY_MODE_ON) {
+
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "MainActv.HISTORY_MODE => ON");
+
+			Methods.sort_tiList_last_viewed_at(tiList);
+			
+		}
+
+//		Collections.sort(tiList, new Comparator<TI>(){
+//
+////			@Override
+//			public int compare(TI lhs, TI rhs) {
+//				// TODO 自動生成されたメソッド・スタブ
+//				
+////				return (int) (lhs.getDate_added() - rhs.getDate_added());
+//				
+//				return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
+//			}
+//			
+//		});
 
 		// Log
 		Log.d("TNActv.java" + "["
@@ -635,6 +672,8 @@ public class TNActv extends ListActivity {
 		 * 		2.1. Set data
 		 * 
 		 * 2-2. Record history
+		 * 2-2-a. Update data
+		 * 
 		 * 2-3. Save preferences
 		 * 
 		 * 3. Start intent
@@ -683,6 +722,46 @@ public class TNActv extends ListActivity {
 						this,
 						ti.getFileId(),
 						Methods.convert_path_into_table_name(this));
+				
+				/*********************************
+				 * 2-2-a. Update data
+				 *********************************/
+//				// Log
+//				Log.d("TNActv.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"[onListItemClick] Table name=" + Methods.convert_path_into_table_name(this));
+				
+				DBUtils dbu = new DBUtils(this, MainActv.dbName);
+				
+				//
+				SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+				
+				boolean res = DBUtils.updateData_TI_last_viewed_at(
+									this,
+									wdb,
+									Methods.convert_path_into_table_name(this),
+									ti);
+				
+				if (res == true) {
+					// Log
+					Log.d("TNActv.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "Data updated: " + ti.getFile_name());
+				} else {//if (res == true)
+					// Log
+					Log.d("TNActv.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]",
+							"Update data => Failed: " + ti.getFile_name());
+				}//if (res == true)
+				
+				
+				wdb.close();
 				
 			} else {//if (current_move_mode == MainActv.HISTORY_MODE_OFF)
 				

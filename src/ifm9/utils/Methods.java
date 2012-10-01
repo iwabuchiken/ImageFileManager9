@@ -2861,6 +2861,38 @@ public class Methods {
 
 	}//public static void sort_tiList(List<ThumbnailItem> tiList)
 
+	public static void sort_tiList_last_viewed_at(List<TI> tiList) {
+		
+		Collections.sort(tiList, new Comparator<TI>(){
+
+//			@Override
+			public int compare(TI ti_1, TI ti_2) {
+				/*********************************
+				 * memo
+				 *********************************/
+				long t1 = ti_1.getLast_viewed_at();
+				long t2 = ti_2.getLast_viewed_at();
+				
+//				if (t1 > 0 && t2 > 0) {
+				if (t1 > 0 || t2 > 0) {
+					
+					return (int)(t1 - t2);
+					
+				} else {//if (t1 == condition)
+					
+					return ti_1.getFile_name().compareToIgnoreCase(ti_2.getFile_name());
+					
+				}
+				
+//				return (int) (ti_1.getDate_added() - rti.getDate_added());
+				
+//				return (int) (lti.getFile_name().compareToIgnoreCase(rti.getFile_name()));
+			}//public int compare(TI lti, TI rti)
+			
+		});//Collections.sort()
+
+	}//public static void sort_tiList(List<ThumbnailItem> tiList)
+
 	public static boolean set_pref(Activity actv, String pref_name, String value) {
 		SharedPreferences prefs = 
 				actv.getSharedPreferences(pref_name, MainActv.MODE_PRIVATE);
@@ -5288,17 +5320,69 @@ public class Methods {
 		 * 1. Build data
 		 * 2. Set up db
 		 * 
+		 * 2-2. Table exists?
+		 * 
 		 * 3. Insert data
 		 * 4. Close db
 		 *********************************/
 		Object[] data = {fileId, table_name};
 		
+		/*********************************
+		 * 2. Set up db
+		 *********************************/
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
 		
 		//
 		SQLiteDatabase wdb = dbu.getWritableDatabase();
 		
+		/*********************************
+		 * 2-2. Table exists?
+		 *********************************/
+		boolean result = dbu.tableExists(wdb, MainActv.tableName_show_history);
 		
+		if (result == false) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + MainActv.tableName_show_history);
+			
+			// Create one
+			result = dbu.createTable(
+											wdb, 
+											MainActv.tableName_show_history, 
+											MainActv.cols_show_history, 
+											MainActv.col_types_show_history);
+			
+			if (result == true) {
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: " + MainActv.tableName_show_history);
+				
+			} else {//if (result == true)
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create table failed: " + MainActv.tableName_show_history);
+				
+				// debug
+				Toast.makeText(actv, 
+						"Create table failed: " + MainActv.tableName_show_history,
+						Toast.LENGTH_SHORT).show();
+
+				wdb.close();
+				
+				return;
+				
+			}//if (result == true)
+		}//if (result == false)
+
+		
+		/*********************************
+		 * 3. Insert data
+		 *********************************/
 		boolean res = DBUtils.insertData_history(actv, wdb, data);
 		
 //		// Log

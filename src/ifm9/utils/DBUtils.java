@@ -637,6 +637,63 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 	}//public void updateData_memos
 
+	public static boolean updateData_TI_last_viewed_at(Activity actv, SQLiteDatabase wdb, 
+			String tableName, TI ti) {
+		/*----------------------------
+		* Steps
+		* 1. 
+		----------------------------*/
+		String sql = "UPDATE " + tableName + " SET " + 
+//			"file_id='" + String.valueOf(ti.getFileId()) + "', " + 
+//			"last_viewed_at='" + Methods.getMillSeconds_now() + "', " +
+			"last_viewed_at='" + Methods.getMillSeconds_now() + "' " +
+			
+			" WHERE file_id = '" + String.valueOf(ti.getFileId()) + "'";
+		
+			
+		//			"file_id", 		"file_path", "file_name", "date_added", "date_modified"
+		//static String[] cols = 
+		//{"file_id", 		"file_path", "file_name", "date_added",
+		//"date_modified", "memos", "tags"};
+		
+		
+		try {
+		
+			wdb.execSQL(sql);
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "sql => Done: " + sql);
+			
+			//Methods.toastAndLog(actv, "Data updated", 2000);
+			
+			return true;
+			
+			
+		} catch (SQLException e) {
+			// Log
+			Log.d("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "Exception => " + e.toString() + " / " + "sql: " + sql);
+			
+			return false;
+		}
+		//
+		//actv.startManagingCursor(c);
+		//
+		//// Log
+		//Log.d("DBUtils.java" + "["
+		//+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+		//+ "]", "c.getCount() => " + c.getCount());
+		//
+		//
+		//c.moveToFirst();
+		
+		
+	
+	}//public void updateData_memos
+
 	public boolean deleteData(Activity actv, SQLiteDatabase db, String tableName, long file_id) {
 		/*----------------------------
 		 * Steps
@@ -757,6 +814,9 @@ public class DBUtils extends SQLiteOpenHelper{
 		 * 2-1. Record exists?
 		 * 2-2. Create a TI object
 		 * 3. Add to list
+		 * 
+		 * 4. Sort list
+		 * 5. Return list
 		 *********************************/
 		List<TI> tiList = new ArrayList<TI>();
 		
@@ -833,12 +893,20 @@ public class DBUtils extends SQLiteOpenHelper{
 					c.getLong(1),	// file_id
 					c.getString(2),	// file_path
 					c.getString(3),	// file_name
+					
 					c.getLong(4),	// date_added
 //					c.getLong(5)		// date_modified
 					c.getLong(5),		// date_modified
+					
 					c.getString(6),	// memos
-					c.getString(7));	// tags
+					c.getString(7),	// tags
+					
+					c.getLong(8)	// last_viewed_at
+					);	
 
+			/*********************************
+			 * 3. Add to list
+			 *********************************/
 			tiList.add(ti);
 					
 			/*----------------------------
@@ -854,6 +922,11 @@ public class DBUtils extends SQLiteOpenHelper{
 		Log.d("DBUtils.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "tiList.size()=" + tiList.size());
+		
+		/*********************************
+		 * 4. Sort list
+		 *********************************/
+//		Methods.sort_tiList_last_viewed_at(tiList);
 		
 		return tiList;
 		
