@@ -128,6 +128,9 @@ public class ImageActv extends Activity {
 		 * 1. "Back" button
 		 * 		1.1. OnTouch
 		 * 		1.2. OnClick
+		 * 
+		 * 2. "Prev" button
+		 * 3. "Next" button
 			----------------------------*/
 		ImageButton ib_back = (ImageButton) findViewById(R.id.image_activity_ib_back);
 		
@@ -136,8 +139,31 @@ public class ImageActv extends Activity {
 		ib_back.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_back.setOnClickListener(new ButtonOnClickListener(this));
 		
+		/*********************************
+		 * 2. "Prev" button
+		 *********************************/
+		ImageButton ib_prev = (ImageButton) findViewById(R.id.image_activity_ib_prev);
 		
-	}
+		ib_prev.setImageResource(R.drawable.ifm8_back);
+		
+		ib_prev.setTag(Methods.ButtonTags.image_activity_prev);
+		
+		ib_prev.setOnTouchListener(new ButtonOnTouchListener(this));
+		ib_prev.setOnClickListener(new ButtonOnClickListener(this));
+		
+		/*********************************
+		 * 3. "Next" button
+		 *********************************/
+		ImageButton ib_next = (ImageButton) findViewById(R.id.image_activity_ib_next);
+		
+		ib_next.setImageResource(R.drawable.ifm8_forward);
+		
+		ib_next.setTag(Methods.ButtonTags.image_activity_next);
+		
+		ib_next.setOnTouchListener(new ButtonOnTouchListener(this));
+		ib_next.setOnClickListener(new ButtonOnClickListener(this));
+		
+	}//private void set_listeners()
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

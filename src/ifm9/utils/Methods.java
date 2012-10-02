@@ -64,7 +64,13 @@ import android.widget.Toast;
 
 import android.os.AsyncTask;
 
+// Apache
 import org.apache.commons.lang.StringUtils;
+
+// REF=> http://commons.apache.org/net/download_net.cgi
+//REF=> http://www.searchman.info/tips/2640.html
+
+//import org.apache.commons.net.ftp.FTPReply;
 
 public class Methods {
 
@@ -160,7 +166,7 @@ public class Methods {
 		thumb_activity_ib_back, thumb_activity_ib_bottom, thumb_activity_ib_top,
 		
 		// image_activity.xml
-		image_activity_back,
+		image_activity_back, image_activity_prev, image_activity_next,
 		
 		// TIListAdapter.java
 		tilist_cb,
@@ -2876,6 +2882,7 @@ public class Methods {
 //				if (t1 > 0 && t2 > 0) {
 				if (t1 > 0 || t2 > 0) {
 					
+					// REF=> http://stackoverflow.com/questions/4355303/how-can-i-convert-a-long-to-int-in-java
 					return (int)(t1 - t2);
 					
 				} else {//if (t1 == condition)

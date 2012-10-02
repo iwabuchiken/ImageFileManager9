@@ -62,6 +62,20 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ib.setImageResource(R.drawable.ifm8_thumb_top_50x50_disenabled);
 				
 				break;// case thumb_activity_ib_top
+
+			case image_activity_prev://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_back_disenabled);
+				
+				break;// case image_activity_prev
+
+			case image_activity_next://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_forward_disenabled);
+				
+				break;// case image_activity_next
 				
 			}//switch (tag)
 			
@@ -92,6 +106,20 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ib.setImageResource(R.drawable.ifm8_thumb_top_50x50);
 				
 				break;// case thumb_activity_ib_top
+
+			case image_activity_prev://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_back);
+				
+				break;// case image_activity_prev
+
+			case image_activity_next://----------------------------------------------------
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_forward);
+				
+				break;// case image_activity_next
 				
 			}//switch (tag)
 			
