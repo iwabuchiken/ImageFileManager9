@@ -33,7 +33,14 @@ public class ImageActv extends Activity {
 	long file_id;
 	
 	//
-	Bitmap bm;
+	public static Bitmap bm;
+
+	/*********************************
+	 * Views
+	 *********************************/
+	public static MyView v;
+
+	public static LinearLayout LL;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -110,13 +117,15 @@ public class ImageActv extends Activity {
 		 * 3. Set image to the view
 			----------------------------*/
 		// MyView
-		MyView v = new MyView(this);
+//		MyView v = new MyView(this);
+		v = new MyView(this);
 		
 		// Set image
 		v.setImageBitmap(bm);
 		
 		//
-		LinearLayout LL = (LinearLayout) findViewById(R.id.image_activity_LL_image);
+//		LinearLayout LL = (LinearLayout) findViewById(R.id.image_activity_LL_image);
+		LL = (LinearLayout) findViewById(R.id.image_activity_LL_image);
 		
 		LL.addView(v);
 		
