@@ -55,6 +55,8 @@ public class MainActv extends ListActivity {
 	/*********************************
 	 * Prefs
 	 *********************************/
+	private static SharedPreferences prefs;
+
 //	public static String prefs_current_path = "current_path";
 	public static String prefs_current_path = "ifm9_master_current_path";
 	
@@ -95,8 +97,6 @@ public class MainActv extends ListActivity {
 	public static List<String> file_names = null;
 
 	public static ArrayAdapter<String> adapter = null;
-
-	private static SharedPreferences prefs;
 
 	public static boolean move_mode = false;
 	
@@ -148,6 +148,8 @@ public class MainActv extends ListActivity {
 		 *  6. Set path label
 		 *  
 		 *  7. Initialize preferences
+		 *  
+		 *  8. Refresh DB
 			----------------------------*/
 		
         super.onCreate(savedInstanceState);
@@ -179,6 +181,12 @@ public class MainActv extends ListActivity {
 		 * 7. Initialize preferences
 		 *********************************/
 		init_prefs();
+		
+		/*********************************
+		 * 8. Refresh DB
+		 *********************************/
+		refresh_db();
+		
 //		int current_history_mode = Methods.get_pref(
 //				this, 
 //				MainActv.prefName_mainActv, 
@@ -191,7 +199,7 @@ public class MainActv extends ListActivity {
 //				+ "]", "onCreate: current_history_mode=" + current_history_mode);
 		
 		//debug
-		do_debug();
+//		do_debug();
 //		copy_db_file();
 //		test_simple_format();
 //		restore_db();
@@ -1165,28 +1173,53 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * 1. Refresh DB
 			----------------------------*/
-		SharedPreferences prefs =
-							this.getSharedPreferences(this.getString(R.string.prefs_shared_prefs_name), 0);
-		
-//		// Log
-//		Log.d("MainActv.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "prefs: db_refresh => " + prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false));
-		
-		if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false)) {
-			
-			Methods.start_refreshDB(this);
-			
-		} else {//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
-			
-//			// Log
-//			Log.d("MainActv.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "Prefs: db_refresh => " + false);
-			
-		}//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
+//		refresh_db();
+//		SharedPreferences prefs =
+//							this.getSharedPreferences(this.getString(R.string.prefs_shared_prefs_name), 0);
+//		
+////		// Log
+////		Log.d("MainActv.java" + "["
+////				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+////				+ "]", "prefs: db_refresh => " + prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false));
+//		
+//		if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false)) {
+//			
+//			Methods.start_refreshDB(this);
+//			
+//		} else {//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
+//			
+////			// Log
+////			Log.d("MainActv.java" + "["
+////					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+////					+ "]", "Prefs: db_refresh => " + false);
+//			
+//		}//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
 		
 		super.onStart();
 	}//protected void onStart()
+
+	private void refresh_db() {
+		SharedPreferences prefs =
+				this.getSharedPreferences(this.getString(R.string.prefs_shared_prefs_name), 0);
+
+		//// Log
+		//Log.d("MainActv.java" + "["
+		//	+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+		//	+ "]", "prefs: db_refresh => " + prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false));
+		
+		if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false)) {
+		
+			Methods.start_refreshDB(this);
+		
+		} else {//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
+		
+		//// Log
+		//Log.d("MainActv.java" + "["
+		//		+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+		//		+ "]", "Prefs: db_refresh => " + false);
+		
+		}//if(prefs.getBoolean(this.getString(R.string.prefs_db_refresh_key), false))
+		
+	}
 
 }//public class MainActv extends Activity

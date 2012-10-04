@@ -65,7 +65,11 @@ public class TNActv extends ListActivity {
 	 * Preference names
 		----------------------------*/
 	public static String tnactv_selected_item = "tnactv_selected_item";
-	
+
+	/*********************************
+	 * Views
+	 *********************************/
+	public static ListView lv_main;
 	
 	/****************************************
 	 * Methods
@@ -503,6 +507,12 @@ public class TNActv extends ListActivity {
 
 	@Override
 	protected void onResume() {
+		/*********************************
+		 * 1. super
+		 * 2. Notify adapter
+		 * 
+		 * 3. Set selection
+		 *********************************/
 		// TODO 自動生成されたメソッド・スタブ
 		super.onResume();
 		
@@ -517,12 +527,54 @@ public class TNActv extends ListActivity {
 			
 		}
 //		TNActv.aAdapter.notifyDataSetChanged();
+
+//		/*********************************
+//		 * 3. Set selection
+//		 *********************************/
+//		lv_main = this.getListView();
+//		
+//		SharedPreferences prefs = this.getSharedPreferences(
+//				MainActv.prefName_tnActv,
+//				MODE_PRIVATE);
+//	
+//
+//		//Methods.PrefenceLabels.thumb_actv.name()
+//		
+//		//int savedPosition = prefs.getInt("chosen_list_item", -1);
+//		int savedPosition = prefs.getInt(
+//							MainActv.prefName_tnActv_current_image_position,
+//							-1);
+//		
+//		int target_position = savedPosition - (lv_main.getChildCount() / 2);
+//		
+//		if (target_position < 0) {
+//			
+//			target_position = 0;
+//			
+//		}//if (target_position == 0)
+//
+//		// Log
+//		Log.d("TNActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "target_position=" + target_position);
+//		
+//		
+//		lv_main.setSelection(target_position);
+
 		
-	}
+//		// Log
+//		Log.d("TNActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "lv_main.getCheckedItemPosition()=" + lv_main.getCheckedItemPosition());
+		
+	}//protected void onResume()
 
 	@Override
 	protected void onStart() {
-		// TODO 自動生成されたメソッド・スタブ
+		/*********************************
+		 * 1. super
+		 * 2. Set selection
+		 *********************************/
 		super.onStart();
 		
 		// Log
@@ -530,7 +582,40 @@ public class TNActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onStart()");
 		
-	}
+//		/*********************************
+//		 * 2. Set selection
+//		 *********************************/
+//		lv_main = this.getListView();
+//		
+//		SharedPreferences prefs = this.getSharedPreferences(
+//				MainActv.prefName_tnActv,
+//				MODE_PRIVATE);
+//	
+//
+//		//Methods.PrefenceLabels.thumb_actv.name()
+//		
+//		//int savedPosition = prefs.getInt("chosen_list_item", -1);
+//		int savedPosition = prefs.getInt(
+//							MainActv.prefName_tnActv_current_image_position,
+//							-1);
+//		
+//		int target_position = savedPosition - (lv_main.getChildCount() / 2);
+//		
+//		if (target_position < 0) {
+//			
+//			target_position = 0;
+//			
+//		}//if (target_position == 0)
+//
+//		// Log
+//		Log.d("TNActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "target_position=" + target_position);
+//		
+//		
+//		lv_main.setSelection(target_position);
+		
+	}//protected void onStart()
 
 	@Override
 	protected void onStop() {
@@ -678,6 +763,13 @@ public class TNActv extends ListActivity {
 		 * 
 		 * 3. Start intent
 			----------------------------*/
+		//debug
+//		// Log
+//		Log.d("TNActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "v.getId()=" + v.getId());
+		
+		
 		/*----------------------------
 		 * 0. Vibrate
 			----------------------------*/

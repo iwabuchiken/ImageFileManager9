@@ -42,6 +42,8 @@ public class ImageActv extends Activity {
 
 	public static LinearLayout LL;
 	
+	public static TextView tv_file_name;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		/*----------------------------
@@ -94,9 +96,10 @@ public class ImageActv extends Activity {
 		/*----------------------------
 		 * 4. Set file name to the view
 			----------------------------*/
-		TextView tv = (TextView) findViewById(R.id.image_activity_tv_message);
+//		TextView tv_file_name = (TextView) findViewById(R.id.image_activity_tv_message);
+		tv_file_name = (TextView) findViewById(R.id.image_activity_tv_message);
 		
-		tv.setText(file_name);
+		tv_file_name.setText(file_name);
 		
 		/*----------------------------
 		 * 5. Set listeners
