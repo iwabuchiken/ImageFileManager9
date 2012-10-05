@@ -52,6 +52,8 @@ public class MainActv extends ListActivity {
 	
 	public static String intent_label_table_names = "table_names";	// Methods.show_history()
 
+	public static String intent_label_searchedItems_table_names = "string_searchedItems_table_names";
+	
 	/*********************************
 	 * Prefs
 	 *********************************/

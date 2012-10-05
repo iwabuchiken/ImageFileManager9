@@ -52,6 +52,8 @@ public class TNActv extends ListActivity {
 	
 	public static String[] history_table_names = null;
 	
+	public static String[] string_searchedItems_table_names = null;
+	
 	/*********************************
 	 * List-related
 	 *********************************/
@@ -364,6 +366,9 @@ public class TNActv extends ListActivity {
 		
 		history_table_names = i.getStringArrayExtra(MainActv.intent_label_table_names);
 		
+		string_searchedItems_table_names = 
+					i.getStringArrayExtra(MainActv.intent_label_searchedItems_table_names);
+		
 		/*----------------------------
 		 * 2. Build tiList
 			----------------------------*/
@@ -381,16 +386,48 @@ public class TNActv extends ListActivity {
 			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "long_searchedItems.length: " + long_searchedItems.length);
+
+			if (string_searchedItems_table_names != null) {
+				
+				// Log
+				Log.d("TNActv.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Calling: Methods.convert_fileIdArray2tiList()");
+				
+	//			tiList = Methods.getAllData(this, tableName);
+	//			tiList = Methods.convert_fileIdArray2tiList(this, MainActv.dirName_base, long_searchedItems);
+				tiList = Methods.convert_fileIdArray2tiList_all_table(
+										this,
+										long_searchedItems,
+										string_searchedItems_table_names);
+				
+			} else {//if (string_searchedItems_table_names != null)
+				
+				// Log
+				Log.d("TNActv.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Calling: Methods.convert_fileIdArray2tiList()");
+				
+	//			tiList = Methods.getAllData(this, tableName);
+	//			tiList = Methods.convert_fileIdArray2tiList(this, MainActv.dirName_base, long_searchedItems);
+				tiList = Methods.convert_fileIdArray2tiList(this, tableName, long_searchedItems);
+				
+			}//if (string_searchedItems_table_names != null)
 			
+//				// Log
+//				Log.d("TNActv.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]", "Calling: Methods.convert_fileIdArray2tiList()");
+//				
+//	//			tiList = Methods.getAllData(this, tableName);
+//	//			tiList = Methods.convert_fileIdArray2tiList(this, MainActv.dirName_base, long_searchedItems);
+//				tiList = Methods.convert_fileIdArray2tiList(this, tableName, long_searchedItems);
+
 			// Log
 			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "Calling: Methods.convert_fileIdArray2tiList()");
+					+ "]", "[prep_list()] tiList.size()=" + tiList.size());
 			
-//			tiList = Methods.getAllData(this, tableName);
-//			tiList = Methods.convert_fileIdArray2tiList(this, MainActv.dirName_base, long_searchedItems);
-			tiList = Methods.convert_fileIdArray2tiList(this, tableName, long_searchedItems);
-
 			
 		} else if (history_file_ids != null) {//if (long_searchedItems == null)
 

@@ -4915,7 +4915,19 @@ public class Methods {
 		/*----------------------------
 		 * 3. Search task
 			----------------------------*/
-		SearchTask st = new SearchTask(actv);
+		CheckBox cb_all_table = (CheckBox) dlg.findViewById(R.id.dlg_search_cb_all_table);
+		
+		int search_mode = 0;	// 0 => Specific table (default)
+		
+		if (cb_all_table.isChecked()) {
+			
+			search_mode = 1;	// 1 => All tables
+			
+		}//if (condition)
+		
+		SearchTask st = new SearchTask(actv, search_mode);
+		
+//		SearchTask st = new SearchTask(actv);
 		
 		
 		
@@ -4953,7 +4965,8 @@ public class Methods {
 		
 		for (long file_id : long_file_id) {
 			
-			String sql = "SELECT * FROM " + tableName + " WHERE file_id = '" + String.valueOf(file_id) + "'";
+			String sql = "SELECT * FROM " + tableName 
+						+ " WHERE file_id = '" + String.valueOf(file_id) + "'";
 			
 			Cursor c = rdb.rawQuery(sql, null);
 			
@@ -4986,6 +4999,68 @@ public class Methods {
 		return tilist;
 	
 	}//public static List<ThumbnailItem> convert_fileIdArray2tiList(Activity actv, String tableName, long[] long_file_id)
+
+	public static List<TI> convert_fileIdArray2tiList_all_table(Activity actv,
+			long[] long_searchedItems, String[] string_searchedItems_table_names) {
+		/*********************************
+		 * memo
+		 *********************************/
+		/*----------------------------
+		* Steps
+		* 1. DB setup
+		* 2. Get ti list
+		* 3. Close db
+		* 4. Return
+		----------------------------*/
+		/*----------------------------
+		* 1. DB setup
+		----------------------------*/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		/*----------------------------
+		* 2. Get ti list
+		----------------------------*/
+		List<TI> tilist = new ArrayList<TI>();
+		
+		for (int i = 0; i < long_searchedItems.length; i++) {
+			
+			String sql = "SELECT * FROM " + string_searchedItems_table_names[i] 
+						+ " WHERE file_id = '"
+						+ String.valueOf(long_searchedItems[i]) + "'";
+			
+			Cursor c = rdb.rawQuery(sql, null);
+			
+			if (c.getCount() > 0) {
+			
+				c.moveToFirst();
+				
+				tilist.add(Methods.convertCursorToThumbnailItem(c));
+				
+				c.moveToNext();
+				
+			}//if (c.getCount() > 0)
+			
+		}//for (int i = 0; i < long_searchedItems.length; i++)
+		
+		// Log
+		Log.d("Methods.java" + "["
+		+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+		+ "]", "tilist.size() => " + tilist.size());
+		
+		/*----------------------------
+		* 3. Close db
+		----------------------------*/
+		rdb.close();
+		
+		
+		/*----------------------------
+		* 4. Return
+		----------------------------*/
+		return tilist;
+		
+	}//public static List<TI> convert_fileIdArray2tiList_all_table()
 
 	/****************************************
 	 *
@@ -5831,6 +5906,7 @@ public class Methods {
 		
 		return false;
 	}//public static boolean record_history(Activity actv, long fileId)
+
 
 	
 }//public class Methods
