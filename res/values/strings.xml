@@ -94,7 +94,8 @@
     <!-- dlg_search.xml -->
     	<string name="dlg_search_title">サーチ</string>
     	<string name="dlg_search_tv_message">サーチする語句を入れてください（複数の場合、スペースで区切ります）</string>
-    
+    	<string name="dlg_search_message_all_table">全テーブル検索</string>
+    	
     <!-- dlg_db_admin.xml -->
     	<string name="dlg_db_admin_title">DB Admin</string>
     	<string name="dlg_db_admin_item_backup_db">Backup DB</string>

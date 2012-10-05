@@ -60,7 +60,7 @@ public final class R {
         public static final int s_01_timer_menu_listitem_filter_30x30_v3=0x7f02001f;
     }
     public static final class id {
-        public static final int LL_main=0x7f090051;
+        public static final int LL_main=0x7f090052;
         public static final int db_manager_btn_create_table=0x7f090000;
         public static final int db_manager_btn_drop_table=0x7f090001;
         public static final int db_manager_btn_register_patterns=0x7f090002;
@@ -128,49 +128,50 @@ public final class R {
         public static final int dlg_register_patterns_et_word=0x7f09003f;
         public static final int dlg_register_patterns_tv_table_name=0x7f090041;
         public static final int dlg_register_patterns_tv_word=0x7f09003e;
-        public static final int dlg_search_bt_ok=0x7f090048;
-        public static final int dlg_search_cancel=0x7f090049;
+        public static final int dlg_search_bt_ok=0x7f090049;
+        public static final int dlg_search_cancel=0x7f09004a;
+        public static final int dlg_search_cb_all_table=0x7f090048;
         public static final int dlg_search_et=0x7f090047;
         public static final int dlg_search_tv_message=0x7f090046;
-        public static final int image_activity_LL_image=0x7f090050;
-        public static final int image_activity_ib_back=0x7f09004e;
-        public static final int image_activity_ib_next=0x7f09004f;
-        public static final int image_activity_ib_prev=0x7f09004d;
-        public static final int image_activity_iv_image=0x7f09004b;
-        public static final int image_activity_sv_image=0x7f09004a;
-        public static final int image_activity_tv_message=0x7f09004c;
-        public static final int image_actv_menu_add_memo=0x7f090066;
-        public static final int image_actv_menu_add_patterns=0x7f090067;
-        public static final int iv_thumbnail=0x7f090052;
-        public static final int list_row_checked_box_checkBox1=0x7f090058;
-        public static final int list_row_checked_box_iv_thumbnail=0x7f090055;
-        public static final int list_row_checked_box_textView1=0x7f090056;
-        public static final int list_row_checked_box_textView2=0x7f090057;
-        public static final int main_opt_menu_create_folder=0x7f090068;
-        public static final int main_opt_menu_db_activity=0x7f090069;
-        public static final int main_opt_menu_history=0x7f09006c;
-        public static final int main_opt_menu_preferences=0x7f09006b;
-        public static final int main_opt_menu_search=0x7f09006a;
-        public static final int row_dlg_item_menu_tv=0x7f09005f;
+        public static final int image_activity_LL_image=0x7f090051;
+        public static final int image_activity_ib_back=0x7f09004f;
+        public static final int image_activity_ib_next=0x7f090050;
+        public static final int image_activity_ib_prev=0x7f09004e;
+        public static final int image_activity_iv_image=0x7f09004c;
+        public static final int image_activity_sv_image=0x7f09004b;
+        public static final int image_activity_tv_message=0x7f09004d;
+        public static final int image_actv_menu_add_memo=0x7f090067;
+        public static final int image_actv_menu_add_patterns=0x7f090068;
+        public static final int iv_thumbnail=0x7f090053;
+        public static final int list_row_checked_box_checkBox1=0x7f090059;
+        public static final int list_row_checked_box_iv_thumbnail=0x7f090056;
+        public static final int list_row_checked_box_textView1=0x7f090057;
+        public static final int list_row_checked_box_textView2=0x7f090058;
+        public static final int main_opt_menu_create_folder=0x7f090069;
+        public static final int main_opt_menu_db_activity=0x7f09006a;
+        public static final int main_opt_menu_history=0x7f09006d;
+        public static final int main_opt_menu_preferences=0x7f09006c;
+        public static final int main_opt_menu_search=0x7f09006b;
+        public static final int row_dlg_item_menu_tv=0x7f090060;
         public static final int tableRow1=0x7f09003d;
         public static final int tableRow2=0x7f090040;
         public static final int tableRow3=0x7f090043;
-        public static final int textView1=0x7f090053;
-        public static final int textView2=0x7f090054;
-        public static final int thumb_activity_LL_buttons=0x7f090060;
-        public static final int thumb_activity_ib_back=0x7f090063;
-        public static final int thumb_activity_ib_next_page=0x7f090064;
-        public static final int thumb_activity_ib_prev_page=0x7f090062;
-        public static final int thumb_activity_ib_toBottom=0x7f090065;
-        public static final int thumb_activity_ib_toTop=0x7f090061;
-        public static final int thumb_actv_menu_move_files=0x7f09006e;
-        public static final int thumb_actv_menu_move_mode=0x7f09006d;
-        public static final int v1_LL_debug=0x7f09005b;
-        public static final int v1_bt_back=0x7f09005c;
-        public static final int v1_bt_forward=0x7f09005e;
-        public static final int v1_bt_up=0x7f09005d;
-        public static final int v1_sv_dir_path=0x7f090059;
-        public static final int v1_tv_dir_path=0x7f09005a;
+        public static final int textView1=0x7f090054;
+        public static final int textView2=0x7f090055;
+        public static final int thumb_activity_LL_buttons=0x7f090061;
+        public static final int thumb_activity_ib_back=0x7f090064;
+        public static final int thumb_activity_ib_next_page=0x7f090065;
+        public static final int thumb_activity_ib_prev_page=0x7f090063;
+        public static final int thumb_activity_ib_toBottom=0x7f090066;
+        public static final int thumb_activity_ib_toTop=0x7f090062;
+        public static final int thumb_actv_menu_move_files=0x7f09006f;
+        public static final int thumb_actv_menu_move_mode=0x7f09006e;
+        public static final int v1_LL_debug=0x7f09005c;
+        public static final int v1_bt_back=0x7f09005d;
+        public static final int v1_bt_forward=0x7f09005f;
+        public static final int v1_bt_up=0x7f09005e;
+        public static final int v1_sv_dir_path=0x7f09005a;
+        public static final int v1_tv_dir_path=0x7f09005b;
     }
     public static final class layout {
         public static final int add_memo_grid_view=0x7f030000;
@@ -226,7 +227,7 @@ public final class R {
         public static final int dlg_confirm_create_folder_tv_message=0x7f06001a;
         /**  dlg_confirm_delete_patterns.xml 
          */
-        public static final int dlg_confirm_delete_patterns_message=0x7f060039;
+        public static final int dlg_confirm_delete_patterns_message=0x7f06003a;
         /**  dlg_confirm_drop_table.xml 
          */
         public static final int dlg_confirm_drop_table_tv_message_drop=0x7f060020;
@@ -248,14 +249,14 @@ public final class R {
         /**  dlg_create_table.xml 
          */
         public static final int dlg_create_table_title=0x7f06002b;
-        public static final int dlg_db_admin_item_backup_db=0x7f060036;
-        public static final int dlg_db_admin_item_refresh_db=0x7f060037;
+        public static final int dlg_db_admin_item_backup_db=0x7f060037;
+        public static final int dlg_db_admin_item_refresh_db=0x7f060038;
         /**  dlg_db_admin.xml 
          */
-        public static final int dlg_db_admin_title=0x7f060035;
+        public static final int dlg_db_admin_title=0x7f060036;
         /**  dlg_delete_patterns.xml 
          */
-        public static final int dlg_delete_patterns_title=0x7f060038;
+        public static final int dlg_delete_patterns_title=0x7f060039;
         /**  dlg_drop_table.xml 
          */
         public static final int dlg_drop_table_title=0x7f06001f;
@@ -278,6 +279,7 @@ public final class R {
         public static final int dlg_register_patterns_title=0x7f060030;
         public static final int dlg_register_patterns_tv_table_name=0x7f060032;
         public static final int dlg_register_patterns_tv_word=0x7f060031;
+        public static final int dlg_search_message_all_table=0x7f060035;
         /**  dlg_search.xml 
          */
         public static final int dlg_search_title=0x7f060033;
