@@ -493,6 +493,9 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * 1. Get view
 		 * 2. Set enables
+		 * 
+		 * 3. Set listeners to buttons => Click
+		 * 4. Set listener => Long click
 			----------------------------*/
 		
 		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);

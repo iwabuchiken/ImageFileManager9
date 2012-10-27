@@ -44,7 +44,10 @@ public class DBUtils extends SQLiteOpenHelper{
 	
 	//
 	Context context;
-	
+
+	/*********************************
+	 * DB
+	 *********************************/
 	// Database
 	SQLiteDatabase db = null;
 

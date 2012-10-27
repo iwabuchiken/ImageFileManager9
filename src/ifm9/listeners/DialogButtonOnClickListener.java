@@ -77,6 +77,10 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		//
 		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();
 
+		// Log
+		Log.d("DialogButtonOnClickListener.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tag_name.name()=" + tag_name.name());
 		//
 		switch (tag_name) {
 		
