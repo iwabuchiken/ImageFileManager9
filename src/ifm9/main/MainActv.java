@@ -156,7 +156,9 @@ public class MainActv extends ListActivity {
 		
         super.onCreate(savedInstanceState);
         
-        setup();
+        debug_b22();
+        
+//        setup();
         
 //        setContentView(R.layout.main);
 //        
@@ -214,7 +216,32 @@ public class MainActv extends ListActivity {
         
     }//public void onCreate(Bundle savedInstanceState)
 
-    private void setup() {
+    /*********************************
+	 * 
+	 * 
+	 *********************************/
+    private void debug_b22() {
+    	
+    	setContentView(R.layout.main);
+        
+        /*----------------------------
+		 * 2-2. Set title
+			----------------------------*/
+		this.setTitle(this.getClass().getName());
+        
+        vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
+		
+        // REF => http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android
+        String device_name = android.os.Build.MODEL;
+        
+        // Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "device_name=" + device_name);
+        
+	}//private void debug_b22()
+
+	private void setup() {
         setContentView(R.layout.main);
         
         /*----------------------------
