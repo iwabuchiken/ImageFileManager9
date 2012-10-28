@@ -155,6 +155,66 @@ public class MainActv extends ListActivity {
 			----------------------------*/
 		
         super.onCreate(savedInstanceState);
+        
+        setup();
+        
+//        setContentView(R.layout.main);
+//        
+//        /*----------------------------
+//		 * 2-2. Set title
+//			----------------------------*/
+//		this.setTitle(this.getClass().getName());
+//        
+//        vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
+//        
+//        /*----------------------------
+//		 * 4. Set list
+//			----------------------------*/
+//        set_initial_dir_list();
+//        
+//        /*----------------------------
+//		 * 5. Set listener => Image buttons
+//			----------------------------*/
+//		set_listeners();
+//		
+//		/*----------------------------
+//		 * 6. Set path label
+//			----------------------------*/
+//		Methods.updatePathLabel(this);
+//		
+//		/*********************************
+//		 * 7. Initialize preferences
+//		 *********************************/
+//		init_prefs();
+//		
+//		/*********************************
+//		 * 8. Refresh DB
+//		 *********************************/
+//		refresh_db();
+		
+//		int current_history_mode = Methods.get_pref(
+//				this, 
+//				MainActv.prefName_mainActv, 
+//				MainActv.prefName_mainActv_history_mode,
+//				-1);
+//
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "onCreate: current_history_mode=" + current_history_mode);
+		
+		//debug
+//		do_debug();
+//		copy_db_file();
+//		test_simple_format();
+//		restore_db();
+//		check_db();
+//		show_column_list();
+		
+        
+    }//public void onCreate(Bundle savedInstanceState)
+
+    private void setup() {
         setContentView(R.layout.main);
         
         /*----------------------------
@@ -188,30 +248,9 @@ public class MainActv extends ListActivity {
 		 * 8. Refresh DB
 		 *********************************/
 		refresh_db();
-		
-//		int current_history_mode = Methods.get_pref(
-//				this, 
-//				MainActv.prefName_mainActv, 
-//				MainActv.prefName_mainActv_history_mode,
-//				-1);
-//
-//		// Log
-//		Log.d("MainActv.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "onCreate: current_history_mode=" + current_history_mode);
-		
-		//debug
-//		do_debug();
-//		copy_db_file();
-//		test_simple_format();
-//		restore_db();
-//		check_db();
-//		show_column_list();
-		
-        
-    }//public void onCreate(Bundle savedInstanceState)
+	}//private void setup()
 
-    private void do_debug() {
+	private void do_debug() {
 		/*********************************
 		 * 6. Drop table
 		 * 7. Add new col => "last_viewed_at"
@@ -493,6 +532,9 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * 1. Get view
 		 * 2. Set enables
+		 * 
+		 * 3. Set listeners to buttons => Click
+		 * 4. Set listener => Long click
 			----------------------------*/
 		
 		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);
