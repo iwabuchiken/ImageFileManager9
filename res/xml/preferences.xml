@@ -10,5 +10,11 @@
         
         />
     
+    <CheckBoxPreference
+        android:title="@string/prefs_finger_paint_title"
+        android:key="@string/prefs_finger_paint_key"
+        android:defaultValue="false"
+        
+        />
 
 </PreferenceScreen>

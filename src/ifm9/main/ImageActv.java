@@ -63,7 +63,6 @@ public class ImageActv extends Activity {
 		//
 		vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
 		
-
 		initial_setup();
 		
 	}//public void onCreate(Bundle savedInstanceState)

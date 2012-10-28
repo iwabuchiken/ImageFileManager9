@@ -824,7 +824,30 @@ public class TNActv extends ListActivity {
 				----------------------------*/
 			Intent i = new Intent();
 			
-			i.setClass(this, ImageActv.class);
+			SharedPreferences prefs =
+					this.getSharedPreferences(
+							this.getString(R.string.prefs_shared_prefs_name), 0);
+			
+			boolean use_fp = 
+					prefs.getBoolean(this.getString(R.string.prefs_finger_paint_key), false);
+			
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "use_fp=" + use_fp);
+
+			if (use_fp == true) {
+				
+				i.setClass(this, FPActv.class);
+				
+			} else {//if (use_fp == true)
+				
+				i.setClass(this, ImageActv.class);
+				
+			}//if (use_fp == true)
+			
+//			i.setClass(this, ImageActv.class);
+//			i.setClass(this, FPActv.class);
 			
 			i.putExtra("file_id", ti.getFileId());
 			i.putExtra("file_path", ti.getFile_path());

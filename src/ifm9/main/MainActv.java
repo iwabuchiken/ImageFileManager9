@@ -155,6 +155,93 @@ public class MainActv extends ListActivity {
 			----------------------------*/
 		
         super.onCreate(savedInstanceState);
+        
+        debug_b22();
+        
+//        setup();
+        
+//        setContentView(R.layout.main);
+//        
+//        /*----------------------------
+//		 * 2-2. Set title
+//			----------------------------*/
+//		this.setTitle(this.getClass().getName());
+//        
+//        vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
+//        
+//        /*----------------------------
+//		 * 4. Set list
+//			----------------------------*/
+//        set_initial_dir_list();
+//        
+//        /*----------------------------
+//		 * 5. Set listener => Image buttons
+//			----------------------------*/
+//		set_listeners();
+//		
+//		/*----------------------------
+//		 * 6. Set path label
+//			----------------------------*/
+//		Methods.updatePathLabel(this);
+//		
+//		/*********************************
+//		 * 7. Initialize preferences
+//		 *********************************/
+//		init_prefs();
+//		
+//		/*********************************
+//		 * 8. Refresh DB
+//		 *********************************/
+//		refresh_db();
+		
+//		int current_history_mode = Methods.get_pref(
+//				this, 
+//				MainActv.prefName_mainActv, 
+//				MainActv.prefName_mainActv_history_mode,
+//				-1);
+//
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "onCreate: current_history_mode=" + current_history_mode);
+		
+		//debug
+//		do_debug();
+//		copy_db_file();
+//		test_simple_format();
+//		restore_db();
+//		check_db();
+//		show_column_list();
+		
+        
+    }//public void onCreate(Bundle savedInstanceState)
+
+    /*********************************
+	 * 
+	 * 
+	 *********************************/
+    private void debug_b22() {
+    	
+    	setContentView(R.layout.main);
+        
+        /*----------------------------
+		 * 2-2. Set title
+			----------------------------*/
+		this.setTitle(this.getClass().getName());
+        
+        vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
+		
+        // REF => http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android
+        String device_name = android.os.Build.MODEL;
+        
+        // Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "device_name=" + device_name);
+        
+	}//private void debug_b22()
+
+	private void setup() {
         setContentView(R.layout.main);
         
         /*----------------------------
@@ -188,30 +275,9 @@ public class MainActv extends ListActivity {
 		 * 8. Refresh DB
 		 *********************************/
 		refresh_db();
-		
-//		int current_history_mode = Methods.get_pref(
-//				this, 
-//				MainActv.prefName_mainActv, 
-//				MainActv.prefName_mainActv_history_mode,
-//				-1);
-//
-//		// Log
-//		Log.d("MainActv.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "onCreate: current_history_mode=" + current_history_mode);
-		
-		//debug
-//		do_debug();
-//		copy_db_file();
-//		test_simple_format();
-//		restore_db();
-//		check_db();
-//		show_column_list();
-		
-        
-    }//public void onCreate(Bundle savedInstanceState)
+	}//private void setup()
 
-    private void do_debug() {
+	private void do_debug() {
 		/*********************************
 		 * 6. Drop table
 		 * 7. Add new col => "last_viewed_at"
