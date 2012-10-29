@@ -6,6 +6,7 @@ import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.utils.Methods;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import android.graphics.Bitmap;
@@ -14,9 +15,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -115,6 +118,9 @@ public class ImageActv extends Activity {
 //		Bitmap bm = BitmapFactory.decodeFile(file_path);
 		bm = BitmapFactory.decodeFile(file_path);
 		
+		
+		Bitmap bm_modified = set_image_1_modify_bitmap(bm);
+		
 		/*----------------------------
 		 * 3. Set image to the view
 			----------------------------*/
@@ -123,7 +129,8 @@ public class ImageActv extends Activity {
 		v = new MyView(this);
 		
 		// Set image
-		v.setImageBitmap(bm);
+//		v.setImageBitmap(bm);
+		v.setImageBitmap(bm_modified);
 		
 		//
 //		LinearLayout LL = (LinearLayout) findViewById(R.id.image_activity_LL_image);
@@ -133,6 +140,49 @@ public class ImageActv extends Activity {
 		
 	}//private void set_image()
 	
+	private Bitmap set_image_1_modify_bitmap(Bitmap bm) {
+		/*********************************
+		 * memo
+		 *********************************/
+		int bm_w = bm.getWidth();
+		int bm_h = bm.getHeight();
+		
+		Display disp=((WindowManager)getSystemService(
+				Context.WINDOW_SERVICE)).getDefaultDisplay();
+		
+		int w;
+		int h;
+		
+		if (bm_w > bm_h) {
+			
+			h = disp.getHeight();
+			
+			w = (int) (h * ((float) bm_w / bm_h));
+			
+//			w = disp.getWidth();
+//			
+//			h = (int) (w * ((float) bm_h / bm_w));
+			
+		} else {//if (bm_w > bm_h)
+			
+			w = disp.getWidth();
+			
+			h = (int) (w * ((float) bm_h / bm_w));
+			
+//			h = disp.getHeight();
+//			
+//			w = (int) (h * ((float) bm_w / bm_h));
+			
+		}//if (bm_w > bm_h)
+		
+		
+//		int w=disp.getWidth();
+//		int h=disp.getHeight();
+
+		return Bitmap.createScaledBitmap(bm, w, h, false);
+		
+	}//private Bitmap set_image_1_modify_bitmap(Bitmap bm)
+
 	private void set_listeners() {
 		/*----------------------------
 		 * Steps

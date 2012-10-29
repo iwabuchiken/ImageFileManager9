@@ -251,30 +251,30 @@ public class MainActv extends ListActivity {
         
         vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
         
-//        /*----------------------------
-//		 * 4. Set list
-//			----------------------------*/
-//        set_initial_dir_list();
-//        
-//        /*----------------------------
-//		 * 5. Set listener => Image buttons
-//			----------------------------*/
-//		set_listeners();
-//		
-//		/*----------------------------
-//		 * 6. Set path label
-//			----------------------------*/
-//		Methods.updatePathLabel(this);
-//		
-//		/*********************************
-//		 * 7. Initialize preferences
-//		 *********************************/
-//		init_prefs();
-//		
-//		/*********************************
-//		 * 8. Refresh DB
-//		 *********************************/
-//		refresh_db();
+        /*----------------------------
+		 * 4. Set list
+			----------------------------*/
+        set_initial_dir_list();
+        
+        /*----------------------------
+		 * 5. Set listener => Image buttons
+			----------------------------*/
+		set_listeners();
+		
+		/*----------------------------
+		 * 6. Set path label
+			----------------------------*/
+		Methods.updatePathLabel(this);
+		
+		/*********************************
+		 * 7. Initialize preferences
+		 *********************************/
+		init_prefs();
+		
+		/*********************************
+		 * 8. Refresh DB
+		 *********************************/
+		refresh_db();
 	}//private void setup()
 
 	private void do_debug() {
