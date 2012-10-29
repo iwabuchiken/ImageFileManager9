@@ -156,9 +156,9 @@ public class MainActv extends ListActivity {
 		
         super.onCreate(savedInstanceState);
         
-        debug_b22();
+//        debug_b22();
         
-//        setup();
+        setup();
         
 //        setContentView(R.layout.main);
 //        
@@ -251,30 +251,30 @@ public class MainActv extends ListActivity {
         
         vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
         
-        /*----------------------------
-		 * 4. Set list
-			----------------------------*/
-        set_initial_dir_list();
-        
-        /*----------------------------
-		 * 5. Set listener => Image buttons
-			----------------------------*/
-		set_listeners();
-		
-		/*----------------------------
-		 * 6. Set path label
-			----------------------------*/
-		Methods.updatePathLabel(this);
-		
-		/*********************************
-		 * 7. Initialize preferences
-		 *********************************/
-		init_prefs();
-		
-		/*********************************
-		 * 8. Refresh DB
-		 *********************************/
-		refresh_db();
+//        /*----------------------------
+//		 * 4. Set list
+//			----------------------------*/
+//        set_initial_dir_list();
+//        
+//        /*----------------------------
+//		 * 5. Set listener => Image buttons
+//			----------------------------*/
+//		set_listeners();
+//		
+//		/*----------------------------
+//		 * 6. Set path label
+//			----------------------------*/
+//		Methods.updatePathLabel(this);
+//		
+//		/*********************************
+//		 * 7. Initialize preferences
+//		 *********************************/
+//		init_prefs();
+//		
+//		/*********************************
+//		 * 8. Refresh DB
+//		 *********************************/
+//		refresh_db();
 	}//private void setup()
 
 	private void do_debug() {
@@ -1144,36 +1144,36 @@ public class MainActv extends ListActivity {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onResume();
 
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "onResume()");
-
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "prefs: " + Methods.get_currentPath_from_prefs(this));
-		
-				/*----------------------------
-		 * 2. Set enables
-			----------------------------*/
-		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);
-		
-		String curDirPath = Methods.get_currentPath_from_prefs(this);
-		
-		if (curDirPath.equals(dirPath_base)) {
-			
-			ib_up.setEnabled(false);
-			
-			ib_up.setImageResource(R.drawable.ifm8_up_disenabled);
-			
-		} else {//if (this.currentDirPath == this.baseDirPath)
-		
-			ib_up.setEnabled(true);
-
-			
-			ib_up.setImageResource(R.drawable.ifm8_up);
-		
-		}//if (this.currentDirPath == this.baseDirPath)
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "onResume()");
+//
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "prefs: " + Methods.get_currentPath_from_prefs(this));
+//		
+//				/*----------------------------
+//		 * 2. Set enables
+//			----------------------------*/
+//		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);
+//		
+//		String curDirPath = Methods.get_currentPath_from_prefs(this);
+//		
+//		if (curDirPath.equals(dirPath_base)) {
+//			
+//			ib_up.setEnabled(false);
+//			
+//			ib_up.setImageResource(R.drawable.ifm8_up_disenabled);
+//			
+//		} else {//if (this.currentDirPath == this.baseDirPath)
+//		
+//			ib_up.setEnabled(true);
+//
+//			
+//			ib_up.setImageResource(R.drawable.ifm8_up);
+//		
+//		}//if (this.currentDirPath == this.baseDirPath)
 		
 	}//protected void onResume()
 
