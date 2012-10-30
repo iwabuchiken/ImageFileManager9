@@ -529,8 +529,30 @@ public class Methods {
 		for (File item : files) {
 			
 			MainActv.file_names.add(item.getName());
+//			if (item.getName().equals(MainActv.listFileName)) {
+//				
+//				String tname = Methods.convert_path_into_table_name(actv);
+//				
+//				int num_of_entries = Methods.get_num_of_entries(actv, tname);
+//				
+////				String name = item.getName() + Methods.get_num_of_entries(this, )
+//				MainActv.file_names.add(item.getName() + "(" + num_of_entries + ")");
+//				
+//				// Log
+//				Log.d("MainActv.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"Table name=" + Methods.convert_path_into_table_name(actv));
+//				
+//			} else {//if (item.getName().equals(MainActv.listFileName))
+//				
+//				MainActv.file_names.add(item.getName());
+//				
+//			}//if (item.getName().equals(MainActv.listFileName))
+
 			
-		}
+		}//for (File item : files)
 		
 		/*----------------------------
 		 * 5. Notify adapter of changes
@@ -5906,6 +5928,46 @@ public class Methods {
 		
 		return false;
 	}//public static boolean record_history(Activity actv, long fileId)
+
+
+	/*********************************
+	 * <Return>
+	 * -1	=> Query failed
+	 *********************************/
+	public static int get_num_of_entries(Activity actv, String table_name) {
+		/*********************************
+		 * memo
+		 *********************************/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		String sql = "SELECT * FROM " + table_name;
+		
+		Cursor c = null;
+		
+		try {
+			
+			c = rdb.rawQuery(sql, null);
+			
+		} catch (Exception e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			rdb.close();
+			
+			return -1;
+		}
+		
+		int num_of_entries = c.getCount();
+		
+		rdb.close();
+
+		return num_of_entries;
+		
+	}//public static int get_num_of_entries(Activity actv, String table_name)
 
 
 	

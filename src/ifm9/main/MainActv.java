@@ -158,7 +158,7 @@ public class MainActv extends ListActivity {
         
 //        debug_b22();
         
-        setup();
+//        setup();
         
 //        setContentView(R.layout.main);
 //        
@@ -777,6 +777,28 @@ public class MainActv extends ListActivity {
 		file_names = new ArrayList<String>();
 
 		for (File item : files) {
+//			if (item.getName().equals(MainActv.listFileName)) {
+//				
+//				String tname = Methods.convert_path_into_table_name(this);
+//				
+//				int num_of_entries = Methods.get_num_of_entries(this, tname);
+//				
+////				String name = item.getName() + Methods.get_num_of_entries(this, )
+//				file_names.add(item.getName() + "(" + num_of_entries + ")");
+//				
+//				// Log
+//				Log.d("MainActv.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"Table name=" + Methods.convert_path_into_table_name(this));
+//				
+//			} else {//if (item.getName().equals(MainActv.listFileName))
+//				
+//				file_names.add(item.getName());
+//				
+//			}//if (item.getName().equals(MainActv.listFileName))
+			
 			file_names.add(item.getName());
 		}
 				
@@ -1241,6 +1263,9 @@ public class MainActv extends ListActivity {
 
 	@Override
 	protected void onStart() {
+		
+		setup();
+		
 		/*----------------------------
 		 * 1. Refresh DB
 			----------------------------*/
