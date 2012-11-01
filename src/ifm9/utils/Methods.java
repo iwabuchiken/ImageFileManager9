@@ -1274,58 +1274,58 @@ public class Methods {
 		
 		Cursor c = refreshMainDB_2_exec_query(actv, wdb, dbu);
 //		
-		//debug
-		// Log
-		if (c != null) {
-
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "c.getCount()=" + c.getCount());
-
-		} else {//if (c != null)
-
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "c == null");
-
-		}//if (c != null)
-		
-		wdb.close();
-		
-		return -1;
-		
-//		/*----------------------------
-//		 * 4. Insert data into db
-//			----------------------------*/
-//		int numOfItemsAdded;
-//		
-//		if (c.getCount() < 1) {
-//			
-//			// Log
+//		//debug
+//		// Log
+//		if (c != null) {
+//
 //			Log.d("Methods.java" + "["
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "Query result: 0");
-//			
-//			numOfItemsAdded = 0;
-//			
-////			// debug
-////			Toast.makeText(actv, "新規のファイルはありません", 2000).show();
-//			
-//		} else {//if (c.getCount() < 1)
-//			
-//			numOfItemsAdded = refreshMainDB_3_insert_data(actv, wdb, dbu, c);
-//			
-//		}//if (c.getCount() < 1)
+//					+ "]", "c.getCount()=" + c.getCount());
+//
+//		} else {//if (c != null)
+//
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "c == null");
+//
+//		}//if (c != null)
 //		
-//		/*----------------------------
-//		 * 9. Close db
-//			----------------------------*/
 //		wdb.close();
 //		
-//		/*----------------------------
-//		 * 10. Return
-//			----------------------------*/
-//		return numOfItemsAdded;
+//		return -1;
+		
+		/*----------------------------
+		 * 4. Insert data into db
+			----------------------------*/
+		int numOfItemsAdded;
+		
+		if (c.getCount() < 1) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Query result: 0");
+			
+			numOfItemsAdded = 0;
+			
+//			// debug
+//			Toast.makeText(actv, "新規のファイルはありません", 2000).show();
+			
+		} else {//if (c.getCount() < 1)
+			
+			numOfItemsAdded = refreshMainDB_3_insert_data(actv, wdb, dbu, c);
+			
+		}//if (c.getCount() < 1)
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 10. Return
+			----------------------------*/
+		return numOfItemsAdded;
 		
 	}//public static int refreshMainDB(Activity actv)
 
