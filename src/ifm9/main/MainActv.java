@@ -5,6 +5,7 @@ import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
 import ifm9.listeners.DialogListener;
 import ifm9.utils.DBUtils;
+import ifm9.utils.MainListAdapter;
 import ifm9.utils.Methods;
 import ifm9.utils.RefreshDBTask;
 
@@ -98,7 +99,9 @@ public class MainActv extends ListActivity {
 	// Used => 
 	public static List<String> file_names = null;
 
-	public static ArrayAdapter<String> adapter = null;
+//	public static ArrayAdapter<String> adapter = null;
+	
+	public static MainListAdapter adapter = null;
 
 	public static boolean move_mode = false;
 	
@@ -562,6 +565,8 @@ public class MainActv extends ListActivity {
 		 * 
 		 * 3. Set listeners to buttons => Click
 		 * 4. Set listener => Long click
+		 * 
+		 * 5. On touch
 			----------------------------*/
 		
 		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);
@@ -592,6 +597,14 @@ public class MainActv extends ListActivity {
 		
 		ib_up.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_up.setOnClickListener(new ButtonOnClickListener(this));
+		
+		/*********************************
+		 * 5. On touch
+		 *********************************/
+//		ListView lv = this.getListView();
+//		
+//		a
+//		
 		
 	}//private void set_listeners()
 
@@ -679,7 +692,11 @@ public class MainActv extends ListActivity {
 	}//private boolean set_initial_dir_list()
 
 	private void set_listener_to_list() {
-		
+		/*********************************
+		 * 1. Long click
+		 * 
+		 * 2. On touch
+		 *********************************/
 		ListView lv = this.getListView();
 		
 //		lv.setTag(Methods.ItemTags.dir_list);
@@ -687,13 +704,24 @@ public class MainActv extends ListActivity {
 		
 		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
 		
+		/*********************************
+		 * 2. On touch
+		 *********************************/
+		
+		
 	}//private void set_listener_to_list()
 
 	private boolean set_list_to_adapter() {
 		
-		adapter = new ArrayAdapter<String>(
+//		adapter = new ArrayAdapter<String>(
+//				this,
+//				android.R.layout.simple_list_item_1,
+//				file_names
+//				);
+		
+		adapter = new MainListAdapter(
 				this,
-				android.R.layout.simple_list_item_1,
+				R.layout.list_row_main_list,
 				file_names
 				);
 
@@ -935,11 +963,16 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * Steps
 		 * 0. Vibrate
+		 * 
 		 * 1. Get item name
 		 * 2. Get file object
 		 * 3. Is a directory?
 		 * 		=> If yes, update the current path
 			----------------------------*/
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "onListItemClick()");
 		//
 		vib.vibrate(Methods.vibLength_click);
 		

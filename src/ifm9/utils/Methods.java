@@ -210,6 +210,9 @@ public class Methods {
 		// MainActivity.java
 		actv_main_lv,
 		
+		// Main
+		main_list_adapter,
+		
 	}//public static enum ListTags
 
 	
@@ -557,6 +560,7 @@ public class Methods {
 		/*----------------------------
 		 * 5. Notify adapter of changes
 			----------------------------*/
+//		if (MainActv.adapter != null) {
 		if (MainActv.adapter != null) {
 			
 			MainActv.adapter.notifyDataSetChanged();
