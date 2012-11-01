@@ -1260,20 +1260,40 @@ public class Methods {
 		/*----------------------------
 		 * 3. Execute query for image files
 			----------------------------*/
-		//debug
-		Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+//		//debug
+//		Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "uri.getPath()=" + uri.getPath());
+//		
+//		wdb.close();
+//		
+//		return -1;
 		
+		Cursor c = refreshMainDB_2_exec_query(actv, wdb, dbu);
+//		
+		//debug
 		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "uri.getPath()=" + uri.getPath());
+		if (c != null) {
+
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount()=" + c.getCount());
+
+		} else {//if (c != null)
+
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c == null");
+
+		}//if (c != null)
 		
 		wdb.close();
 		
 		return -1;
 		
-//		Cursor c = refreshMainDB_2_exec_query(actv, wdb, dbu);
-//		
 //		/*----------------------------
 //		 * 4. Insert data into db
 //			----------------------------*/
