@@ -5274,9 +5274,29 @@ public class Methods {
 				actv.getSharedPreferences(
 						actv.getString(R.string.prefs_shared_prefs_name), 0);
 		
-		int pref_history_size = 
-//				(int) prefs.getInt(actv.getString(R.string.prefs_history_size_key), 0);
-				prefs.getin;
+		String pref_history_size = 
+				prefs.getString(actv.getString(R.string.prefs_history_size_key), null);
+		
+		result = Methods.is_numeric(pref_history_size);
+		
+		int history_size = 0;
+		
+		if (result == true) {
+			
+			history_size = Integer.parseInt(pref_history_size);
+			
+		} else {//if (result == true)
+			
+			// debug
+			Toast.makeText(actv,
+					"pref_history_size => Not a numeric", Toast.LENGTH_SHORT).show();
+			
+		}//if (result == true)
+		
+		
+//		int pref_history_size = 
+////				(int) prefs.getInt(actv.getString(R.string.prefs_history_size_key), 0);
+//				prefs.getin;
 
 //		int pref_history_size = prefs.getString(actv.getString(R.string.prefs_history_size_key), null);
 		
@@ -5287,11 +5307,11 @@ public class Methods {
 		
 		long start_id_num = 0;
 		
-		if (num_of_records > pref_history_size) {
+		if (num_of_records > history_size) {
 			
-			start_id_num = (long) (num_of_records - pref_history_size);
+			start_id_num = (long) (num_of_records - history_size);
 			
-		} else if(num_of_records <= pref_history_size) {//if (num_of_records > )
+		} else if(num_of_records <= history_size) {//if (num_of_records > )
 			
 			start_id_num = 0;
 			
@@ -5312,7 +5332,11 @@ public class Methods {
 		
 		
 		// REF=> http://www.accessclub.jp/sql/10.html
-		String sql = "SELECT * FROM " + MainActv.tableName_show_history;
+//		String sql = "SELECT * FROM " + MainActv.tableName_show_history;
+		String sql = "SELECT * FROM " + MainActv.tableName_show_history
+				+ " WHERE " + android.provider.BaseColumns._ID + " >= "
+				+ start_id_num;
+		
 		
 		Cursor c = wdb.rawQuery(sql, null);
 		

@@ -813,6 +813,12 @@ public class DBUtils extends SQLiteOpenHelper{
 
 	public List<TI> get_all_data_history(Activity actv,
 			SQLiteDatabase rdb, long[] history_file_ids, String[] history_table_names) {
+		
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting => get_all_data_history()");
+		
 		/*********************************
 		 * 1. Declare tiList
 		 * 2. Query
@@ -834,6 +840,11 @@ public class DBUtils extends SQLiteOpenHelper{
 //					+ "]", "history: name=" + name);
 //			
 //		}//for (String name : history_table_names)
+		
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "history_file_ids.length=" + history_file_ids.length);
 		
 		for (int i = 0; i < history_file_ids.length; i++) {
 			
