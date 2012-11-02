@@ -1299,6 +1299,8 @@ public class MainActv extends ListActivity {
 		
 		setup();
 		
+//		debug_B27();
+		
 		/*----------------------------
 		 * 1. Refresh DB
 			----------------------------*/
@@ -1326,6 +1328,26 @@ public class MainActv extends ListActivity {
 		
 		super.onStart();
 	}//protected void onStart()
+
+	private void debug_B27() {
+		/*********************************
+		 * memo
+		 *********************************/
+		SharedPreferences prefs =
+				this.getSharedPreferences(
+						this.getString(R.string.prefs_shared_prefs_name), 0);
+		
+		String pref_history_size = prefs.getString(this.getString(R.string.prefs_history_size_key), null);
+		
+		boolean res = Methods.is_numeric(pref_history_size);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "pref_history_size=" + pref_history_size
+				+ "(is_numeric=" + res + ")");
+		
+	}//private void debug_B27()
 
 	private void refresh_db() {
 		SharedPreferences prefs =

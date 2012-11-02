@@ -2,7 +2,9 @@ package ifm9.main;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -60,8 +62,14 @@ public class PrefActv extends PreferenceActivity {
 	@Override
 	protected void onStart() {
 		// TODO 自動生成されたメソッド・スタブ
+		EditTextPreference prefEditText = 
+				(EditTextPreference) findPreference(
+						this.getString(R.string.prefs_history_size_key));
+		
+		prefEditText.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
 		super.onStart();
-	}
+		
+	}//protected void onStart()
 
 	@Override
 	protected void onStop() {

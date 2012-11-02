@@ -29,6 +29,9 @@
     <string name="prefs_finger_paint_key">finger_paint</string>
     <string name="prefs_finger_paint_title">FPActvを使う</string>
 
+    <string name="prefs_history_size_key">history_size</string>
+    <string name="prefs_history_size_title">History size</string>
+    
     <!-- Dialogues ================================ -->
     <!-- dlg_create_folder.xml -->
     <string name="dlg_create_folder_title">フォルダ作成</string>

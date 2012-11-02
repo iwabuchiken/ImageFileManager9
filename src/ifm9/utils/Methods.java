@@ -5200,6 +5200,9 @@ public class Methods {
 		/*********************************
 		 * 1. Set up db
 		 * 2. Table exists?
+		 * 
+		 * 2-2. Number of records more than the set limit?
+		 * 
 		 * 3. Get all data
 		 * 
 		 * 3-2. Set pref value => 1
@@ -5208,6 +5211,11 @@ public class Methods {
 		 * 4-2. Close db
 		 * 5. Start activity
 		 *********************************/
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting => show_history()");
+		
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
 		
 		//
@@ -5256,6 +5264,43 @@ public class Methods {
 				
 			}//if (result == true)
 		}//if (result == false)
+		
+		/*********************************
+		 * 2-2. Number of records more than the set limit?
+		 *********************************/
+		long num_of_records = Methods.get_num_of_entries(actv, MainActv.tableName_show_history);
+
+		SharedPreferences prefs =
+				actv.getSharedPreferences(
+						actv.getString(R.string.prefs_shared_prefs_name), 0);
+		
+		int pref_history_size = 
+//				(int) prefs.getInt(actv.getString(R.string.prefs_history_size_key), 0);
+				prefs.getin;
+
+//		int pref_history_size = prefs.getString(actv.getString(R.string.prefs_history_size_key), null);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "num_of_records=" + num_of_records);
+		
+		long start_id_num = 0;
+		
+		if (num_of_records > pref_history_size) {
+			
+			start_id_num = (long) (num_of_records - pref_history_size);
+			
+		} else if(num_of_records <= pref_history_size) {//if (num_of_records > )
+			
+			start_id_num = 0;
+			
+		}//if (num_of_records > )
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "start_id_num=" + start_id_num);
 		
 		/*********************************
 		 * 3. Get all data
@@ -5973,6 +6018,18 @@ public class Methods {
 		
 	}//public static int get_num_of_entries(Activity actv, String table_name)
 
+	public static boolean is_numeric(String str) {
+		
+		// REF=> http://www.coderanch.com/t/401142/java/java/check-if-String-value-numeric # Hurkpan Potgieter Greenhorn
+		String regex = "((-|\\+)?[0-9]+(\\.[0-9]+)?)+";
+		
+//		Pattern p = Pattern.compile( "([0-9]*)\\.[0]" );
+		Pattern p = Pattern.compile(regex);
 
+		Matcher m = p.matcher(str);
+		
+		return m.matches(); //TRUE
+		
+	}//public static boolean is_numeric(String str)
 	
 }//public class Methods
