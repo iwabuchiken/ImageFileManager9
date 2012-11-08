@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.net.ftp.FTPClient;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -1387,6 +1388,9 @@ public class MainActv extends ListActivity {
 		
 		setup();
 		
+		debug_ftp();
+		
+		
 		/*----------------------------
 		 * 1. Refresh DB
 			----------------------------*/
@@ -1414,6 +1418,14 @@ public class MainActv extends ListActivity {
 		
 		super.onStart();
 	}//protected void onStart()
+
+	private void debug_ftp() {
+		/*********************************
+		 * memo
+		 *********************************/
+		FTPClient ftpclient;
+		
+	}
 
 	private void refresh_db() {
 		SharedPreferences prefs =

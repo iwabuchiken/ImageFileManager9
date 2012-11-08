@@ -131,6 +131,12 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 
 
 	private View move_mode_on(View v, int position, View convertView) {
+		
+		// Log
+		Log.d("TIListAdapter.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting => move_mode_off()");
+		
 		/*----------------------------
 		 * 2. ON
 			----------------------------*/
@@ -257,6 +263,12 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 
 
 	private View move_mode_off(View v, int position, View convertView) {
+		
+		// Log
+		Log.d("TIListAdapter.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting => move_mode_off()");
+		
 		/*----------------------------
 		 * 1. Set layout
 		 * 2. Get view
@@ -364,6 +376,10 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 		
 		tv.setText(ti.getFile_name());
 
+		// Log
+		Log.d("TIListAdapter.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "ti.getFile_name()=" + ti.getFile_name());
 		/*----------------------------
 		 * 5.2. Memo
 			----------------------------*/

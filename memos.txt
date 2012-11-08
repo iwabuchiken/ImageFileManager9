@@ -3,6 +3,7 @@ cd C:\WORKS\WS\WS_Android~\ImageFileManager9
 C:\WORKS\PROGRAMS\FreeMind\FreeMind.exe C:\WORKS\WS\WS_Android~\FM\IFM9\IFM9.mm
 gitk
 
+C:\Users\IwabuchiKen\Desktop
 
 C:\WORKS\WORKSPACES_ANDROID\FM\a
 

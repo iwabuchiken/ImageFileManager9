@@ -905,6 +905,18 @@ public class Methods {
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "getAllData() => Starts");
+		
+		String[] col_list = Methods.get_column_list(actv, MainActv.dbName, tableName);
+
+//		for (int i = 0; i < col_list.length; i++) {
+//			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "col_list[" + i + "]=" + col_list[i]);
+//			
+//		}
+		
 		/*----------------------------
 		 * 1. DB setup
 			----------------------------*/
@@ -915,6 +927,11 @@ public class Methods {
 		/*----------------------------
 		 * 0. Table exists?
 			----------------------------*/
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName=" + tableName);
+		
 		boolean res = dbu.tableExists(rdb, tableName);
 		
 		if (res == false) {
@@ -951,6 +968,11 @@ public class Methods {
 			
 			c = rdb.rawQuery(sql, null);
 			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount()=" + c.getCount());
+			
 		} catch (Exception e) {
 			// Log
 			Log.d("Methods.java" + "["
@@ -977,19 +999,69 @@ public class Methods {
 		for (int i = 0; i < c.getCount(); i++) {
 //		for (int i = 0; i < c.getCount() / 200; i++) {
 
-			TI ti = new TI(
-					c.getLong(1),	// file_id
-					c.getString(2),	// file_path
-					c.getString(3),	// file_name
-					c.getLong(4),	// date_added
-//					c.getLong(5)		// date_modified
-					c.getLong(5),		// date_modified
-					c.getString(6),	// memos
-					c.getString(7)	// tags
-			);
+			TI ti;
+			
+			if (col_list[1].equals("created_at")) {
+
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "col_list[1].equals(\"created_at\")");
+
+				ti = new TI(
+						c.getLong(3),	// file_id
+						c.getString(4),	// file_path
+						c.getString(5),	// file_name
+						c.getLong(6),	// date_added
+//						c.getLong(5)		// date_modified
+						c.getLong(7),		// date_modified
+						c.getString(8),	// memos
+						c.getString(10)	// tags
+						
+				);
+				
+			} else {//if (col_list[1].equals("created_at"))
+
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "!col_list[1].equals(\"created_at\")");
+
+				ti = new TI(
+						c.getLong(1),	// file_id
+						c.getString(2),	// file_path
+						c.getString(3),	// file_name
+						c.getLong(4),	// date_added
+//						c.getLong(5)		// date_modified
+						c.getLong(5),		// date_modified
+						c.getString(6),	// memos
+						c.getString(7),	// tags
+						c.getLong(8)
+				);
+
+			}//if (col_list[1].equals("created_at"))
+			
+			
+//			TI ti = new TI(
+//					c.getLong(1),	// file_id
+//					c.getString(2),	// file_path
+//					c.getString(3),	// file_name
+//					c.getLong(4),	// date_added
+////					c.getLong(5)		// date_modified
+//					c.getLong(5),		// date_modified
+//					c.getString(6),	// memos
+//					c.getString(7)	// tags
+//			);
 	
 			// Add to the list
 			tiList.add(ti);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getString(3)=" + c.getString(3));
 			
 			//
 			c.moveToNext();
