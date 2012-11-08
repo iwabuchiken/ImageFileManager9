@@ -1388,12 +1388,7 @@ public class MainActv extends ListActivity {
 		
 		setup();
 		
-<<<<<<< HEAD
-//		debug_B27();
-=======
 		debug_ftp();
-		
->>>>>>> B28_FIX_ELECTRONICS__D5_list
 		
 		/*----------------------------
 		 * 1. Refresh DB
