@@ -1437,6 +1437,7 @@ public class MainActv extends ListActivity {
 				+ "(is_numeric=" + res + ")");
 		
 	}//private void debug_B27()
+
 	private void debug_ftp() {
 		/*********************************
 		 * memo
