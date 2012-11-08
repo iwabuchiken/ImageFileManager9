@@ -905,6 +905,18 @@ public class Methods {
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "getAllData() => Starts");
+		
+		String[] col_list = Methods.get_column_list(actv, MainActv.dbName, tableName);
+
+//		for (int i = 0; i < col_list.length; i++) {
+//			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "col_list[" + i + "]=" + col_list[i]);
+//			
+//		}
+		
 		/*----------------------------
 		 * 1. DB setup
 			----------------------------*/
@@ -915,6 +927,11 @@ public class Methods {
 		/*----------------------------
 		 * 0. Table exists?
 			----------------------------*/
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName=" + tableName);
+		
 		boolean res = dbu.tableExists(rdb, tableName);
 		
 		if (res == false) {
@@ -951,6 +968,11 @@ public class Methods {
 			
 			c = rdb.rawQuery(sql, null);
 			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount()=" + c.getCount());
+			
 		} catch (Exception e) {
 			// Log
 			Log.d("Methods.java" + "["
@@ -977,19 +999,69 @@ public class Methods {
 		for (int i = 0; i < c.getCount(); i++) {
 //		for (int i = 0; i < c.getCount() / 200; i++) {
 
-			TI ti = new TI(
-					c.getLong(1),	// file_id
-					c.getString(2),	// file_path
-					c.getString(3),	// file_name
-					c.getLong(4),	// date_added
-//					c.getLong(5)		// date_modified
-					c.getLong(5),		// date_modified
-					c.getString(6),	// memos
-					c.getString(7)	// tags
-			);
+			TI ti;
+			
+			if (col_list[1].equals("created_at")) {
+
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "col_list[1].equals(\"created_at\")");
+
+				ti = new TI(
+						c.getLong(3),	// file_id
+						c.getString(4),	// file_path
+						c.getString(5),	// file_name
+						c.getLong(6),	// date_added
+//						c.getLong(5)		// date_modified
+						c.getLong(7),		// date_modified
+						c.getString(8),	// memos
+						c.getString(10)	// tags
+						
+				);
+				
+			} else {//if (col_list[1].equals("created_at"))
+
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "!col_list[1].equals(\"created_at\")");
+
+				ti = new TI(
+						c.getLong(1),	// file_id
+						c.getString(2),	// file_path
+						c.getString(3),	// file_name
+						c.getLong(4),	// date_added
+//						c.getLong(5)		// date_modified
+						c.getLong(5),		// date_modified
+						c.getString(6),	// memos
+						c.getString(7),	// tags
+						c.getLong(8)
+				);
+
+			}//if (col_list[1].equals("created_at"))
+			
+			
+//			TI ti = new TI(
+//					c.getLong(1),	// file_id
+//					c.getString(2),	// file_path
+//					c.getString(3),	// file_name
+//					c.getLong(4),	// date_added
+////					c.getLong(5)		// date_modified
+//					c.getLong(5),		// date_modified
+//					c.getString(6),	// memos
+//					c.getString(7)	// tags
+//			);
 	
 			// Add to the list
 			tiList.add(ti);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getString(3)=" + c.getString(3));
 			
 			//
 			c.moveToNext();
@@ -1250,10 +1322,49 @@ public class Methods {
 			return -1;
 			
 		}//if (res == false)
+		
+//		//debug
+//		wdb.close();
+//		
+//		return -1;
+		
+		
 		/*----------------------------
 		 * 3. Execute query for image files
 			----------------------------*/
+//		//debug
+//		Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "uri.getPath()=" + uri.getPath());
+//		
+//		wdb.close();
+//		
+//		return -1;
+		
 		Cursor c = refreshMainDB_2_exec_query(actv, wdb, dbu);
+//		
+//		//debug
+//		// Log
+//		if (c != null) {
+//
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "c.getCount()=" + c.getCount());
+//
+//		} else {//if (c != null)
+//
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "c == null");
+//
+//		}//if (c != null)
+//		
+//		wdb.close();
+//		
+//		return -1;
 		
 		/*----------------------------
 		 * 4. Insert data into db
@@ -5274,9 +5385,29 @@ public class Methods {
 				actv.getSharedPreferences(
 						actv.getString(R.string.prefs_shared_prefs_name), 0);
 		
-		int pref_history_size = 
-//				(int) prefs.getInt(actv.getString(R.string.prefs_history_size_key), 0);
-				prefs.getin;
+		String pref_history_size = 
+				prefs.getString(actv.getString(R.string.prefs_history_size_key), null);
+		
+		result = Methods.is_numeric(pref_history_size);
+		
+		int history_size = 0;
+		
+		if (result == true) {
+			
+			history_size = Integer.parseInt(pref_history_size);
+			
+		} else {//if (result == true)
+			
+			// debug
+			Toast.makeText(actv,
+					"pref_history_size => Not a numeric", Toast.LENGTH_SHORT).show();
+			
+		}//if (result == true)
+		
+		
+//		int pref_history_size = 
+////				(int) prefs.getInt(actv.getString(R.string.prefs_history_size_key), 0);
+//				prefs.getin;
 
 //		int pref_history_size = prefs.getString(actv.getString(R.string.prefs_history_size_key), null);
 		
@@ -5287,11 +5418,11 @@ public class Methods {
 		
 		long start_id_num = 0;
 		
-		if (num_of_records > pref_history_size) {
+		if (num_of_records > history_size) {
 			
-			start_id_num = (long) (num_of_records - pref_history_size);
+			start_id_num = (long) (num_of_records - history_size);
 			
-		} else if(num_of_records <= pref_history_size) {//if (num_of_records > )
+		} else if(num_of_records <= history_size) {//if (num_of_records > )
 			
 			start_id_num = 0;
 			
@@ -5312,7 +5443,11 @@ public class Methods {
 		
 		
 		// REF=> http://www.accessclub.jp/sql/10.html
-		String sql = "SELECT * FROM " + MainActv.tableName_show_history;
+//		String sql = "SELECT * FROM " + MainActv.tableName_show_history;
+		String sql = "SELECT * FROM " + MainActv.tableName_show_history
+				+ " WHERE " + android.provider.BaseColumns._ID + " >= "
+				+ start_id_num;
+		
 		
 		Cursor c = wdb.rawQuery(sql, null);
 		

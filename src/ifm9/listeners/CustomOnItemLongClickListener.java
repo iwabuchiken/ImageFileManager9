@@ -129,8 +129,8 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 		}//switch (tag)
 		
 		
-//		return false;
-		return true;
+		return false;
+//		return true;
 		
 	}//public boolean onItemLongClick()
 

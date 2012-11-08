@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.net.ftp.FTPClient;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -105,6 +106,12 @@ public class MainActv extends ListActivity {
 
 	public static boolean move_mode = false;
 	
+	public static String machine_name_tablet = "ASUS Pad TF300T";
+//	11-01 15:05:05.230: D/MainActv.java[236](17428): device_name=ASUS Pad TF300T
+//
+	public static String machine_name_phone = "ISW11M";
+//	11-01 15:05:10.994: D/MainActv.java[237](5081): device_name=ISW11M
+
 	/*----------------------------
 	 * DB
 		----------------------------*/
@@ -158,6 +165,8 @@ public class MainActv extends ListActivity {
 			----------------------------*/
 		
         super.onCreate(savedInstanceState);
+        
+//        setup_tablet();
         
 //        debug_b22();
         
@@ -219,7 +228,74 @@ public class MainActv extends ListActivity {
         
     }//public void onCreate(Bundle savedInstanceState)
 
-    /*********************************
+    private void setup_tablet() {
+		/*********************************
+		 * 1. Set => External storage
+		 * 
+		 * 2. Setup => database
+		 *********************************/
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starts => setup_tablet");
+		
+    	String device_name = android.os.Build.MODEL;
+
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "device_name=" + device_name);
+    	
+		if (device_name.equals(machine_name_tablet)) {
+			
+			dirName_ExternalStorage = "/mnt/sdcard";
+			
+			dirPath_base = dirName_ExternalStorage + File.separator + dirName_base;
+			
+			dirPath_db_backup = dirName_ExternalStorage + "/IFM9_backup";
+			
+		}//if (device_name == condition)
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "dirName_ExternalStorage=" + dirName_ExternalStorage);
+		
+//    	if (device_name.equals(this.dirName_ExternalStorage)) {
+//			
+//		}//if (device_name == condition)
+		
+		/*********************************
+		 * 2. Setup => database
+		 *********************************/
+		File f_db = new File(this.dirPath_db);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "f_db.getAbsolutePath()=" + f_db.getAbsolutePath());
+
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "f_db.exists()=" + f_db.exists());
+	
+		DBUtils dbu = new DBUtils(this, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		wdb.close();
+		
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "f_db.getAbsolutePath()=" + f_db.getAbsolutePath());
+
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "f_db.exists()=" + f_db.exists());
+		
+	}//private void setup_tablet()
+
+	/*********************************
 	 * 
 	 * 
 	 *********************************/
@@ -662,7 +738,7 @@ public class MainActv extends ListActivity {
 		 * 2. Set variables => currentDirPath, baseDirPath
 			----------------------------*/
 		init_prefs_current_path();
-
+//
 		/*----------------------------
 		 * 3. Get file list
 			----------------------------*/
@@ -689,6 +765,7 @@ public class MainActv extends ListActivity {
 		 * 9. Return
 			----------------------------*/
 		return false;
+		
 	}//private boolean set_initial_dir_list()
 
 	private void set_listener_to_list() {
@@ -833,6 +910,11 @@ public class MainActv extends ListActivity {
 	}//private void init_file_list(File file)
 
 	private void init_prefs_current_path() {
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starts => init_prefs_current_path()");
+		
 		/*----------------------------
 		 * If the preference already set, then no operation
 		 * 
@@ -874,6 +956,11 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * 3. Set value
 			----------------------------*/
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "dirPath_base=" + dirPath_base);
+		
 		editor.putString(prefs_current_path, dirPath_base);
 		
 		editor.commit();
@@ -1297,9 +1384,16 @@ public class MainActv extends ListActivity {
 	@Override
 	protected void onStart() {
 		
+		setup_tablet();
+		
 		setup();
 		
+<<<<<<< HEAD
 //		debug_B27();
+=======
+		debug_ftp();
+		
+>>>>>>> B28_FIX_ELECTRONICS__D5_list
 		
 		/*----------------------------
 		 * 1. Refresh DB
@@ -1348,6 +1442,13 @@ public class MainActv extends ListActivity {
 				+ "(is_numeric=" + res + ")");
 		
 	}//private void debug_B27()
+	private void debug_ftp() {
+		/*********************************
+		 * memo
+		 *********************************/
+		FTPClient ftpclient;
+		
+	}
 
 	private void refresh_db() {
 		SharedPreferences prefs =
