@@ -22,6 +22,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -1257,7 +1258,20 @@ public class MainActv extends ListActivity {
 			Methods.show_history(this);
 			
 			break;// case R.id.main_opt_menu_history
+
+		case R.id.main_opt_menu_ftp://-----------------------------------------------
 			
+			Intent i = new Intent();
+			
+			i.setClass(this, FTPActv.class);
+			
+			i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			
+			this.startActivity(i);
+
+			
+			break;// case R.id.main_opt_menu_ftp
+
 		}//switch (item.getItemId())
 		
 		return super.onOptionsItemSelected(item);

@@ -8,6 +8,7 @@ import ifm9.listeners.DialogButtonOnTouchListener;
 import ifm9.listeners.DialogListener;
 import ifm9.listeners.DialogOnItemClickListener;
 import ifm9.listeners.DialogOnItemLongClickListener;
+import ifm9.main.FTPActv;
 import ifm9.main.MainActv;
 import ifm9.main.PrefActv;
 import ifm9.main.R;
@@ -21,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.SocketException;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ import android.os.AsyncTask;
 
 // Apache
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.net.ftp.FTPClient;
 
 // REF=> http://commons.apache.org/net/download_net.cgi
 //REF=> http://www.searchman.info/tips/2640.html
@@ -6166,5 +6169,70 @@ public class Methods {
 		return m.matches(); //TRUE
 		
 	}//public static boolean is_numeric(String str)
+
+	
+	public static void ftp_connect_disconnect(Activity actv) {
+		/*********************************
+		 * memo
+		 *********************************/
+		FTPClient fp = new FTPClient();
+		
+		try {
+			
+			fp.connect("ftp.benfranklin.chips.jp");
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "fp.getReplyCode()=" + fp.getReplyCode());
+			
+			// debug
+			Toast.makeText(actv, "Reply code => " + fp.getReplyCode(), Toast.LENGTH_SHORT).show();
+			
+		} catch (SocketException e) {
+			
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Error: " + e.toString());
+			
+			return;
+			
+		} catch (IOException e) {
+
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Error: " + e.toString());
+			
+			return;
+		}
+		
+		try {
+			
+			fp.disconnect();
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "fp => Disconnected");
+
+			// debug
+			Toast.makeText(actv, "Disconnected", Toast.LENGTH_SHORT).show();
+
+			return;
+			
+		} catch (IOException e) {
+			
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Error: " + e.toString());
+			
+			return;
+			
+		}
+		
+	}//public static void ftp_connect_disconnect()
 	
 }//public class Methods

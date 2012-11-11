@@ -29,4 +29,11 @@
 	    
 	</item>
 	
+	<item 
+	    android:id="@+id/main_opt_menu_ftp" 
+	    android:title="@string/main_opt_menu_ftp" 
+	    android:icon="@android:drawable/ic_menu_send">
+	    
+	</item>
+		
 </menu>

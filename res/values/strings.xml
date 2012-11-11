@@ -20,6 +20,7 @@
     <string name="main_opt_menu_search">探す</string>
     <string name="main_opt_menu_preferences">カスタマイズ</string>
     <string name="main_opt_menu_history">閲覧履歴</string>
+    <string name="main_opt_menu_ftp">FTP</string>
 
     <!-- preferences.xml -->
     <string name="prefs_shared_prefs_name">IFM9_prefs</string>
