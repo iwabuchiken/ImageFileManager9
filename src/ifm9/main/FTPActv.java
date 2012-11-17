@@ -1,6 +1,8 @@
 package ifm9.main;
 
 import ifm9.utils.Methods;
+import ifm9.utils.MethodsFTP;
+import ifm9.utils.TaskFTP;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,7 +35,12 @@ public class FTPActv extends Activity {
 
 		this.setTitle(this.getClass().getName());
 		
-		Methods.ftp_connect_disconnect(this);
+		TaskFTP task = new TaskFTP(this);
+		
+		task.execute("ABC");
+//		Methods.ftp_connect_disconnect(this);
+		
+//		MethodsFTP.ftp_connect_disconnect(this);
 		
 	}
 	

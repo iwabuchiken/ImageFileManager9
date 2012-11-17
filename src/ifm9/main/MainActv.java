@@ -1404,7 +1404,8 @@ public class MainActv extends ListActivity {
 		
 		setup();
 		
-		debug_ftp();
+		debug_B29_ftp();
+		
 		
 		/*----------------------------
 		 * 1. Refresh DB
@@ -1473,7 +1474,7 @@ public class MainActv extends ListActivity {
 		
 	}//private void debug_B27()
 
-	private void debug_ftp() {
+	private void debug_B29_ftp() {
 		/*********************************
 		 * memo
 		 *********************************/
