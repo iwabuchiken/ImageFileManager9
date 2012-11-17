@@ -354,7 +354,7 @@ public class MainActv extends ListActivity {
 		/*********************************
 		 * 8. Refresh DB
 		 *********************************/
-		refresh_db();
+//		refresh_db();
 	}//private void setup()
 
 	private void do_debug() {
@@ -1398,6 +1398,8 @@ public class MainActv extends ListActivity {
 	@Override
 	protected void onStart() {
 		
+//		debug_b30();
+		
 		setup_tablet();
 		
 		setup();
@@ -1431,6 +1433,25 @@ public class MainActv extends ListActivity {
 		
 		super.onStart();
 	}//protected void onStart()
+
+	private void debug_b30() {
+		
+		String src = MainActv.dirPath_db_backup + File.separator
+					+"ifm9_backup_20121110_102050.bk";
+		
+		String dst = MainActv.dirPath_db + File.separator
+					+ MainActv.dbName;
+		
+		Methods.restore_db(this, MainActv.dbName, src, dst);
+		
+//		String current_path = Methods.get_pref(this, MainActv.prefs_current_path, null);
+//		
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "current_path=" + current_path);
+//		
+	}
 
 	private void debug_B27() {
 		/*********************************

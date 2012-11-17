@@ -2653,7 +2653,7 @@ public class Methods {
 				
 			} catch (IOException e) {
 				// Log
-				Log.d("Methods.java"
+				Log.e("Methods.java"
 						+ "["
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
@@ -2727,7 +2727,7 @@ public class Methods {
 						
 					} catch (IOException e) {
 						// Log
-						Log.d("Methods.java"
+						Log.e("Methods.java"
 								+ "["
 								+ Thread.currentThread().getStackTrace()[2]
 										.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
@@ -4536,13 +4536,13 @@ public class Methods {
 			
 		} catch (FileNotFoundException e) {
 			// Log
-			Log.d("Methods.java" + "["
+			Log.e("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 			
 		} catch (IOException e) {
 			// Log
-			Log.d("Methods.java" + "["
+			Log.e("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 		}//try
@@ -4999,7 +4999,7 @@ public class Methods {
 			Toast.makeText(actv, "パターン削除　=>　できませんでした", 3000).show();
 			
 			// Log
-			Log.d("Methods.java" + "["
+			Log.e("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Pattern deletion => Failed:  " + item);
 			
@@ -5292,7 +5292,7 @@ public class Methods {
 
 		} catch (FileNotFoundException e) {
 			// Log
-			Log.d("Methods.java" + "["
+			Log.e("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 			
@@ -5300,7 +5300,7 @@ public class Methods {
 			
 		} catch (IOException e) {
 			// Log
-			Log.d("Methods.java" + "["
+			Log.e("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Exception: " + e.toString());
 			
@@ -5930,7 +5930,7 @@ public class Methods {
 			
 		} catch (SQLException e) {
 			// Log
-			Log.d(actv.getClass().getName() + 
+			Log.e(actv.getClass().getName() + 
 					"[" + Thread.currentThread().getStackTrace()[2].getLineNumber() + "]", 
 					"Exception => " + e.toString());
 			
