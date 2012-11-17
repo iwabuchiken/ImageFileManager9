@@ -6236,3 +6236,12 @@ public class Methods {
 	}//public static void ftp_connect_disconnect()
 	
 }//public class Methods
+
+class FTPMethods {
+	public static void message(Activity actv) {
+		
+		// debug
+		Toast.makeText(actv, "message()", Toast.LENGTH_SHORT).show();
+	}
+	
+}
