@@ -23,6 +23,9 @@ public class MethodsFTP {
 	 * >0	=> Reply code
 	 * 
 	 * REF=> http://www.searchman.info/tips/2640.html
+	 * 
+	 * #sqlite db file: "database disk image is malformed"
+	 * REF=> http://stackoverflow.com/questions/9058169/sqlite-database-disk-image-is-malformed-on-windows-but-fine-on-android
 	 *********************************/
 	public static int ftp_connect_disconnect(Activity actv) {
 		/*********************************
@@ -44,7 +47,19 @@ public class MethodsFTP {
 						MainActv.dirPath_db,
 						MainActv.fileName_db
 				}, File.separator);
+		
+		String fpath_audio = StringUtils.join(
+				new String[]{
+						MainActv.dirName_ExternalStorage,
+						"Audios",
+						"Fiddle_music",
+						"Gaelic Folk Song.mp3"
+				}, File.separator);
 
+//		String fpath_remote = "./" + MainActv.fileName_db;
+		
+		String fpath_remote = "./" + "Gaelic Folk Song.mp3";
+		
 		/*********************************
 		 * Connect
 		 *********************************/
@@ -124,10 +139,12 @@ public class MethodsFTP {
 		try {
 			
 			is = new FileInputStream(fpath);
+//			is = new FileInputStream(fpath_audio);
 			
-			fp.storeFile("./" + MainActv.fileName_db, is);// サーバー側
+//			fp.storeFile("./" + MainActv.fileName_db, is);// サーバー側
+			fp.storeFile(fpath_remote, is);// サーバー側
 			
-			fp.makeDirectory("./ABC");
+//			fp.makeDirectory("./ABC");
 			
 			
 			// Log
