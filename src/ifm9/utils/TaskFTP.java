@@ -21,11 +21,13 @@ public class TaskFTP extends AsyncTask<String, Integer, String> {
 	protected String doInBackground(String... arg0) {
 		
 		int res = MethodsFTP.ftp_connect_disconnect(actv);
+//		
+//		// Log
+//		Log.d("TaskFTP.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "res=" + res);
 		
-		// Log
-		Log.d("TaskFTP.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "res=" + res);
+//		int res = try_1();
 		
 		if (res > 0) {
 			
@@ -39,6 +41,13 @@ public class TaskFTP extends AsyncTask<String, Integer, String> {
 		
 		
 //		return "done";
+	}
+
+	private int try_1() {
+		
+		
+		
+		return 0;
 	}
 
 	@Override

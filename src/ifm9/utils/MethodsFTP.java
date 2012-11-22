@@ -13,20 +13,32 @@ public class MethodsFTP {
 
 	/*********************************
 	 * -1	=> Exception
+	 * -2	=> Log in failed
 	 * >0	=> Reply code
+	 * 
+	 * REF=> http://www.searchman.info/tips/2640.html
 	 *********************************/
 	public static int ftp_connect_disconnect(Activity actv) {
 		/*********************************
 		 * memo
 		 *********************************/
+		// FTP client
 		FTPClient fp = new FTPClient();
 		
 		int reply_code;
 		
-		// Connect
+		String server_name = "ftp.benfranklin.chips.jp";
+		
+		String uname = "chips.jp-benfranklin";
+
+		String passwd = "9x9jh4";
+
+		/*********************************
+		 * Connect
+		 *********************************/
 		try {
 			
-			fp.connect("ftp.benfranklin.chips.jp");
+			fp.connect(server_name);
 			
 			reply_code = fp.getReplyCode();
 			
@@ -34,9 +46,6 @@ public class MethodsFTP {
 			Log.d("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "fp.getReplyCode()=" + fp.getReplyCode());
-			
-//			// debug
-//			Toast.makeText(actv, "Reply code => " + fp.getReplyCode(), Toast.LENGTH_SHORT).show();
 			
 		} catch (SocketException e) {
 			
@@ -57,6 +66,46 @@ public class MethodsFTP {
 			return -1;
 		}
 		
+		/*********************************
+		 * Log in
+		 *********************************/
+		
+		boolean res;
+		try {
+			
+			res = fp.login(uname, passwd);
+			
+			if(res == false) {
+				
+				reply_code = fp.getReplyCode();
+				
+				// Log
+				Log.d("MethodsFTP.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Log in failed => " + reply_code);
+				
+				fp.disconnect();
+				
+				return -2;
+				
+			} else {
+				
+				// Log
+				Log.d("MethodsFTP.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Log in => Succeeded");
+				
+			}
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		/*********************************
+		 * Disconnect
+		 *********************************/
 		try {
 			
 			fp.disconnect();
@@ -65,9 +114,6 @@ public class MethodsFTP {
 			Log.d("Methods.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "fp => Disconnected");
-
-//			// debug
-//			Toast.makeText(actv, "Disconnected", Toast.LENGTH_SHORT).show();
 
 			return reply_code;
 			
