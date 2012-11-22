@@ -1,8 +1,14 @@
 package ifm9.utils;
 
+import ifm9.main.MainActv;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.SocketException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 
 import android.app.Activity;
@@ -32,6 +38,12 @@ public class MethodsFTP {
 		String uname = "chips.jp-benfranklin";
 
 		String passwd = "9x9jh4";
+		
+		String fpath = StringUtils.join(
+				new String[]{
+						MainActv.dirPath_db,
+						MainActv.fileName_db
+				}, File.separator);
 
 		/*********************************
 		 * Connect
@@ -80,7 +92,7 @@ public class MethodsFTP {
 				reply_code = fp.getReplyCode();
 				
 				// Log
-				Log.d("MethodsFTP.java"
+				Log.e("MethodsFTP.java"
 						+ "["
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "Log in failed => " + reply_code);
@@ -103,6 +115,44 @@ public class MethodsFTP {
 			e1.printStackTrace();
 		}
 		
+		/*********************************
+		 * FTP files
+		 *********************************/
+		// ファイル送信
+		FileInputStream is;
+		
+		try {
+			
+			is = new FileInputStream(fpath);
+			
+			fp.storeFile("./" + MainActv.fileName_db, is);// サーバー側
+			
+			fp.makeDirectory("./ABC");
+			
+			
+			// Log
+			Log.d("MethodsFTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "File => Stored");
+			
+			is.close();
+
+		} catch (FileNotFoundException e) {
+
+			// Log
+			Log.e("MethodsFTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+			
+		} catch (IOException e) {
+			
+			// Log
+			Log.e("MethodsFTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+
+		}
+						
 		/*********************************
 		 * Disconnect
 		 *********************************/
