@@ -1,5 +1,8 @@
 package ifm9.listeners;
 
+import java.util.List;
+
+import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.utils.Methods;
 import ifm9.utils.RefreshDBTask;
@@ -136,6 +139,10 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				
 				
 //				Methods.refreshMainDB(actv, dlg);
+			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_set_new_column))){
+				
+				//
+				dlg_db_admin_item_set_new_column();
 				
 			}
 			
@@ -185,4 +192,80 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		}//switch (tag)
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+
+	private void dlg_db_admin_item_set_new_column() {
+		// Dismiss dialog
+		dlg.dismiss();
+		
+//		// Strings
+//		String t_name = "IFM9__TEST";
+//		String col_name = "table_name";
+//		String data_type = "String";
+		
+//////////////////////////////////////////////////
+//		boolean res = 
+//				Methods.update_table_add_new_column(
+//						actv, 
+//						MainActv.dbName,
+//						t_name,
+//						col_name,
+//						data_type);
+//		
+//		// debug
+//		Toast.makeText(actv, "Add new column => " + res, Toast.LENGTH_SHORT).show();
+//		
+//////////////////////////////////////////////////
+		
+//////////////////////////////////////////////////
+		// Get table name list
+		List<String> t_names = Methods.get_table_list(actv, "ifm");
+		
+		// Add a new column
+		boolean res = false;
+		String col_name = "table_name";
+		String data_type = "String";
+		
+		for (String name : t_names) {
+			
+			res = Methods.update_table_add_new_column(
+					actv, 
+					MainActv.dbName,
+					name,
+					col_name,
+					data_type);
+
+			// Log
+			Log.d("DialogOnItemClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "t_name=" + name + "(res=" + res + ")");
+
+		}
+		
+		// debug
+//		Toast.makeText(actv, "Add new column => " + res, Toast.LENGTH_SHORT).show();
+		
+//////////////////////////////////////////////////
+		
+		//
+		
+//////////////////////////////////////////////////
+//		// Get table name
+////		String tableName = Methods.convert_path_into_table_name(actv);
+//		
+//		// Get column names
+////		String[] col_names = Methods.get_column_list(actv, MainActv.dbName, tableName);
+//		String[] col_names = Methods.get_column_list(actv, MainActv.dbName, t_name);
+//		
+//		// Show each name
+//		for (String name : col_names) {
+//			
+//			// Log
+//			Log.d("DialogOnItemClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "col_name=" + name);
+//			
+//		}
+//////////////////////////////////////////////////
+
+	}//private void dlg_db_admin_item_set_new_column()
 }

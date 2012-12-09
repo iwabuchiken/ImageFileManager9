@@ -236,7 +236,7 @@ public final class R {
         public static final int dlg_confirm_create_folder_tv_message=0x7f06001f;
         /**  dlg_confirm_delete_patterns.xml 
          */
-        public static final int dlg_confirm_delete_patterns_message=0x7f06003f;
+        public static final int dlg_confirm_delete_patterns_message=0x7f060040;
         /**  dlg_confirm_drop_table.xml 
          */
         public static final int dlg_confirm_drop_table_tv_message_drop=0x7f060025;
@@ -260,12 +260,13 @@ public final class R {
         public static final int dlg_create_table_title=0x7f060030;
         public static final int dlg_db_admin_item_backup_db=0x7f06003c;
         public static final int dlg_db_admin_item_refresh_db=0x7f06003d;
+        public static final int dlg_db_admin_item_set_new_column=0x7f06003e;
         /**  dlg_db_admin.xml 
          */
         public static final int dlg_db_admin_title=0x7f06003b;
         /**  dlg_delete_patterns.xml 
          */
-        public static final int dlg_delete_patterns_title=0x7f06003e;
+        public static final int dlg_delete_patterns_title=0x7f06003f;
         /**  dlg_drop_table.xml 
          */
         public static final int dlg_drop_table_title=0x7f060024;
@@ -303,7 +304,7 @@ public final class R {
         public static final int generic_tv_menu=0x7f060003;
         public static final int generic_tv_register=0x7f060004;
         public static final int hello=0x7f060007;
-        public static final int hello_world=0x7f060040;
+        public static final int hello_world=0x7f060041;
         /**  image_actv_menu.xml 
          */
         public static final int image_actv_menu_add_memo=0x7f060026;
@@ -317,7 +318,7 @@ public final class R {
         public static final int main_opt_menu_preferences=0x7f06000e;
         public static final int main_opt_menu_refresh_db=0x7f06000b;
         public static final int main_opt_menu_search=0x7f06000d;
-        public static final int menu_settings=0x7f060041;
+        public static final int menu_settings=0x7f060042;
         public static final int prefs_db_refresh_key=0x7f060012;
         public static final int prefs_db_refresh_title=0x7f060013;
         public static final int prefs_finger_paint_key=0x7f060014;
@@ -331,7 +332,7 @@ public final class R {
         /**  thumb_actv_menu.xml 
          */
         public static final int thumb_actv_menu_move_mode=0x7f06002a;
-        public static final int title_activity_fpactv=0x7f060042;
+        public static final int title_activity_fpactv=0x7f060043;
         public static final int v1_tv_dir_path=0x7f060009;
     }
     public static final class style {

@@ -4410,9 +4410,10 @@ public class Methods {
 		 * 2. Prep => List
 			----------------------------*/
 		String[] choices = {
-										actv.getString(R.string.dlg_db_admin_item_backup_db),
-										actv.getString(R.string.dlg_db_admin_item_refresh_db)
-										};
+				actv.getString(R.string.dlg_db_admin_item_backup_db),
+				actv.getString(R.string.dlg_db_admin_item_refresh_db),
+				actv.getString(R.string.dlg_db_admin_item_set_new_column)
+		};
 		
 		List<String> list = new ArrayList<String>();
 		
@@ -6234,6 +6235,51 @@ public class Methods {
 		}
 		
 	}//public static void ftp_connect_disconnect()
+
+	public static boolean update_table_add_new_column(Activity actv, String db_name, 
+			String table_name, String col_name, String data_type) {
+		
+		// REF=> http://stackoverflow.com/questions/8291673/how-to-add-new-column-to-android-sqlite-database
+		/*----------------------------
+		* Steps
+		* 1. 
+		----------------------------*/
+		// DB helper object
+		DBUtils dbu = new DBUtils(actv, db_name);
+		
+		// DB
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+	
+		String sql = "ALTER TABLE " + table_name
+					+ " ADD COLUMN " + col_name
+					+ " " + data_type;
+		
+		try {
+		
+			wdb.execSQL(sql);
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "sql => Done: " + sql);
+			
+			//Methods.toastAndLog(actv, "Data updated", 2000);
+			
+			return true;
+			
+		
+		} catch (SQLException e) {
+
+			// Log
+			Log.e("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "Exception => " + e.toString() + " / " + "sql: " + sql);
+		
+			return false;
+		}
+		
+	}//public boolean update_table_add_new_column
+
 
 }//public class Methods
 
