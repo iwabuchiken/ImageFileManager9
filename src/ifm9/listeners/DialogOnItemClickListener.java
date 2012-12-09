@@ -4,6 +4,7 @@ import java.util.List;
 
 import ifm9.main.MainActv;
 import ifm9.main.R;
+import ifm9.tasks.Task_add_table_name;
 import ifm9.utils.Methods;
 import ifm9.utils.RefreshDBTask;
 import android.app.Activity;
@@ -197,6 +198,10 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		// Dismiss dialog
 		dlg.dismiss();
 		
+		Task_add_table_name task = new Task_add_table_name(actv);
+		
+		task.execute("message");
+		
 //		// Strings
 //		String t_name = "IFM9__TEST";
 //		String col_name = "table_name";
@@ -217,32 +222,32 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 //////////////////////////////////////////////////
 		
 //////////////////////////////////////////////////
-		// Get table name list
-		List<String> t_names = Methods.get_table_list(actv, "ifm");
-		
-		// Add a new column
-		boolean res = false;
-		String col_name = "table_name";
-		String data_type = "String";
-		
-		for (String name : t_names) {
-			
-			res = Methods.update_table_add_new_column(
-					actv, 
-					MainActv.dbName,
-					name,
-					col_name,
-					data_type);
-
-			// Log
-			Log.d("DialogOnItemClickListener.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "t_name=" + name + "(res=" + res + ")");
-
-		}
-		
-		// debug
-//		Toast.makeText(actv, "Add new column => " + res, Toast.LENGTH_SHORT).show();
+//		// Get table name list
+//		List<String> t_names = Methods.get_table_list(actv, "ifm");
+//		
+//		// Add a new column
+//		boolean res = false;
+//		String col_name = "table_name";
+//		String data_type = "String";
+//		
+//		for (String name : t_names) {
+//			
+//			res = Methods.update_table_add_new_column(
+//					actv, 
+//					MainActv.dbName,
+//					name,
+//					col_name,
+//					data_type);
+//
+//			// Log
+//			Log.d("DialogOnItemClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "t_name=" + name + "(res=" + res + ")");
+//
+//		}
+//		
+//		// debug
+////		Toast.makeText(actv, "Add new column => " + res, Toast.LENGTH_SHORT).show();
 		
 //////////////////////////////////////////////////
 		

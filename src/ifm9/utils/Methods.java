@@ -5967,7 +5967,14 @@ public class Methods {
 		 *********************************/
 		//=> source: http://stackoverflow.com/questions/4681744/android-get-list-of-tables : "Just had to do the same. This seems to work:"
 		String q = "SELECT name FROM " + "sqlite_master"+
-						" WHERE type = 'table' ORDER BY name";
+//						" WHERE type = 'table' ORDER BY name";
+						" WHERE type = 'table' AND name like '"
+						+ key_word + "'" + " ORDER BY name";
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "query=" + q);
 		
 		Cursor c = null;
 		try {

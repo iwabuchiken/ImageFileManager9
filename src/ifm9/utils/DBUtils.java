@@ -64,12 +64,14 @@ public class DBUtils extends SQLiteOpenHelper{
 	// Main data
 	public static String[] cols = 
 		{"file_id", "file_path", "file_name", 	"date_added",
-		"date_modified",	"memos", "tags", 	"last_viewed_at"};
+		"date_modified",	"memos", "tags", 	"last_viewed_at",
+		"table_name"};
 //	"date_modified", "memos", "tags"};
 
 	public static String[] col_types =
 		{"INTEGER", "TEXT", 	"TEXT",			"INTEGER",
-		"INTEGER",			"TEXT",	"TEXT",		"INTEGER"};
+		"INTEGER",			"TEXT",	"TEXT",		"INTEGER",
+		"String"};
 
 	static String[] cols_for_insert_data = 
 		{"file_id", 		"file_path", "file_name", "date_added", "date_modified"};
@@ -638,6 +640,67 @@ public class DBUtils extends SQLiteOpenHelper{
 //		
 //		
 //		c.moveToFirst();
+		
+		
+		
+	}//public void updateData_memos
+
+	public boolean updateData_table_name(Activity actv, SQLiteDatabase wdb, 
+			String tableName, TI ti) {
+		/*----------------------------
+		* Steps
+		* 1. 
+		----------------------------*/
+		String sql = "UPDATE " + tableName + " SET " + 
+			"file_id='" + String.valueOf(ti.getFileId()) + "', " + 
+			"file_path='" + ti.getFile_path() + "', " +
+			"file_name='" + ti.getFile_name() + "', " +
+			"date_added='" + String.valueOf(ti.getDate_added()) + "', " +
+			"date_modified='" + String.valueOf(ti.getDate_modified()) + "', " +
+			"memos='" + ti.getMemo() + "', " +
+			"tags='" + ti.getTags() + "'" +
+			
+			" WHERE file_id = '" + String.valueOf(ti.getFileId()) + "'";
+		
+			
+		//			"file_id", 		"file_path", "file_name", "date_added", "date_modified"
+		//static String[] cols = 
+		//{"file_id", 		"file_path", "file_name", "date_added",
+		//"date_modified", "memos", "tags"};
+		
+		
+		try {
+			
+			wdb.execSQL(sql);
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "sql => Done: " + sql);
+			
+			//Methods.toastAndLog(actv, "Data updated", 2000);
+			
+			return true;
+			
+			
+		} catch (SQLException e) {
+			// Log
+			Log.d("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "Exception => " + e.toString() + " / " + "sql: " + sql);
+			
+			return false;
+		}
+		//
+		//actv.startManagingCursor(c);
+		//
+		//// Log
+		//Log.d("DBUtils.java" + "["
+		//+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+		//+ "]", "c.getCount() => " + c.getCount());
+		//
+		//
+		//c.moveToFirst();
 		
 		
 		
