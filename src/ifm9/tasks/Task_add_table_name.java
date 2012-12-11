@@ -49,7 +49,8 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		
 		// Get table name list
 //		List<String> t_names = Methods.get_table_list(actv, "ifm");
-		List<String> t_names = Methods.get_table_list(actv, "%_job");
+		List<String> t_names = Methods.get_table_list(actv, "ifm%");
+//		List<String> t_names = Methods.get_table_list(actv, "%_job");
 		
 		//
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
@@ -58,7 +59,13 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		
 		// For each table, add the table name to each record in the table
 		for (String t_name : t_names) {
+
+			// Log
+			Log.d("Task_add_table_name.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "t_name=" + t_name);
 			
+			// Select all records in that table
 			String sql = "SELECT * FROM " + t_name;
 			
 			Cursor c = null;
@@ -66,6 +73,55 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 			try {
 				// Exec query
 				c = wdb.rawQuery(sql, null);
+				
+				// Move to first
+				c.moveToFirst();
+				
+				/// B32: 1.2
+				// Processing to all records
+				for (int i = 0; i < c.getCount(); i++) {
+
+					// If the column 'table_name' is empty, 
+					//	then, insert the table name
+					if (c.getString(9) == null) {
+						
+						String q = "UPDATE " + t_name + " SET "
+								+ "table_name='" + t_name + "'"
+								+ " WHERE " + android.provider.BaseColumns._ID
+								+ "='" + c.getString(0) + "'";
+						
+						// Log
+						Log.d("Task_add_table_name.java"
+								+ "["
+								+ Thread.currentThread().getStackTrace()[2]
+										.getLineNumber() + "]", "q=" + q);
+						
+						try {
+							
+							wdb.execSQL(q);
+							
+							// Log
+							Log.d("Task_add_table_name.java" + "["
+							+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+							+ "]", "q => Done: " + q);
+							
+						} catch (SQLException e) {
+							// Log
+							Log.d("Task_add_table_name.java" + "["
+							+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+							+ "]", "Exception => " + e.toString() + " / " + "q: " + q);
+							
+						}
+
+						
+					}//if (c.getString(9) == null)
+					
+					// Move to the next record in the table
+					c.moveToNext();
+					
+				}//for (int i = 0; i < c.getCount(); i++)
+
+				
 //////////////////////////////////////////////////////
 //				// Get column list
 //				String[] col_list = 
@@ -81,73 +137,75 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 //				}
 //////////////////////////////////////////////////////
 				
-				// Log
-				Log.d("Methods.java" + "["
-						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-						+ "]",
-						"table=" + t_name
-						+ "/c.getCount()=" + c.getCount());
-				
-				// If the table has record(s)
-				if (c.getCount() > 0) {
-					// Move to first
-					c.moveToFirst();
-					
-					for (int i = 0; i < c.getCount(); i++) {
-
-//						// Log
-//						Log.d("Task_add_table_name.java"
-//								+ "["
-//								+ Thread.currentThread().getStackTrace()[2]
-//										.getLineNumber() + "]",
-//								"c.getLong(0)=" + c.getLong(0)
-//								+ "c.getString(9)=" + c.getString(9));
-						
-						if (c.getString(9) == null) {
-							
-							String q = "UPDATE " + t_name + " SET "
-									+ "table_name='" + t_name + "'"
-									+ " WHERE " + android.provider.BaseColumns._ID
-									+ "='" + c.getString(0) + "'";
-							
-							// Log
-							Log.d("Task_add_table_name.java"
-									+ "["
-									+ Thread.currentThread().getStackTrace()[2]
-											.getLineNumber() + "]", "q=" + q);
-							
-							try {
-								
-								wdb.execSQL(q);
-								
-								// Log
-								Log.d("DBUtils.java" + "["
-								+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-								+ "]", "q => Done: " + q);
-								
-							} catch (SQLException e) {
-								// Log
-								Log.d("DBUtils.java" + "["
-								+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-								+ "]", "Exception => " + e.toString() + " / " + "q: " + q);
-								
-							}
-
-							
-						}//if (c.getString(9) == null)
-						
-						// 
-						
-						c.moveToNext();
-						
-					}
-					
-				}//if (c.getCount() == condition)
-				
+				// B31: 1.1
+//////////////////////////////////////////////////////
+//				// Log
+//				Log.d("Methods.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]",
+//						"table=" + t_name
+//						+ "/c.getCount()=" + c.getCount());
+//				
+//				// If the table has record(s)
+//				if (c.getCount() > 0) {
+//					// Move to first
+//					c.moveToFirst();
+//					
+//					for (int i = 0; i < c.getCount(); i++) {
+//
+////						// Log
+////						Log.d("Task_add_table_name.java"
+////								+ "["
+////								+ Thread.currentThread().getStackTrace()[2]
+////										.getLineNumber() + "]",
+////								"c.getLong(0)=" + c.getLong(0)
+////								+ "c.getString(9)=" + c.getString(9));
+//						
+//						if (c.getString(9) == null) {
+//							
+//							String q = "UPDATE " + t_name + " SET "
+//									+ "table_name='" + t_name + "'"
+//									+ " WHERE " + android.provider.BaseColumns._ID
+//									+ "='" + c.getString(0) + "'";
+//							
+//							// Log
+//							Log.d("Task_add_table_name.java"
+//									+ "["
+//									+ Thread.currentThread().getStackTrace()[2]
+//											.getLineNumber() + "]", "q=" + q);
+//							
+//							try {
+//								
+//								wdb.execSQL(q);
+//								
+//								// Log
+//								Log.d("DBUtils.java" + "["
+//								+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//								+ "]", "q => Done: " + q);
+//								
+//							} catch (SQLException e) {
+//								// Log
+//								Log.d("DBUtils.java" + "["
+//								+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//								+ "]", "Exception => " + e.toString() + " / " + "q: " + q);
+//								
+//							}
+//
+//							
+//						}//if (c.getString(9) == null)
+//						
+//						// 
+//						
+//						c.moveToNext();
+//						
+//					}//for (int i = 0; i < c.getCount(); i++)
+//					
+//				}//if (c.getCount() == condition)
+//////////////////////////////////////////////////////
 				
 			} catch (Exception e) {
 				// Log
-				Log.d("Methods.java" + "["
+				Log.d("Task_add_table_name.java" + "["
 						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 						+ "]", "Exception => " + e.toString());
 				
@@ -163,6 +221,15 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		return "DONE";
 		
 	}//protected String doInBackground(String... params)
+
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+		
+		// debug
+		Toast.makeText(actv, "Task starts => Add table name", Toast.LENGTH_SHORT).show();
+	}
 	
 	
-}//public class SearchTask
+}//public class Task_add_table_name extends AsyncTask<String, Integer, String>
