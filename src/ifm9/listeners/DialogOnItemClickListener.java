@@ -145,6 +145,11 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				//
 				dlg_db_admin_item_set_new_column();
 				
+			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_restore_db))){
+				
+				//
+				dlg_db_admin_item_restore_db();
+				
 			}
 			
 			break;// case dlg_add_memos_gv
@@ -193,6 +198,13 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		}//switch (tag)
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+
+	private void dlg_db_admin_item_restore_db() {
+		
+		Methods.restore_db(actv);
+		
+		dlg.dismiss();
+	}
 
 	private void dlg_db_admin_item_set_new_column() {
 		// Dismiss dialog

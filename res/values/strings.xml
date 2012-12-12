@@ -106,6 +106,7 @@
     <string name="dlg_db_admin_item_backup_db">Backup DB</string>
     <string name="dlg_db_admin_item_refresh_db">DBリフレッシュ</string>
     <string name="dlg_db_admin_item_set_new_column">Set new column</string>
+    <string name="dlg_db_admin_item_restore_db">Restore db</string>
 
     <!-- dlg_delete_patterns.xml -->
     <string name="dlg_delete_patterns_title">定型句　削除</string>

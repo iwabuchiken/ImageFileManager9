@@ -51,15 +51,184 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 //		doInBackground_insert_table_name();
 		
 		/// B31 v-1.4
+		/// B31 v-1.5
 		// Test: modifying tables with 9 columns
-		doInBackground_modify_table_with_9_columns();
+//		doInBackground_modify_table_with_9_columns();
 		
+		/// B31 v-1.5
+//		Methods.restore_db(actv);
+		doInBackground_get_12_columns_tables();
 		
 		return "DONE";
 		
 	}//protected String doInBackground(String... params)
 
+	private void doInBackground_get_12_columns_tables() {
+
+		// Get list
+		List<String> t_names = Methods.get_table_list(actv, "ifm%");
+
+		// Get tables that has 10 columns
+		List<String> t_names_10 = this.get_table_list_10(t_names);
+
+		if (t_names_10 != null) {
+
+			// Log
+			Log.d("Task_add_table_name.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "t_names_10.size()=" + t_names_10.size());
+			
+			for (int i = 0; i < 10; i++) {
+
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "t_names_10.get(" + i + ")=" + t_names_10.get(i));
+
+			}
+
+		}//if (t_names_10 == condition)
+		//
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		for (String t_name : t_names) {
+
+			// Log
+			Log.d("Task_add_table_name.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "t_name=" + t_name);
+			
+			// Select all records in that table
+			String sql = "SELECT * FROM " + t_name;
+			
+			Cursor c = null;
+		
+			try {
+				// Exec query
+				c = wdb.rawQuery(sql, null);
+				
+				// If no record, then next
+				if (c.getCount() < 1) {
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "c.getCount() < 1");
+					
+					continue;
+					
+				}//if (c.getCount() == condition)
+
+				// Number of columns => 12?
+				if (c.getColumnCount() != 12) {
+					
+					continue;
+					
+				} else {//if (c.getColumnCount() == condition)
+					
+					// Move to first
+					c.moveToFirst();
+
+					for (int i = 0; i < c.getColumnCount(); i++) {
+						
+						// Log
+						Log.d("Task_add_table_name.java"
+								+ "["
+								+ Thread.currentThread().getStackTrace()[2]
+										.getLineNumber() + "]",
+								"c.getString(" + i + ")=" + c.getString(i));
+						
+					}
+					
+					
+				}//if (c.getColumnCount() == condition)
+		
+				
+			} catch (Exception e) {
+
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception => " + e.toString());
+			
+				continue;
+			
+			}//try
+		
+		}//for (String t_name : t_names)
+		
+		//
+		wdb.close();
+
+	}//private void doInBackground_get_12_columns_tables()
+
+	private List<String> get_table_list_10(List<String> t_names) {
+
+		// New list
+		List<String> t_names_10 = new ArrayList<String>();
+
+		// Setup db
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		// Build a new list
+		for (String t_name : t_names) {
+			
+			String sql = "SELECT * from " + t_name;
+			
+			// Log
+			Log.d("Task_add_table_name.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "t_name=" + t_name);
+			
+			Cursor c = null;
+			
+			try {
+				// Exec query
+				c = wdb.rawQuery(sql, null);
+				
+				// If no record, then next
+				if (c.getColumnCount() == 10) {
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "Column count=10");
+
+					t_names_10.add(t_name);
+					
+					continue;
+					
+				}//if (c.getCount() == condition)
+				
+			} catch (Exception e) {
+
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception => " + e.toString());
+			
+				continue;
+			
+			}//try
+			
+		}//for (String t_name : t_names)
+		
+		// Close db
+		wdb.close();
+		
+		// Return
+		return t_names_10;
+		
+	}//private List<String> get_table_list_10(List<String> t_names)
+
 	private void doInBackground_modify_table_with_9_columns() {
+
+		/////////////////////////////////////////////////////////
+		/// B31 v-1.5
 
 		// DB setup
 		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
@@ -67,30 +236,152 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 
 		// Table name
 		String t_name = "IFM9__Violin";
+//		String t_name = "IFM9";
 		
 		// Select all records in that table
 		String sql = "SELECT * FROM " + t_name;
 		
+		// Log
+		Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sql=" + sql);
+		
 		Cursor c = null;
 		
 		try {
+			/*********************************
+			 * Generate a cursor
+			 * Build an objects list
+			 *********************************/
 			// Exec query
 			c = wdb.rawQuery(sql, null);
+
+			// Contain any record?
+			if (c.getCount() < 1) {
+				
+				// Log
+				Log.d("Task_add_table_name.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Result => c.getCount() < 1");
+				
+				// Close db
+				wdb.close();
+				
+				// Exit the method
+				return;
+				
+			}//if (c.getCount() == condition)
+
+			// Number of columns is 10?
+			if (c.getColumnCount() != 10) {
+
+				// Log
+				Log.d("Task_add_table_name.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]",
+						"Result => c.getColumnCount() != 10");
+
+				// Close db
+				wdb.close();
+				
+				// Exit the method
+				return;
+				
+			}//if (c.getCount() == condition)
 			
-			// Move to first
-			c.moveToFirst();
+//			// Move to first
+//			c.moveToFirst();
 			
-			// Log
-			Log.d("Task_add_table_name.java"
-					+ "["
-					+ Thread.currentThread().getStackTrace()[2]
-							.getLineNumber() + "]",
-					"t_name=" + t_name + "(c.getColumnCount()=" + c.getColumnCount() + ")");
+			// Create a list of objects using db data
+			List<Object[]> list = doInBackground_modify_table_with_9_columns_1_prepare_list(c);
 			
-			// Log
-			Log.d("Task_add_table_name.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "c.getCount()=" + c.getCount());
+			// Validate the list
+			if (list == null) {
+				
+				// Log
+				Log.d("Task_add_table_name.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "list == null");
+				
+				wdb.close();
+				
+				return;
+				
+			} else {//if (list == null)
+				
+				// Log
+				Log.d("Task_add_table_name.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]",
+						"list.size()" + list.size());
+				
+			}//if (list == null)
+			
+			/*********************************
+			 * Drop the existing table
+			 * Create a new one
+			 *********************************/
+//			// Delete the existing table
+//			boolean res = Methods.drop_table(actv, MainActv.dbName, t_name);
+//			
+//			if (res != true) {
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"Table was not dropped; exitting the method");
+//				
+//				wdb.close();
+//				
+//				return;
+//				
+//			}//if (res != true)
+//			
+//			// Then, create a new one with the same table name
+//			res = Methods.create_table(actv, MainActv.dbName, t_name);
+//			
+			/*********************************
+			 * Insert data from the list into db
+			 *********************************/
+			Object[] obj = null;
+			
+			for (int j = 0; j < 5; j++) {
+
+				obj = list.get(j);
+				
+				// Log
+				Log.d("Task_add_table_name.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "list.get(" + j + ")");
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "obj.length=" + obj.length);
+				
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "obj.toString()" + obj.toString());
+				
+				for (int i = 0; i < obj.length; i++) {
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "obj[" + i + "]=" + obj[i]);
+					
+				}//for (int i = 0; i < obj.length; i++)
+
+				
+			}//for (int j = 0; j < 3; j++)
 			
 		} catch (Exception e) {
 
@@ -103,8 +394,91 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 
 		// Close db
 		wdb.close();
-
+		/////////////////////////////////////////////////////////
+		
+		
+		/////////////////////////////////////////////////////////
+		/// B31 v-1.4
+		
+//		// DB setup
+//		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+//		SQLiteDatabase wdb = dbu.getWritableDatabase();
+//
+//		// Table name
+//		String t_name = "IFM9__Violin";
+//		
+//		// Select all records in that table
+//		String sql = "SELECT * FROM " + t_name;
+//		
+//		Cursor c = null;
+//		
+//		try {
+//			// Exec query
+//			c = wdb.rawQuery(sql, null);
+//			
+//			// Move to first
+//			c.moveToFirst();
+//			
+//			// Log
+//			Log.d("Task_add_table_name.java"
+//					+ "["
+//					+ Thread.currentThread().getStackTrace()[2]
+//							.getLineNumber() + "]",
+//					"t_name=" + t_name + "(c.getColumnCount()=" + c.getColumnCount() + ")");
+//			
+//			// Log
+//			Log.d("Task_add_table_name.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "c.getCount()=" + c.getCount());
+//			
+//		} catch (Exception e) {
+//
+//			// Log
+//			Log.e("Task_add_table_name.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Exception => " + e.toString());
+//			
+//		}//try
+//
+//		// Close db
+//		wdb.close();
+		/////////////////////////////////////////////////////////
+		
 	}//private void doInBackground_modify_table_with_9_columns()
+
+	private List<Object[]> doInBackground_modify_table_with_9_columns_1_prepare_list(
+			Cursor c) {
+		
+		// List object
+		List<Object[]> list = new ArrayList<Object[]>();
+		
+		// Move to first
+		c.moveToFirst();
+		
+		for (int i = 0; i < c.getCount(); i++) {
+
+			Object[] obj = new Object[]{
+				c.getLong(0),	// _id
+				c.getLong(1),	// file_id
+				c.getString(2),	// file_path
+				c.getString(3),	// file_name
+				c.getString(4),	// date_added
+				c.getString(5),	// date_modified
+				c.getString(6),	// memos
+				c.getString(7),	// tags
+				c.getString(8),	// last_viewed_at
+				c.getString(9)	// table_name
+			};
+			
+			// Add object to the list
+			list.add(obj);
+			
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		return list;
+	}//private List<Object> doInBackground_modify_table_with_9_columns_1_prepare_list
 
 	private void doInBackground_insert_table_name() {
 		// Get table name list

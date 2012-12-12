@@ -65,6 +65,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import android.os.AsyncTask;
+import android.os.Looper;
 
 // Apache
 import org.apache.commons.lang.StringUtils;
@@ -4412,7 +4413,8 @@ public class Methods {
 		String[] choices = {
 				actv.getString(R.string.dlg_db_admin_item_backup_db),
 				actv.getString(R.string.dlg_db_admin_item_refresh_db),
-				actv.getString(R.string.dlg_db_admin_item_set_new_column)
+				actv.getString(R.string.dlg_db_admin_item_set_new_column),
+				actv.getString(R.string.dlg_db_admin_item_restore_db)
 		};
 		
 		List<String> list = new ArrayList<String>();
@@ -5286,8 +5288,21 @@ public class Methods {
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "File copied: " + src);
 			
-			// debug
-			Toast.makeText(actv, "DB restoration => Done", 3000).show();
+			if (Looper.myLooper() == Looper.getMainLooper()) {
+				
+				// debug
+				Toast.makeText(actv, "DB restoration => Done", 3000).show();
+				
+			} else {//if (condition)
+
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "DB restoration => Done");
+				
+			}//if (condition)
+			
 			
 			return true;
 
@@ -5310,6 +5325,73 @@ public class Methods {
 		}//try
 		
 	}//private boolean restore_db()
+
+	public static void restore_db(Activity actv) {
+    	
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting: restore_db()");
+
+		/*********************************
+		 * Get the absolute path of the latest backup file
+		 *********************************/
+		// Get the most recently-created db file
+		String src_dir = "/mnt/sdcard-ext/IFM9_backup";
+		
+		File f_dir = new File(src_dir);
+		
+		File[] src_dir_files = f_dir.listFiles();
+		
+		// If no files in the src dir, quit the method
+		if (src_dir_files.length < 1) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "No files in the dir: " + src_dir);
+			
+			return;
+			
+		}//if (src_dir_files.length == condition)
+		
+		// Latest file
+		File f_src_latest = src_dir_files[0];
+		
+		
+		for (File file : src_dir_files) {
+			
+			if (f_src_latest.lastModified() < file.lastModified()) {
+						
+				f_src_latest = file;
+				
+			}//if (variable == condition)
+			
+		}//for (File file : src_dir_files)
+		
+		// Show the path of the latest file
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "f_src_latest=" + f_src_latest.getAbsolutePath());
+		
+		/*********************************
+		 * Restore file
+		 *********************************/
+		String src = f_src_latest.getAbsolutePath();
+		String dst = StringUtils.join(
+				new String[]{"/data/data/ifm9.main/databases", MainActv.dbName},
+				File.separator);
+		
+		boolean res = Methods.restore_db(actv, MainActv.dbName, src, dst);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "res=" + res);
+		
+	}//private void restore_db()
+
 
 	public static void show_history(Activity actv) {
 		/*********************************
@@ -5815,7 +5897,7 @@ public class Methods {
 //		return null;
 	}//public static String[] get_column_list(Activity actv, String tableName)
 
-    public static void drop_table(Activity actv, String dbName, String tableName) {
+    public static boolean drop_table(Activity actv, String dbName, String tableName) {
     	// Setup db
 		DBUtils dbu = new DBUtils(actv, dbName);
 		
@@ -5829,6 +5911,7 @@ public class Methods {
 			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Table dropped: " + tableName);
+
 		} else {//if (res == true)
 
 			// Log
@@ -5840,7 +5923,9 @@ public class Methods {
 		
 
 		wdb.close();
-		
+
+		// Return
+		return res;
 		
 	}//private void drop_table(String tableName)
 
@@ -6287,6 +6372,26 @@ public class Methods {
 		
 	}//public boolean update_table_add_new_column
 
+	public static boolean create_table(Activity actv, String dbName,
+			String t_name) {
+
+		// db setup
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		// Create a table
+		boolean res = dbu.createTable(wdb, t_name, 
+//					dbu.get_cols(), dbu.get_col_types());
+							DBUtils.cols, DBUtils.col_types);
+		
+		// Close db
+		wdb.close();
+		
+		// Return
+		return res;
+
+	}//public static boolean create_table
 
 }//public class Methods
 
