@@ -46,7 +46,67 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 
 	@Override
 	protected String doInBackground(String... params) {
+
+		// B31 v-1.3
+//		doInBackground_insert_table_name();
 		
+		/// B31 v-1.4
+		// Test: modifying tables with 9 columns
+		doInBackground_modify_table_with_9_columns();
+		
+		
+		return "DONE";
+		
+	}//protected String doInBackground(String... params)
+
+	private void doInBackground_modify_table_with_9_columns() {
+
+		// DB setup
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		// Table name
+		String t_name = "IFM9__Violin";
+		
+		// Select all records in that table
+		String sql = "SELECT * FROM " + t_name;
+		
+		Cursor c = null;
+		
+		try {
+			// Exec query
+			c = wdb.rawQuery(sql, null);
+			
+			// Move to first
+			c.moveToFirst();
+			
+			// Log
+			Log.d("Task_add_table_name.java"
+					+ "["
+					+ Thread.currentThread().getStackTrace()[2]
+							.getLineNumber() + "]",
+					"t_name=" + t_name + "(c.getColumnCount()=" + c.getColumnCount() + ")");
+			
+			// Log
+			Log.d("Task_add_table_name.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount()=" + c.getCount());
+			
+		} catch (Exception e) {
+
+			// Log
+			Log.e("Task_add_table_name.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+		}//try
+
+		// Close db
+		wdb.close();
+
+	}//private void doInBackground_modify_table_with_9_columns()
+
+	private void doInBackground_insert_table_name() {
 		// Get table name list
 //		List<String> t_names = Methods.get_table_list(actv, "ifm");
 		List<String> t_names = Methods.get_table_list(actv, "ifm%");
@@ -275,10 +335,10 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 				+ "col_num_unknown=" + col_num_unknown);
 		
 /////////////////////////////////////////////////////////////////////
+
 		
-		return "DONE";
-		
-	}//protected String doInBackground(String... params)
+	}//private void doInBackground_insert_table_name()
+
 
 	@Override
 	protected void onPreExecute() {
