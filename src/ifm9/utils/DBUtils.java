@@ -330,7 +330,7 @@ public class DBUtils extends SQLiteOpenHelper{
 	}//public boolean dropTable(String tableName) 
 
 	public boolean insertData(SQLiteDatabase db, String tableName, 
-												String[] columnNames, String[] values) {
+								String[] col_names, String[] values) {
 		
 ////		String sql = "SELECT * FROM TABLE " + DBUtils.table_name_memo_patterns;
 //		String sql = "SELECT * FROM " + DBUtils.table_name_memo_patterns;
@@ -359,9 +359,9 @@ public class DBUtils extends SQLiteOpenHelper{
 			ContentValues val = new ContentValues();
 			
 			// Put values
-			for (int i = 0; i < columnNames.length; i++) {
-				val.put(columnNames[i], values[i]);
-			}//for (int i = 0; i < columnNames.length; i++)
+			for (int i = 0; i < col_names.length; i++) {
+				val.put(col_names[i], values[i]);
+			}//for (int i = 0; i < col_names.length; i++)
 			
 			// Insert data
 			db.insert(tableName, null, val);
@@ -375,8 +375,8 @@ public class DBUtils extends SQLiteOpenHelper{
 			// Log
 //			Log.d("DBUtils.java" + "["
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "Data inserted => " + "(" + columnNames[0] + " => " + values[0] + 
-//				" / " + columnNames[3] + " => " + values[3] + ")");
+//				+ "]", "Data inserted => " + "(" + col_names[0] + " => " + values[0] + 
+//				" / " + col_names[3] + " => " + values[3] + ")");
 			
 			return true;
 		} catch (Exception e) {
@@ -391,7 +391,7 @@ public class DBUtils extends SQLiteOpenHelper{
 //		//debug
 //		return false;
 		
-	}//public insertData(String tableName, String[] columnNames, String[] values)
+	}//public insertData(String tableName, String[] col_names, String[] values)
 
 	public boolean insertData(SQLiteDatabase db, String tableName, 
 											String[] columnNames, long[] values) {

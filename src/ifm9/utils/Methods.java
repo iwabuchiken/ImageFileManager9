@@ -2049,8 +2049,9 @@ public class Methods {
 		
 	}//private static int insertDataIntoDB(Activity actv, Cursor c)
 
-	private static boolean insertDataIntoDB(
-			Activity actv, String tableName, String[] types, String[] values) {
+//	private static boolean insertDataIntoDB(Activity actv,
+	public static boolean insertDataIntoDB(Activity actv,
+			String tableName, String[] col_names, String[] values) {
 		/*----------------------------
 		* Steps
 		* 1. Set up db
@@ -2068,15 +2069,31 @@ public class Methods {
 		/*----------------------------
 		* 2. Insert data
 		----------------------------*/
-		boolean result = dbu.insertData(wdb, tableName, types, values);
+		boolean result = dbu.insertData(wdb, tableName, col_names, values);
 		
 		/*----------------------------
 		* 3. Show message
 		----------------------------*/
 		if (result == true) {
 		
-			// debug
-			Toast.makeText(actv, "Data stored", 2000).show();
+			if (Looper.myLooper() == Looper.getMainLooper()) {
+				
+				// debug
+				Toast.makeText(actv, "Data stored", 2000).show();
+				
+			} else {//if (condition)
+
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]",
+						"Data stored");
+				
+			}//if (condition)
+
+//			// debug
+//			Toast.makeText(actv, "Data stored", 2000).show();
 			
 			/*----------------------------
 			* 4. Close db
@@ -2087,8 +2104,24 @@ public class Methods {
 			
 		} else {//if (result == true)
 		
-			// debug
-			Toast.makeText(actv, "Store data => Failed", 200).show();
+//			// debug
+//			Toast.makeText(actv, "Store data => Failed", 200).show();
+			
+			if (Looper.myLooper() == Looper.getMainLooper()) {
+				
+				// debug
+				Toast.makeText(actv, "Store data => Failed", 2000).show();
+				
+			} else {//if (condition)
+
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]",
+						"Store data => Failed");
+				
+			}//if (condition)
 			
 			/*----------------------------
 			* 4. Close db
