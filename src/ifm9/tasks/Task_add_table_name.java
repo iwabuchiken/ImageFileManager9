@@ -71,6 +71,9 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		// Get tables that has 10 columns
 		List<String> t_names_10 = this.get_table_list_10(t_names);
 
+		
+		doInBackground_get_12_columns_tables_B31_v1_7(t_names);
+		
 		/// B31 v-1.5 ////////////////////////////////////
 //		if (t_names_10 != null) {
 //
@@ -90,219 +93,221 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 //
 //		}//if (t_names_10 == condition)
 		////////////////////////////////////////////////
-		
-		//
-		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
-		SQLiteDatabase wdb = dbu.getWritableDatabase();
 
 		/// B31 v-1.6 ////////////////////////////////////
-		List<Object[]> data_list = new ArrayList<Object[]>();
+		//
+//		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+//		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+//		List<Object[]> data_list = new ArrayList<Object[]>();
+//		
+//		// Target table
+//		String t_name = "IFM9__Android__AM";
+//		
+//		// Sql sentence
+//		String sql = "SELECT * from " + t_name;
+//		
+//		Cursor c = null;
+//	
+//		try {
+//			// Exec query
+//			c = wdb.rawQuery(sql, null);
+//			
+//			// Count check
+//			if (c.getCount() < 1) {
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "c.getCount() < 1");
+//				
+//				wdb.close();
+//				
+//				return;
+//				
+//			}//if (c.getCount() == condition)
+//			
+//			// Move to first
+//			c.moveToFirst();
+//			
+////			Object[] data = new Object[c.getColumnCount() - 1];
+//			String[] data = new String[c.getColumnCount() - 1];
+//			
+////			for (int i = 0; i < c.getColumnCount(); i++) {
+//			for (int i = 1; i < c.getColumnCount(); i++) {
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"c.getString(" + i + ")" + c.getString(i));
+//				
+//				if (c.getString(i) != null) {
+//
+////					data[i] = c.getString(i);
+//					data[i - 1] = c.getString(i);
+//
+//				} else {//if (c.getString(i) == condition)
+//					
+//					data[i] = null;
+//					
+//					// Log
+//					Log.d("Task_add_table_name.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]",
+//							"c.getString(" + i + ") != null");
+//					
+//				}//if (c.getString(i) == condition)
+//				
+//			}//for (int i = 0; i < c.getColumnCount(); i++)
+//			
+//			for (int i = 0; i < data.length; i++) {
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"data[" + i + "]" + data[i]);
+//				
+//			}
+//			
+//			// Insert data to a new table
+//			String t_name_new = "IFM9__Android__AM__TEST";
+//			
+//			boolean res = Methods.insertDataIntoDB(
+//							actv, t_name_new, DBUtils.cols, data);
+//			
+//			// Log
+//			Log.d("Task_add_table_name.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "res=" + res);
+//			
+//			//
+//			sql = "SELECT * from " + t_name_new;
+//			
+//			try {
+//				c = wdb.rawQuery(sql, null);
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"t_name_new=" + t_name_new);
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"c.getColumnCount()=" + c.getColumnCount());
+//				
+//				if (c.getCount() > 0) {
+//
+//					// Move to first
+//					c.moveToFirst();
+//					
+//					for (int i = 0; i < c.getColumnCount(); i++) {
+//						
+//						// Log
+//						Log.d("Task_add_table_name.java"
+//								+ "["
+//								+ Thread.currentThread().getStackTrace()[2]
+//										.getLineNumber() + "]",
+//								"c.getString(" + i + ")=" + c.getString(i));
+//						
+//					}//for (int i = 0; i < c.getColumnCount(); i++)
+//					
+//				} else {//if (c.getCount() > 0)
+//					
+//					// Log
+//					Log.d("Task_add_table_name.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", "!c.getCount() > 0");
+//					
+//				}//if (c.getCount() > 0)
+//				
+//				
+//				
+//			} catch (Exception e) {
+//				
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				
+//			}//try
+//
+//			// Try => Table "...GET_UP
+//			t_name_new = "IFM9__MEMO__GET_UP";
+//			
+//			sql = "SELECT * from " + t_name_new;
+//			
+//			try {
+//				c = wdb.rawQuery(sql, null);
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"t_name_new=" + t_name_new);
+//				
+//				// Log
+//				Log.d("Task_add_table_name.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"c.getColumnCount()=" + c.getColumnCount());
+//				
+//				if (c.getCount() > 0) {
+//
+//					// Move to first
+//					c.moveToFirst();
+//					
+//					for (int i = 0; i < c.getColumnCount(); i++) {
+//						
+//						// Log
+//						Log.d("Task_add_table_name.java"
+//								+ "["
+//								+ Thread.currentThread().getStackTrace()[2]
+//										.getLineNumber() + "]",
+//								"c.getString(" + i + ")=" + c.getString(i));
+//						
+//					}//for (int i = 0; i < c.getColumnCount(); i++)
+//					
+//				} else {//if (c.getCount() > 0)
+//					
+//					// Log
+//					Log.d("Task_add_table_name.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", "!c.getCount() > 0");
+//					
+//				}//if (c.getCount() > 0)
+//				
+//				
+//				
+//			} catch (Exception e) {
+//				
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				
+//			}//try
+//			
+//		} catch (Exception e) {
+//
+//			// Log
+//			Log.d("Task_add_table_name.java" + "["
+//			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//			+ "]", "Exception => " + e.toString());
+//		
+//		}//try
 		
-		// Target table
-		String t_name = "IFM9__Android__AM";
-		
-		// Sql sentence
-		String sql = "SELECT * from " + t_name;
-		
-		Cursor c = null;
-	
-		try {
-			// Exec query
-			c = wdb.rawQuery(sql, null);
-			
-			// Count check
-			if (c.getCount() < 1) {
-				
-				// Log
-				Log.d("Task_add_table_name.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]", "c.getCount() < 1");
-				
-				wdb.close();
-				
-				return;
-				
-			}//if (c.getCount() == condition)
-			
-			// Move to first
-			c.moveToFirst();
-			
-//			Object[] data = new Object[c.getColumnCount() - 1];
-			String[] data = new String[c.getColumnCount() - 1];
-			
-//			for (int i = 0; i < c.getColumnCount(); i++) {
-			for (int i = 1; i < c.getColumnCount(); i++) {
-				
-				// Log
-				Log.d("Task_add_table_name.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]",
-						"c.getString(" + i + ")" + c.getString(i));
-				
-				if (c.getString(i) != null) {
-
-//					data[i] = c.getString(i);
-					data[i - 1] = c.getString(i);
-
-				} else {//if (c.getString(i) == condition)
-					
-					data[i] = null;
-					
-					// Log
-					Log.d("Task_add_table_name.java"
-							+ "["
-							+ Thread.currentThread().getStackTrace()[2]
-									.getLineNumber() + "]",
-							"c.getString(" + i + ") != null");
-					
-				}//if (c.getString(i) == condition)
-				
-			}//for (int i = 0; i < c.getColumnCount(); i++)
-			
-			for (int i = 0; i < data.length; i++) {
-				
-				// Log
-				Log.d("Task_add_table_name.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]",
-						"data[" + i + "]" + data[i]);
-				
-			}
-			
-			// Insert data to a new table
-			String t_name_new = "IFM9__Android__AM__TEST";
-			
-			boolean res = Methods.insertDataIntoDB(
-							actv, t_name_new, DBUtils.cols, data);
-			
-			// Log
-			Log.d("Task_add_table_name.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "res=" + res);
-			
-			//
-			sql = "SELECT * from " + t_name_new;
-			
-			try {
-				c = wdb.rawQuery(sql, null);
-				
-				// Log
-				Log.d("Task_add_table_name.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]",
-						"t_name_new=" + t_name_new);
-				
-				// Log
-				Log.d("Task_add_table_name.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]",
-						"c.getColumnCount()=" + c.getColumnCount());
-				
-				if (c.getCount() > 0) {
-
-					// Move to first
-					c.moveToFirst();
-					
-					for (int i = 0; i < c.getColumnCount(); i++) {
-						
-						// Log
-						Log.d("Task_add_table_name.java"
-								+ "["
-								+ Thread.currentThread().getStackTrace()[2]
-										.getLineNumber() + "]",
-								"c.getString(" + i + ")=" + c.getString(i));
-						
-					}//for (int i = 0; i < c.getColumnCount(); i++)
-					
-				} else {//if (c.getCount() > 0)
-					
-					// Log
-					Log.d("Task_add_table_name.java"
-							+ "["
-							+ Thread.currentThread().getStackTrace()[2]
-									.getLineNumber() + "]", "!c.getCount() > 0");
-					
-				}//if (c.getCount() > 0)
-				
-				
-				
-			} catch (Exception e) {
-				
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-			}//try
-
-			// Try => Table "...GET_UP
-			t_name_new = "IFM9__MEMO__GET_UP";
-			
-			sql = "SELECT * from " + t_name_new;
-			
-			try {
-				c = wdb.rawQuery(sql, null);
-				
-				// Log
-				Log.d("Task_add_table_name.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]",
-						"t_name_new=" + t_name_new);
-				
-				// Log
-				Log.d("Task_add_table_name.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]",
-						"c.getColumnCount()=" + c.getColumnCount());
-				
-				if (c.getCount() > 0) {
-
-					// Move to first
-					c.moveToFirst();
-					
-					for (int i = 0; i < c.getColumnCount(); i++) {
-						
-						// Log
-						Log.d("Task_add_table_name.java"
-								+ "["
-								+ Thread.currentThread().getStackTrace()[2]
-										.getLineNumber() + "]",
-								"c.getString(" + i + ")=" + c.getString(i));
-						
-					}//for (int i = 0; i < c.getColumnCount(); i++)
-					
-				} else {//if (c.getCount() > 0)
-					
-					// Log
-					Log.d("Task_add_table_name.java"
-							+ "["
-							+ Thread.currentThread().getStackTrace()[2]
-									.getLineNumber() + "]", "!c.getCount() > 0");
-					
-				}//if (c.getCount() > 0)
-				
-				
-				
-			} catch (Exception e) {
-				
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-			}//try
-			
-		} catch (Exception e) {
-
-			// Log
-			Log.d("Task_add_table_name.java" + "["
-			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-			+ "]", "Exception => " + e.toString());
-		
-		}//try
+		//////////////////////////////////////////////////////////B31 v-1.6
 		
 		/// B31 v-1.5 ////////////////////////////////////
 //		for (String t_name : t_names) {
@@ -320,7 +325,7 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 //			try {
 //				// Exec query
 //				c = wdb.rawQuery(sql, null);
-//				
+				
 //				// If no record, then next
 //				if (c.getCount() < 1) {
 //					
@@ -338,7 +343,7 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 //				if (c.getColumnCount() != 12) {
 //					
 //					continue;
-//					
+
 //				} else {//if (c.getColumnCount() == condition)
 //					
 //					// Move to first
@@ -375,9 +380,100 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		//////////////////////////////////////////
 		
 		//
-		wdb.close();
+//		wdb.close();
 
 	}//private void doInBackground_get_12_columns_tables()
+
+	private void doInBackground_get_12_columns_tables_B31_v1_7(
+			List<String> t_names) {
+		
+		// Setup db
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		List<String[]> data_list = new ArrayList<String[]>();
+		
+		int count_table_num = 0;
+		
+		for (String t_name : t_names) {
+			
+			// Log
+			Log.d("Task_add_table_name.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "t_name=" + t_name);
+			
+			// Select all records in that table
+			String sql = "SELECT * FROM " + t_name;
+			
+			Cursor c = null;
+		
+			try {
+				// Exec query
+				c = wdb.rawQuery(sql, null);
+
+				// If no record, then next
+				if (c.getCount() < 1) {
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "c.getCount() < 1");
+					
+					continue;
+					
+				}//if (c.getCount() == condition)
+
+				// Number of columns => 12?
+				if (c.getColumnCount() != 10) {
+					
+					continue;
+					
+				}//if (c.getColumnCount() != 10)
+
+				//
+				// Log
+				Log.d("Task_add_table_name.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "t_name=" + t_name);
+				
+				count_table_num += 1;
+				
+				/*********************************
+				 * Get all data from each record,
+				 * Build a list of data arrays,
+				 * Drop the original table,
+				 * Create a new one with the same name,
+				 * Insert data from the list into the new table
+				 * Repeat the above procedures for the rest of the
+				 * 		tables.
+				 *********************************/
+
+			} catch (Exception e) {
+
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception => " + e.toString());
+			
+				continue;
+			
+			}//try
+
+		}//for (String t_name : t_names)
+		
+		// Log
+		Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "count_table_num=" + count_table_num);
+
+		
+		
+		// Close db
+		wdb.close();
+		
+	}//private void doInBackground_get_12_columns_tables_B31_v1_7
 
 	private List<String> get_table_list_10(List<String> t_names) {
 
