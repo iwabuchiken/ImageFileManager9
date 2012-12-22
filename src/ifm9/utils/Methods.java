@@ -4079,6 +4079,8 @@ public class Methods {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "file_id=" + file_id);
 		
+//		Methods.getData_debug_show_all_data(actv, tableName, file_id);
+		
 		rdb.close();
 		
 		return ti;
