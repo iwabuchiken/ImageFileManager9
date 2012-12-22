@@ -3854,7 +3854,7 @@ public class Methods {
 		/*----------------------------
 		 * 1-2. Set text to edit text
 			----------------------------*/
-		TI ti = getData(actv, tableName, file_id);
+		TI ti = Methods.getData(actv, tableName, file_id);
 		
 		EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
 		
@@ -4073,6 +4073,11 @@ public class Methods {
 		SQLiteDatabase rdb = dbu.getReadableDatabase();
 		
 		TI ti = dbu.getData(actv, rdb, tableName, file_id);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "file_id=" + file_id);
 		
 		rdb.close();
 		
