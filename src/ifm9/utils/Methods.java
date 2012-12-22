@@ -4074,18 +4074,84 @@ public class Methods {
 		
 		TI ti = dbu.getData(actv, rdb, tableName, file_id);
 		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "file_id=" + file_id);
-		
-//		Methods.getData_debug_show_all_data(actv, tableName, file_id);
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "file_id=" + file_id);
+//		
+//		Methods.getData_B32_v_1_1_show_all_data(actv, tableName, file_id);
 		
 		rdb.close();
 		
 		return ti;
 		
 	}//public ThumbnailItem getData(Activity actv, String tableName, long file_id)
+
+	private static void getData_B32_v_1_1_show_all_data(Activity actv,
+			String tableName, long file_id) {
+		/*********************************
+		 * memo
+		 *********************************/
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+//		String sql = "SELECT * FROM " + tableName + " WHERE 'file_id'=" + file_id;
+//		String sql = "SELECT * FROM " + tableName + " WHERE 'file_id'= '" + file_id + "'";
+		String sql = "SELECT * FROM " + tableName + " WHERE file_id= '" + file_id + "'";
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sql=" + sql);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "file_id=" + file_id);
+		
+		Cursor c = null;
+		
+		try {
+			
+			c = rdb.rawQuery(sql, null);
+			
+//			c.moveToFirst();
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getColumnCount()=" + c.getColumnCount());
+			
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount()=" + c.getCount());
+			
+			
+//			for (int i = 0; i < c.getColumnCount(); i++) {
+//				
+//				// Log
+//				Log.d("Methods.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]",
+//						"c.getString(" + i + ")=" + c.getString(i));
+//				
+//			}
+			
+			rdb.close();
+			
+		} catch (Exception e) {
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			rdb.close();
+			
+		}//try
+		
+	}//private static void getData_B32_v_1_1_show_all_data
 
 	public static void addMemo(Activity actv, Dialog dlg, long file_id, String tableName) {
 		/*----------------------------

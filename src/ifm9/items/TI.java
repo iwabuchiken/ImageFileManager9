@@ -26,6 +26,8 @@ public class TI {
 	String tags;
 	
 	long last_viewed_at;
+	
+	String table_name;
 
 	/*----------------------------
 	 * Constructor
@@ -48,9 +50,10 @@ public class TI {
 	/*----------------------------
 	 * Methods
 		----------------------------*/
-	
+	// Num of params => 7
 	public TI(long fileId, String file_path, String file_name, 
-			long date_added, long date_modified, String memo, String tags) {
+			long date_added, long date_modified, String memo,
+			String tags) {
 		//
 		this.fileId = fileId;
 		
@@ -65,8 +68,10 @@ public class TI {
 		
 	}//public ThumbnailItem()
 
+	// Num of params => 8
 	public TI(long fileId, String file_path, String file_name, 
-			long date_added, long date_modified, String memo, String tags, long last_viewed_at) {
+			long date_added, long date_modified, String memo,
+			String tags, long last_viewed_at) {
 		//
 		this.fileId = fileId;
 		
@@ -83,6 +88,27 @@ public class TI {
 		
 	}//public ThumbnailItem()
 
+	// Num of params => 9
+	public TI(long fileId, String file_path, String file_name, 
+			long date_added, long date_modified, String memo,
+			String tags, long last_viewed_at, String table_name) {
+		//
+		this.fileId = fileId;
+		
+		this.file_path = file_path;
+		this.file_name = file_name;
+				
+		this.date_added = date_added;
+		this.date_modified = date_modified;
+		
+		this.memo = memo;
+		this.tags = tags;
+		
+		this.last_viewed_at = last_viewed_at;
+		
+		this.table_name = table_name;
+		
+	}//public ThumbnailItem()
 
 	public long getFileId() {
 		return fileId;
