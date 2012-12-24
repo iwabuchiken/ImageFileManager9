@@ -47,7 +47,10 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 	@Override
 	protected String doInBackground(String... params) {
 
-		doInBackground_B31_v_1_11_insert_table_name();
+		// 20121224_175006
+		doInBackground_B28_v_1_1_fix_records();
+		
+//		doInBackground_B31_v_1_11_insert_table_name();
 		
 //		doInBackground_get_12_columns_tables_B31_v_1_9();
 		
@@ -70,6 +73,134 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		return "DONE";
 		
 	}//protected String doInBackground(String... params)
+
+	private void doInBackground_B28_v_1_1_fix_records() {
+		/*********************************
+		 * memo
+		 *********************************/
+		List<String> t_names = Methods.get_table_list(actv, "IFM9__ELECTRONICS__D5%");
+
+		// Setup db
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		// Counter
+		int count_null = 0;
+		int count_blank = 0;
+		int count_yes = 0;
+
+		// Log
+		Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "t_names.size()=" + t_names.size());
+		
+		for (String t_name : t_names) {
+			
+			// Execute a query,
+			String sql = "SELECT * FROM " + t_name;
+			
+			Cursor c = null;
+
+			/*********************************
+			 * Execute query
+			 * If the table doesn't have a record, then
+			 * 		next table
+			 *********************************/
+			try {
+				// Exec query
+				c = wdb.rawQuery(sql, null);
+
+				// If the table doesn't have a record, then
+				if (c.getCount() < 1) {
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "c.getCount() < 1");
+
+					// next table
+					continue;
+					
+				} else {//if (c.getCount() == condition)
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]",
+							"Query done => c.getCount()=" + c.getCount());
+					
+				}//if (c.getCount() == condition)
+				
+				/*********************************
+				 * Move the cursor to the first one,
+				 * Do c.getString(11)
+				 * If no value in it, then message so
+				 * If the two values conflict, then also, message so
+				 *********************************/
+				c.moveToFirst();
+
+				for (int i = 0; i < c.getCount(); i++) {
+
+					// file_id
+					String val = c.getString(3);
+					
+					// If no value in it, then message so
+					if (val == null || val.equals("null")) {
+						
+						// Count
+						count_null += 1;
+						
+						Methods.update_data_table_name(actv, wdb, t_name, c.getLong(0), t_name);
+						
+					} else if (val.equals("")) {//if (val == null)
+//						// Log
+//						Log.d("Task_add_table_name.java"
+//								+ "["
+//								+ Thread.currentThread().getStackTrace()[2]
+//										.getLineNumber() + "]", "val.equals(\"\")");
+
+						// Count
+//						count_null += 1;
+						count_blank += 1;
+
+					// If the two values conflict, then also, message so
+					} else {//if (val == null)
+						
+						// Count
+						count_yes += 1;
+						
+					}//if (val == null)
+
+				}//for (int i = 0; i < c.getCount(); i++)
+				
+			} catch (Exception e) {
+
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception => " + e.toString());
+			
+				continue;
+			
+			}//try
+			
+		}//for (String t_name : t_names)
+		
+		wdb.close();
+		
+		// Show the result
+		// Log
+		Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]",
+				"count_null=" + count_null
+				+ "count_blank=" + count_blank
+				+ "count_yes=" + count_yes
+				);
+
+	}//private void doInBackground_B28_v_1_1_fix_records()
 
 	private void doInBackground_B31_v_1_11_insert_table_name() {
 		// Get list
