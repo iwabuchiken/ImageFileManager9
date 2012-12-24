@@ -6499,5 +6499,13 @@ public class Methods {
 
 	}//public static boolean create_table
 
+	
+	public static void update_data_table_name(Activity actv,
+			SQLiteDatabase wdb, String t_name, long db_id, String new_name) {
+		
+		boolean res = DBUtils.update_data_table_name(actv, wdb, t_name, db_id, new_name);
+		
+	}//public static void update_data_table_name
+
 }//public class Methods
 

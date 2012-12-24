@@ -1014,6 +1014,54 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 	}//public List<TI> get_all_data_history()
 
+	
+	public static boolean update_data_table_name(Activity actv,
+			SQLiteDatabase wdb, String t_name, long db_id, String new_name) {
+		
+		String sql = "UPDATE " + t_name + " SET "
+//					+ "table_name='" + new_name
+					+ "table_name='" + new_name + "'"
+					+ " WHERE " + android.provider.BaseColumns._ID + " = "
+					+ String.valueOf(db_id);
+//					+ " WHERE " + android.provider.BaseColumns._ID + " = '"
+//					+ String.valueOf(db_id) + "'";
+				
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sql=" + sql);
+		
+		//						"file_id", 		"file_path", "file_name", "date_added", "date_modified"
+		//static String[] cols = 
+		//	{"file_id", 		"file_path", "file_name", "date_added",
+		//		"date_modified", "memos", "tags"};
+
+
+		try {
+			
+			wdb.execSQL(sql);
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "sql => Done");
+			
+		//	Methods.toastAndLog(actv, "Data updated", 2000);
+			
+			return true;
+			
+			
+		} catch (SQLException e) {
+			// Log
+			Log.e("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString() + " / " + "sql: " + sql);
+			
+			return false;
+		}
+
+	}//public static boolean update_data_table_name
+
 
 }//public class DBUtils
 
