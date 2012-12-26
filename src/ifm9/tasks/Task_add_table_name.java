@@ -47,8 +47,11 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 	@Override
 	protected String doInBackground(String... params) {
 
+		// 20121224_180458
+		doInBackground_B28_v_1_2_fix_records();
+		
 		// 20121224_175006
-		doInBackground_B28_v_1_1_fix_records();
+//		doInBackground_B28_v_1_1_fix_records();
 		
 //		doInBackground_B31_v_1_11_insert_table_name();
 		
@@ -73,6 +76,168 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		return "DONE";
 		
 	}//protected String doInBackground(String... params)
+
+	
+	private void doInBackground_B28_v_1_2_fix_records() {
+
+		/*********************************
+		 * memo
+		 *********************************/
+		String t_name_trunk = "IFM9__ELECTRONICS__D5";
+		
+		List<String> t_names = Methods.get_table_list(actv, t_name_trunk + "%");
+		
+		List<String[]> data_list = new ArrayList<String[]>();
+		List<String[]> data_list_new = new ArrayList<String[]>();
+
+		// Setup db
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		// Counter
+		int count_null = 0;
+		int count_blank = 0;
+		int count_yes = 0;
+
+		// Log
+		Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "t_names.size()=" + t_names.size());
+		
+//		for (String t_name : t_names) {
+			
+			// Execute a query,
+			String sql = "SELECT * FROM " + t_name_trunk;
+			
+			Cursor c = null;
+
+			/*********************************
+			 * Execute query
+			 * If the table doesn't have a record, then
+			 * 		next table
+			 *********************************/
+			try {
+				// Exec query
+				c = wdb.rawQuery(sql, null);
+
+				// If the table doesn't have a record, then
+				if (c.getCount() < 1) {
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "c.getCount() < 1");
+
+					// next table
+//					continue;
+					
+				} else {//if (c.getCount() == condition)
+					
+					// Log
+					Log.d("Task_add_table_name.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]",
+							"Query done => c.getCount()=" + c.getCount());
+					
+				}//if (c.getCount() == condition)
+				
+				/*********************************
+				 * Move the cursor to the first one,
+				 * Do c.getString(11)
+				 * If no value in it, then message so
+				 * If the two values conflict, then also, message so
+				 *********************************/
+				c.moveToFirst();
+
+				for (int i = 0; i < c.getCount(); i++) {
+
+					// file_id
+					String val = c.getString(3);
+					
+					// If no value in it, then message so
+					if (val == null || val.equals("null") || val.equals("")) {
+						
+						// Count
+						count_null += 1;
+						
+//						Methods.update_data_table_name(actv, wdb, t_name, c.getLong(0), t_name);
+						
+						String[] obj = null;
+						
+						obj = new String[]{
+							c.getString(5),	// file_id
+							c.getString(6),	// file_path
+							c.getString(7),	// file_name tags
+							c.getString(8),	// date_added last_viewed_at
+							c.getString(9),	// date_modified table_name
+							c.getString(10),// memos
+							null,			// tags
+							null,			// last_viewed_at
+							null			// table_name
+						};
+						
+						// Build a list of data arrays,
+						data_list.add(obj);
+
+						c.moveToNext();
+						
+					// If the two values conflict, then also, message so
+					} else {//if (val == null)
+						
+						// Count
+						count_yes += 1;
+						
+					}//if (val == null)
+
+				}//for (int i = 0; i < c.getCount(); i++)
+				
+			} catch (Exception e) {
+
+				// Log
+				Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception => " + e.toString());
+			
+//				continue;
+			
+			}//try
+			
+//		}//for (String t_name : t_names)
+		
+			
+		// Drop the original table,
+		Methods.drop_table(actv, MainActv.dbName, t_name_trunk);
+		
+		// Create a new one with the same name,
+		Methods.create_table(actv, MainActv.dbName, t_name_trunk);
+
+			
+		// Insert data
+		for (String[] data : data_list) {
+			
+			Methods.insertDataIntoDB(actv, t_name_trunk, DBUtils.cols, data);
+		}
+		
+			
+		// Close db
+		wdb.close();
+		
+		// Show the result
+		// Log
+		Log.d("Task_add_table_name.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]",
+				"count_null=" + count_null + "/"
+//				+ "count_blank=" + count_blank
+				+ "count_yes=" + count_yes + "/"
+				+ "data_list.size()=" + data_list.size()
+				
+				);
+
+		
+	}//private void doInBackground_B28_v_1_2_fix_records()
 
 	private void doInBackground_B28_v_1_1_fix_records() {
 		/*********************************
