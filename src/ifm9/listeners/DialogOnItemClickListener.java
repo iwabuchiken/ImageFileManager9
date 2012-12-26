@@ -207,8 +207,8 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 //		String db_file_name = "ifm9_backup_20121226_125955.bk";
 //		
 //		Methods.restore_db(actv, db_file_name);
-		
-		dlg.dismiss();
+//		
+//		dlg.dismiss();
 	}
 
 	private void dlg_db_admin_item_set_new_column() {
