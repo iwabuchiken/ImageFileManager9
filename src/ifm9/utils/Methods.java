@@ -5498,6 +5498,66 @@ public class Methods {
 		
 	}//private void restore_db()
 
+	public static void restore_db(Activity actv, String db_file_name) {
+    	
+    	// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Starting: restore_db()");
+
+		/*********************************
+		 * Get the absolute path of the latest backup file
+		 *********************************/
+		// Get the most recently-created db file
+		String src_dir = "/mnt/sdcard-ext/IFM9_backup";
+		
+		String src = StringUtils.join(
+				new String[]{src_dir, db_file_name},
+				File.separator);
+
+		// Source file exists?
+		if (!new File(src).exists()) {
+			
+			// debug
+			Toast.makeText(actv,
+					"The source file doesn't exist: " + db_file_name,
+					Toast.LENGTH_SHORT).show();
+			
+			return;
+			
+		}//if (new File(src).exists() == condition)
+		
+		/*********************************
+		 * Restore file
+		 *********************************/
+
+		String dst = StringUtils.join(
+				new String[]{"/data/data/ifm9.main/databases", MainActv.dbName},
+				File.separator);
+		
+		boolean res = Methods.restore_db(actv, MainActv.dbName, src, dst);
+		
+		// Log
+		Log.d("MainActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "res=" + res);
+		
+		// Message
+		if (res) {
+			
+			// debug
+			Toast.makeText(actv, "DB restored: " + db_file_name, Toast.LENGTH_SHORT).show();
+			
+		} else {//if (res)
+			
+			// debug
+			Toast.makeText(actv, "Restore DB failed: " + db_file_name, Toast.LENGTH_SHORT).show();
+			
+		}//if (res)
+		
+		
+	}//private void restore_db()
+
 
 	public static void show_history(Activity actv) {
 		/*********************************

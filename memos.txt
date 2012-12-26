@@ -46,3 +46,6 @@ pushd C:\WORKS\WORKSPACES_ANDROID\GIMP\Icons
 [Android]
 "Failed to pull selection"
 	=> REF: http://yamato-iphone.blogspot.jp/2011/05/failed-to-pull-selection.html
+	
+[sqlite3]
+pushd C:\Users\IwabuchiKen\Desktop
