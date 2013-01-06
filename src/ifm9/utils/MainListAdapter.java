@@ -50,10 +50,10 @@ public class MainListAdapter extends ArrayAdapter<String> {
 		 * 
 		 * 6. Set listener => On touch
 		 *********************************/
-		// Log
-		Log.d("MainListAdapter.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "getView()");
+//		// Log
+//		Log.d("MainListAdapter.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "getView()");
 		
     	View v = null;
     	

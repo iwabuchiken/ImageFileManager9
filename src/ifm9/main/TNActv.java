@@ -812,6 +812,11 @@ public class TNActv extends ListActivity {
 			----------------------------*/
 		vib.vibrate(Methods.vibLength_click);
 		
+		// Log
+		Log.d("TNActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "MainActv.move_mode=" + MainActv.move_mode);
+		
 		if (MainActv.move_mode == false) {
 			/*----------------------------
 			 * 1. Get item
@@ -1075,24 +1080,24 @@ public class TNActv extends ListActivity {
 		
 		move_mode = true;
 		
-		// Log
-		Log.d("TNActv.java"
-				+ "["
-				+ Thread.currentThread().getStackTrace()[2]
-						.getLineNumber() + "]", "move_mode => Now true");
+//		// Log
+//		Log.d("TNActv.java"
+//				+ "["
+//				+ Thread.currentThread().getStackTrace()[2]
+//						.getLineNumber() + "]", "move_mode => Now true");
 		
 		/*----------------------------
 		 * 2-1. Set position to preference
 			----------------------------*/
-		// Log
-		Log.d("TNActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "this.getSelectedItemPosition(): " + this.getSelectedItemPosition());
-
-		Log.d("TNActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "this.getSelectedItemId(): " + this.getSelectedItemId());
-
+//		// Log
+//		Log.d("TNActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "this.getSelectedItemPosition(): " + this.getSelectedItemPosition());
+//
+//		Log.d("TNActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "this.getSelectedItemId(): " + this.getSelectedItemId());
+//
 		/*----------------------------
 		 * 4. Re-set tiList
 			----------------------------*/

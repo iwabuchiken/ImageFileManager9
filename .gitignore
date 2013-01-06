@@ -4,3 +4,5 @@
 *.ap_
 *.dex
 *.*.class
+*.jar
+libs/*

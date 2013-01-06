@@ -258,9 +258,9 @@ public class MainActv extends ListActivity {
 		}//if (device_name == condition)
 		
 		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "dirName_ExternalStorage=" + dirName_ExternalStorage);
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "dirName_ExternalStorage=" + dirName_ExternalStorage);
 		
 //    	if (device_name.equals(this.dirName_ExternalStorage)) {
 //			
@@ -271,14 +271,14 @@ public class MainActv extends ListActivity {
 		 *********************************/
 		File f_db = new File(this.dirPath_db);
 		
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "f_db.getAbsolutePath()=" + f_db.getAbsolutePath());
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "f_db.getAbsolutePath()=" + f_db.getAbsolutePath());
 
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "f_db.exists()=" + f_db.exists());
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "f_db.exists()=" + f_db.exists());
 	
 		DBUtils dbu = new DBUtils(this, MainActv.dbName);
 		
@@ -286,13 +286,13 @@ public class MainActv extends ListActivity {
 
 		wdb.close();
 		
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "f_db.getAbsolutePath()=" + f_db.getAbsolutePath());
-
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "f_db.exists()=" + f_db.exists());
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "f_db.getAbsolutePath()=" + f_db.getAbsolutePath());
+//
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "f_db.exists()=" + f_db.exists());
 		
 	}//private void setup_tablet()
 
@@ -488,12 +488,12 @@ public class MainActv extends ListActivity {
 				MainActv.prefName_mainActv_history_mode,
 				MainActv.HISTORY_MODE_OFF);
 
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", 
-				"history_mode set => MainActv.HISTORY_MODE_OFF"
-				+ "(" + MainActv.HISTORY_MODE_OFF + ")");
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", 
+//				"history_mode set => MainActv.HISTORY_MODE_OFF"
+//				+ "(" + MainActv.HISTORY_MODE_OFF + ")");
 		
 	}//private void init_prefs()
 
@@ -848,10 +848,10 @@ public class MainActv extends ListActivity {
 		
 		String path_in_prefs = Methods.get_currentPath_from_prefs(this);
 		
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "path_in_prefs: " + path_in_prefs);
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "path_in_prefs: " + path_in_prefs);
 		
 
 		if (path_in_prefs == null) {
@@ -911,10 +911,10 @@ public class MainActv extends ListActivity {
 	}//private void init_file_list(File file)
 
 	private void init_prefs_current_path() {
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "Starts => init_prefs_current_path()");
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "Starts => init_prefs_current_path()");
 		
 		/*----------------------------
 		 * If the preference already set, then no operation
@@ -957,19 +957,19 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * 3. Set value
 			----------------------------*/
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "dirPath_base=" + dirPath_base);
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "dirPath_base=" + dirPath_base);
 		
 		editor.putString(prefs_current_path, dirPath_base);
 		
 		editor.commit();
 		
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "Prefs init => " + prefs_current_path + "/" + dirPath_base);
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "Prefs init => " + prefs_current_path + "/" + dirPath_base);
 		
 	}//private void init_prefs_current_path()
 
@@ -1168,20 +1168,20 @@ public class MainActv extends ListActivity {
 		editor.clear();
 		editor.commit();
 		
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "Prefs cleared");
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "Prefs cleared");
 		
 		/*----------------------------
 		 * 4. Clear => file_names
 			----------------------------*/
 		file_names = null;
 		
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "file_names => Set to null");
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "file_names => Set to null");
 		
 	}//protected void onDestroy()
 
@@ -1287,10 +1287,10 @@ public class MainActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onPause()");
 
-		// Log
-		Log.d("MainActv.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "prefs: " + Methods.get_currentPath_from_prefs(this));
+//		// Log
+//		Log.d("MainActv.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "prefs: " + Methods.get_currentPath_from_prefs(this));
 		
 		
 	}

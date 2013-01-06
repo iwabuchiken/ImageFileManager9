@@ -1007,12 +1007,6 @@ public class Methods {
 			
 			if (col_list[1].equals("created_at")) {
 
-				// Log
-				Log.d("Methods.java"
-						+ "["
-						+ Thread.currentThread().getStackTrace()[2]
-								.getLineNumber() + "]", "col_list[1].equals(\"created_at\")");
-
 				ti = new TI(
 						c.getLong(3),	// file_id
 						c.getString(4),	// file_path
@@ -1062,11 +1056,6 @@ public class Methods {
 			// Add to the list
 			tiList.add(ti);
 			
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "c.getString(3)=" + c.getString(3));
-			
 			//
 			c.moveToNext();
 			
@@ -1097,10 +1086,10 @@ public class Methods {
 		String tableName = null;
 		StringBuilder sb = new StringBuilder();
 
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "convert_prefs_into_path_label(actv): " + convert_prefs_into_path_label(actv));
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "convert_prefs_into_path_label(actv): " + convert_prefs_into_path_label(actv));
 		
 //		Log.d("Methods.java" + "["
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
