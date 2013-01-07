@@ -1,13 +1,15 @@
 package ifm9.main;
 
-import ifm9.listeners.ButtonOnClickListener;
-import ifm9.listeners.ButtonOnTouchListener;
+import ifm9.adapters.MainListAdapter;
 import ifm9.listeners.CustomOnItemLongClickListener;
-import ifm9.listeners.DialogListener;
+import ifm9.listeners.button.ButtonOnClickListener;
+import ifm9.listeners.button.ButtonOnTouchListener;
+import ifm9.listeners.dialog.DialogListener;
+import ifm9.tasks.RefreshDBTask;
 import ifm9.utils.DBUtils;
-import ifm9.utils.MainListAdapter;
 import ifm9.utils.Methods;
-import ifm9.utils.RefreshDBTask;
+import ifm9.utils.Methods_dialog;
+import ifm9.utils.Tags;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -670,7 +672,7 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * 3. Listeners => Click
 			----------------------------*/
-		ib_up.setTag(Methods.ButtonTags.ib_up);
+		ib_up.setTag(Tags.ButtonTags.ib_up);
 		
 		ib_up.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_up.setOnClickListener(new ButtonOnClickListener(this));
@@ -778,7 +780,7 @@ public class MainActv extends ListActivity {
 		ListView lv = this.getListView();
 		
 //		lv.setTag(Methods.ItemTags.dir_list);
-		lv.setTag(Methods.ListTags.actv_main_lv);
+		lv.setTag(Tags.ListTags.actv_main_lv);
 		
 		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
 		
@@ -1231,19 +1233,19 @@ public class MainActv extends ListActivity {
 		
 		case R.id.main_opt_menu_create_folder://----------------------------------
 			
-			Methods.dlg_createFolder(this);
+			Methods_dialog.dlg_createFolder(this);
 			
 			break;// case R.id.main_opt_menu_create_folder
 			
 		case R.id.main_opt_menu_db_activity://----------------------------------
 			
-			Methods.dlg_db_activity(this);
+			Methods_dialog.dlg_db_activity(this);
 			
 			break;// case R.id.main_opt_menu_db_activity
 
 		case R.id.main_opt_menu_search://-----------------------------------------------
 			
-			Methods.dlg_seratchItem(this);
+			Methods_dialog.dlg_seratchItem(this);
 			
 			break;// case R.id.main_opt_menu_search
 			

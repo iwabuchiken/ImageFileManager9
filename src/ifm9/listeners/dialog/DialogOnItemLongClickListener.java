@@ -1,7 +1,8 @@
-package ifm9.listeners;
+package ifm9.listeners.dialog;
 
 import ifm9.main.MainActv;
 import ifm9.utils.Methods;
+import ifm9.utils.Tags;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -26,7 +27,7 @@ public class DialogOnItemLongClickListener implements OnItemLongClickListener {
 	static Vibrator vib;
 
 	//
-	static Methods.ItemTags itemTag = null;
+	static Tags.ItemTags itemTag = null;
 	
 	//
 	ArrayAdapter<String> dirListAdapter;	// Used in => case dir_list_move_files
@@ -79,7 +80,7 @@ public class DialogOnItemLongClickListener implements OnItemLongClickListener {
 			----------------------------*/
 		
 		//
-		Methods.DialogItemTags tag = (Methods.DialogItemTags) parent.getTag();
+		Tags.DialogItemTags tag = (Tags.DialogItemTags) parent.getTag();
 		
 		// Log
 		Log.d("DialogOnItemLongClickListener.java" + "["

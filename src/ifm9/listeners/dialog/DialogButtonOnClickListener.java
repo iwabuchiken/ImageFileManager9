@@ -1,6 +1,8 @@
-package ifm9.listeners;
+package ifm9.listeners.dialog;
 
 import ifm9.utils.Methods;
+import ifm9.utils.Methods_dialog;
+import ifm9.utils.Tags;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Vibrator;
@@ -75,7 +77,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 //	@Override
 	public void onClick(View v) {
 		//
-		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();
+		Tags.DialogTags tag_name = (Tags.DialogTags) v.getTag();
 
 		// Log
 		Log.d("DialogButtonOnClickListener.java" + "["
@@ -116,7 +118,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 
 		case dlg_create_folder_ok://--------------------------------------------------
 			
-			Methods.dlg_isEmpty(actv, dlg);
+			Methods_dialog.dlg_isEmpty(actv, dlg);
 			
 			break;// case dlg_create_folder_ok
 
@@ -190,7 +192,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			vib.vibrate(Methods.vibLength_click);
 			
 //			Methods.dlg_register_patterns_isInputEmpty(actv, dlg);
-			Methods.dlg_register_patterns_isInputEmpty(actv, dlg, dlg2);
+			Methods_dialog.dlg_register_patterns_isInputEmpty(actv, dlg, dlg2);
 			
 			break;
 

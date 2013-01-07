@@ -3,6 +3,7 @@ package ifm9.listeners;
 import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.utils.Methods;
+import ifm9.utils.Tags;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -36,7 +37,7 @@ public class ListOnTouchListener implements OnTouchListener {
 //	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
-		Methods.ListTags tag = (Methods.ListTags) v.getTag();
+		Tags.ListTags tag = (Tags.ListTags) v.getTag();
 		
 		// Log
 		Log.d("ListOnTouchListener.java" + "["

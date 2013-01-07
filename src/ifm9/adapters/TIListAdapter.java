@@ -1,14 +1,20 @@
-package ifm9.utils;
+package ifm9.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ifm9.items.TI;
-import ifm9.listeners.ButtonOnClickListener;
 import ifm9.listeners.CustomOnLongClickListener;
+import ifm9.listeners.button.ButtonOnClickListener;
 import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.main.TNActv;
+import ifm9.utils.CONS;
+import ifm9.utils.Methods;
+import ifm9.utils.Tags;
+import ifm9.utils.Tags.ButtonTags;
+import ifm9.utils.Tags.ItemTags;
+import ifm9.utils.CONS.MoveMode;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -40,7 +46,7 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 	LayoutInflater inflater;
 
 	//
-	Methods.MoveMode moveMode = null;
+	CONS.MoveMode moveMode = null;
 //	Methods.MoveMode moveMode = Methods.MoveMode.OFF;
 
 //	public static ArrayList<Integer> checkedPositions;
@@ -64,7 +70,7 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 
 
 	public TIListAdapter(Context con, int resourceId, List<TI> items, 
-											Methods.MoveMode moveMode) {
+											CONS.MoveMode moveMode) {
 		// Super
 		super(con, resourceId, items);
 
@@ -76,7 +82,7 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 		inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 
-	}//public TIListAdapter(Context con, int resourceId, List<TI> items, Methods.MoveMode moveMode)
+	}//public TIListAdapter(Context con, int resourceId, List<TI> items, CONS.MoveMode moveMode)
 
 	/*--------------------------------------------------------
 	 * Methods
@@ -103,7 +109,7 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 			----------------------------*/
     	View v = null;
 
-    	if (moveMode == null || moveMode == Methods.MoveMode.OFF) {
+    	if (moveMode == null || moveMode == CONS.MoveMode.OFF) {
     		
 //    		// Log
 //			Log.d("TIListAdapter.java" + "["
@@ -222,7 +228,7 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 			----------------------------*/
 		CheckBox cb = (CheckBox) v.findViewById(R.id.list_row_checked_box_checkBox1);
 		
-		cb.setTag(Methods.ButtonTags.tilist_cb);
+		cb.setTag(Tags.ButtonTags.tilist_cb);
 		
 		if (TNActv.checkedPositions.contains((Integer) position)) {
 			
@@ -247,7 +253,7 @@ public class TIListAdapter extends ArrayAdapter<TI> {
 		
 		cb.setOnLongClickListener(
 					new CustomOnLongClickListener(
-									(Activity) con, position, Methods.ItemTags.tilist_checkbox));
+									(Activity) con, position, Tags.ItemTags.tilist_checkbox));
 
 		/*----------------------------
 		 * 2.7. Return

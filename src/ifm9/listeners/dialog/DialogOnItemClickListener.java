@@ -1,12 +1,14 @@
-package ifm9.listeners;
+package ifm9.listeners.dialog;
 
 import java.util.List;
 
 import ifm9.main.MainActv;
 import ifm9.main.R;
+import ifm9.tasks.RefreshDBTask;
 import ifm9.tasks.Task_add_table_name;
 import ifm9.utils.Methods;
-import ifm9.utils.RefreshDBTask;
+import ifm9.utils.Methods_dialog;
+import ifm9.utils.Tags;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -58,7 +60,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		 * 3. Switching
 			----------------------------*/
 		
-		Methods.DialogItemTags tag = (Methods.DialogItemTags) parent.getTag();
+		Tags.DialogItemTags tag = (Tags.DialogItemTags) parent.getTag();
 //		
 		vib.vibrate(Methods.vibLength_click);
 		
@@ -71,7 +73,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 
 			String folderPath = (String) parent.getItemAtPosition(position);
 			
-			Methods.dlg_confirm_moveFiles(actv, dlg, folderPath);
+			Methods_dialog.dlg_confirm_moveFiles(actv, dlg, folderPath);
 
 //			// debug
 //			Toast.makeText(actv, "Move files to: " + folderPath, 2000)
@@ -170,11 +172,11 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				----------------------------*/
 			if (item.equals(actv.getString(R.string.generic_tv_register))) {
 				
-				Methods.dlg_register_patterns(actv, dlg);
+				Methods_dialog.dlg_register_patterns(actv, dlg);
 				
 			} else if (item.equals(actv.getString(R.string.generic_tv_delete))) {
 
-				Methods.dlg_delete_patterns(actv, dlg);
+				Methods_dialog.dlg_delete_patterns(actv, dlg);
 				
 			} else if (item.equals(actv.getString(R.string.generic_tv_edit))) {
 				
@@ -189,7 +191,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 //			// debug
 //			Toast.makeText(actv, item, 2000).show();
 			
-			Methods.dlg_confirm_delete_patterns(actv, dlg, dlg2, item);
+			Methods_dialog.dlg_confirm_delete_patterns(actv, dlg, dlg2, item);
 			
 			break;// case dlg_delete_patterns_gv
 			

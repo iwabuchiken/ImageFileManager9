@@ -1,6 +1,7 @@
-package ifm9.utils;
+package ifm9.tasks;
 
 import ifm9.main.R;
+import ifm9.utils.MethodsFTP;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;

@@ -1,8 +1,8 @@
 package ifm9.main;
 
+import ifm9.tasks.TaskFTP;
 import ifm9.utils.Methods;
 import ifm9.utils.MethodsFTP;
-import ifm9.utils.TaskFTP;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;

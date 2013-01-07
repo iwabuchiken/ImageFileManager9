@@ -1,6 +1,8 @@
 package ifm9.listeners;
 
 import ifm9.utils.Methods;
+import ifm9.utils.Methods_dialog;
+import ifm9.utils.Tags;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -24,7 +26,7 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 	static Vibrator vib;
 
 	//
-	static Methods.ItemTags itemTag = null;
+	static Tags.ItemTags itemTag = null;
 	
 	//
 	ArrayAdapter<String> dirListAdapter;	// Used in => case dir_list_move_files
@@ -77,7 +79,7 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 			----------------------------*/
 		
 		//
-		Methods.ListTags tag = (Methods.ListTags) parent.getTag();
+		Tags.ListTags tag = (Tags.ListTags) parent.getTag();
 		
 		// Log
 		Log.d("CustomOnItemLongClickListener.java" + "["
@@ -122,7 +124,7 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 			/*----------------------------
 			 * 5.1.2. If yes, call a method
 				----------------------------*/
-			Methods.dlg_removeFolder(actv, folderName);
+			Methods_dialog.dlg_removeFolder(actv, folderName);
 						
 			break;
 		

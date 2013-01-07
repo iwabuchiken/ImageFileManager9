@@ -5,14 +5,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ifm9.adapters.TIListAdapter;
 import ifm9.items.TI;
-import ifm9.listeners.ButtonOnClickListener;
-import ifm9.listeners.ButtonOnTouchListener;
 import ifm9.listeners.CustomOnItemLongClickListener;
-import ifm9.listeners.DialogListener;
+import ifm9.listeners.button.ButtonOnClickListener;
+import ifm9.listeners.button.ButtonOnTouchListener;
+import ifm9.listeners.dialog.DialogListener;
+import ifm9.utils.CONS;
 import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
-import ifm9.utils.TIListAdapter;
+import ifm9.utils.Methods_dialog;
+import ifm9.utils.Tags;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -483,7 +486,7 @@ public class TNActv extends ListActivity {
 		ib_back.setEnabled(true);
 		ib_back.setImageResource(R.drawable.ifm8_thumb_back_50x50);
 		
-		ib_back.setTag(Methods.ButtonTags.thumb_activity_ib_back);
+		ib_back.setTag(Tags.ButtonTags.thumb_activity_ib_back);
 		
 		ib_back.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_back.setOnClickListener(new ButtonOnClickListener(this));
@@ -494,7 +497,7 @@ public class TNActv extends ListActivity {
 //		ListView lv = (ListView) findViewById(android.R.layout.activity_list_item);
 		ListView lv = this.getListView();
 		
-		lv.setTag(Methods.ItemTags.dir_list_thumb_actv);
+		lv.setTag(Tags.ItemTags.dir_list_thumb_actv);
 		
 		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
 		
@@ -509,7 +512,7 @@ public class TNActv extends ListActivity {
 		bt_bottom.setImageResource(R.drawable.ifm8_thumb_bottom_50x50);
 		
 		// Tag
-		bt_bottom.setTag(Methods.ButtonTags.thumb_activity_ib_bottom);
+		bt_bottom.setTag(Tags.ButtonTags.thumb_activity_ib_bottom);
 		
 		bt_bottom.setOnTouchListener(new ButtonOnTouchListener(this));
 		bt_bottom.setOnClickListener(new ButtonOnClickListener(this, lv));
@@ -525,7 +528,7 @@ public class TNActv extends ListActivity {
 		bt_top.setImageResource(R.drawable.ifm8_thumb_top_50x50);
 		
 		// Tag
-		bt_top.setTag(Methods.ButtonTags.thumb_activity_ib_top);
+		bt_top.setTag(Tags.ButtonTags.thumb_activity_ib_top);
 		
 		/*----------------------------
 		 * 4.2. Listeners
@@ -1048,7 +1051,7 @@ public class TNActv extends ListActivity {
 				/*----------------------------
 				 * 2. If yes, show dialog
 					----------------------------*/
-				Methods.dlg_moveFiles(this);
+				Methods_dialog.dlg_moveFiles(this);
 				
 			}//if (move_mode == false)
 			
@@ -1160,7 +1163,7 @@ public class TNActv extends ListActivity {
 						this, 
 						R.layout.thumb_activity, 
 						tiList,
-						Methods.MoveMode.ON);
+						CONS.MoveMode.ON);
 
 		setListAdapter(bAdapter);
 
@@ -1248,7 +1251,7 @@ public class TNActv extends ListActivity {
 						this, 
 						R.layout.thumb_activity, 
 						tiList,
-						Methods.MoveMode.OFF);
+						CONS.MoveMode.OFF);
 		
 		setListAdapter(aAdapter);
 		

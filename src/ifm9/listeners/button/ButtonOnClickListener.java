@@ -1,4 +1,4 @@
-package ifm9.listeners;
+package ifm9.listeners.button;
 
 import ifm9.items.TI;
 import ifm9.main.ImageActv;
@@ -6,6 +6,7 @@ import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.main.TNActv;
 import ifm9.utils.Methods;
+import ifm9.utils.Tags;
 
 import java.io.File;
 
@@ -70,7 +71,7 @@ public class ButtonOnClickListener implements OnClickListener {
 //	@Override
 	public void onClick(View v) {
 //		//
-		Methods.ButtonTags tag = (Methods.ButtonTags) v.getTag();
+		Tags.ButtonTags tag = (Tags.ButtonTags) v.getTag();
 //
 		vib.vibrate(Methods.vibLength_click);
 		

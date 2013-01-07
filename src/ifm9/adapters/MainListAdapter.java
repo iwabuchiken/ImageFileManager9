@@ -1,4 +1,4 @@
-package ifm9.utils;
+package ifm9.adapters;
 
 import java.util.List;
 
@@ -6,6 +6,9 @@ import ifm9.items.TI;
 import ifm9.listeners.ListOnTouchListener;
 import ifm9.main.MainActv;
 import ifm9.main.R;
+import ifm9.utils.Methods;
+import ifm9.utils.Tags;
+import ifm9.utils.Tags.ListTags;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -121,7 +124,7 @@ public class MainListAdapter extends ArrayAdapter<String> {
     	/*********************************
 		 * 6. Set listener => On touch
 		 *********************************/
-    	v.setTag(Methods.ListTags.main_list_adapter);
+    	v.setTag(Tags.ListTags.main_list_adapter);
     	
     	v.setOnTouchListener(new ListOnTouchListener((Activity) con));
     	

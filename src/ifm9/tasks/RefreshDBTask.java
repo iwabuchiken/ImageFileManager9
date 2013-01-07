@@ -1,5 +1,6 @@
-package ifm9.utils;
+package ifm9.tasks;
 
+import ifm9.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListActivity;

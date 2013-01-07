@@ -1,7 +1,9 @@
-package ifm9.utils;
+package ifm9.tasks;
 
 import ifm9.main.MainActv;
 import ifm9.main.TNActv;
+import ifm9.utils.DBUtils;
+import ifm9.utils.Methods;
 
 import java.util.ArrayList;
 import java.util.List;

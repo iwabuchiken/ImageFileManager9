@@ -1,7 +1,8 @@
-package ifm9.listeners;
+package ifm9.listeners.button;
 
 import ifm9.main.R;
 import ifm9.utils.Methods;
+import ifm9.utils.Tags;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -33,7 +34,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 //	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
-		Methods.ButtonTags tag = (Methods.ButtonTags) v.getTag();
+		Tags.ButtonTags tag = (Tags.ButtonTags) v.getTag();
 		
 		switch (event.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:

@@ -1,9 +1,11 @@
 package ifm9.main;
 
 import ifm9.items.*;
-import ifm9.listeners.ButtonOnClickListener;
-import ifm9.listeners.ButtonOnTouchListener;
+import ifm9.listeners.button.ButtonOnClickListener;
+import ifm9.listeners.button.ButtonOnTouchListener;
 import ifm9.utils.Methods;
+import ifm9.utils.Methods_dialog;
+import ifm9.utils.Tags;
 
 import android.app.Activity;
 import android.content.Context;
@@ -195,7 +197,7 @@ public class ImageActv extends Activity {
 			----------------------------*/
 		ImageButton ib_back = (ImageButton) findViewById(R.id.image_activity_ib_back);
 		
-		ib_back.setTag(Methods.ButtonTags.image_activity_back);
+		ib_back.setTag(Tags.ButtonTags.image_activity_back);
 		
 		ib_back.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_back.setOnClickListener(new ButtonOnClickListener(this));
@@ -207,7 +209,7 @@ public class ImageActv extends Activity {
 		
 		ib_prev.setImageResource(R.drawable.ifm8_back);
 		
-		ib_prev.setTag(Methods.ButtonTags.image_activity_prev);
+		ib_prev.setTag(Tags.ButtonTags.image_activity_prev);
 		
 		ib_prev.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_prev.setOnClickListener(new ButtonOnClickListener(this));
@@ -219,7 +221,7 @@ public class ImageActv extends Activity {
 		
 		ib_next.setImageResource(R.drawable.ifm8_forward);
 		
-		ib_next.setTag(Methods.ButtonTags.image_activity_next);
+		ib_next.setTag(Tags.ButtonTags.image_activity_next);
 		
 		ib_next.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_next.setOnClickListener(new ButtonOnClickListener(this));
@@ -248,7 +250,7 @@ public class ImageActv extends Activity {
 			
 			
 //			Methods.dlg_addMemo(this, file_id, Methods.convertPathIntoTableName(this));
-			Methods.dlg_addMemo(this, file_id, Methods.convert_path_into_table_name(this));
+			Methods_dialog.dlg_addMemo(this, file_id, Methods.convert_path_into_table_name(this));
 			
 			// Log
 			Log.d("ImageActv.java" + "["
@@ -262,7 +264,7 @@ public class ImageActv extends Activity {
 			
 //			Methods.dlg_register_patterns(this);
 			
-			Methods.dlg_patterns(this);
+			Methods_dialog.dlg_patterns(this);
 			
 			break;
 		}//switch (item.getItemId())

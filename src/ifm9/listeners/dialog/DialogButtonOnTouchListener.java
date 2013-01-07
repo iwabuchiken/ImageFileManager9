@@ -1,6 +1,7 @@
-package ifm9.listeners;
+package ifm9.listeners.dialog;
 
 import ifm9.utils.Methods;
+import ifm9.utils.Tags;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -31,7 +32,7 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 //	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO 自動生成されたメソッド・スタブ
-		Methods.DialogTags tag_name = (Methods.DialogTags) v.getTag();
+		Tags.DialogTags tag_name = (Tags.DialogTags) v.getTag();
 		
 		switch (event.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:

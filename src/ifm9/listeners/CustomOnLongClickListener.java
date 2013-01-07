@@ -1,7 +1,7 @@
 package ifm9.listeners;
 
 import ifm9.main.TNActv;
-import ifm9.utils.Methods.ItemTags;
+import ifm9.utils.Tags.ItemTags;
 import android.app.Activity;
 import android.view.View;
 import android.view.View.OnLongClickListener;
