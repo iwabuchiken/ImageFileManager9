@@ -76,15 +76,15 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "sw.length=" + sw.length);
 		
-		//debug
-		for (String[] item : sw) {
-			
-			// Log
-			Log.d("SearchTask.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "item=" + item);
-			
-		}
+//		//debug
+//		for (String[] item : sw) {
+//			
+//			// Log
+//			Log.d("SearchTask.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "item=" + item);
+//			
+//		}
 		
 		// Log
 		if (string_searchedItems_table_names != null) {
@@ -149,7 +149,8 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 		 * 1-2. Get => Table names list
 		 *********************************/
 //		List<String> table_names = Methods.get_table_list(actv);
-		List<String> table_names = Methods.get_table_list(actv, "IFM9");
+//		List<String> table_names = Methods.get_table_list(actv, "IFM9");
+		List<String> table_names = Methods.get_table_list(actv, "IFM9%");
 		
 		/*----------------------------
 		 * 2. Construct data
@@ -245,7 +246,8 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 		
 		for (int i = 0; i < c.getCount(); i++) {
 			
-			String memo = c.getString(6);
+//			String memo = c.getString(6);
+			String memo = c.getString(8);
 			
 			/*********************************
 			 * 1. No memo in the item => Next item
@@ -276,7 +278,8 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 					/*----------------------------
 					 * 2.4. List<Long> searchedItems => file id
 						----------------------------*/
-					searchedItems.add(c.getLong(1));
+//					searchedItems.add(c.getLong(1));
+					searchedItems.add(c.getLong(3));
 					
 					/*********************************
 					 * Table name
