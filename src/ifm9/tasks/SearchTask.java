@@ -59,10 +59,10 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 		
 		string_searchedItems_table_names = null;
 
-		// Log
-		Log.d("SearchTask.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "Starts => SearchTask(Activity actv, int search_mode)");
+//		// Log
+//		Log.d("SearchTask.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "Starts => SearchTask(Activity actv, int search_mode)");
 
 	}//public SearchTask(Activity actv2, int search_mode)
 	
@@ -70,6 +70,21 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 
 	@Override
 	protected String doInBackground(String[]... sw) {
+		
+		// Log
+		Log.d("SearchTask.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sw.length=" + sw.length);
+		
+		//debug
+		for (String[] item : sw) {
+			
+			// Log
+			Log.d("SearchTask.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "item=" + item);
+			
+		}
 		
 		// Log
 		if (string_searchedItems_table_names != null) {
@@ -299,6 +314,11 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 		
 		String targetTable = sw[1][0];
 		
+		// Log
+		Log.d("SearchTask.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "targetTable=" + targetTable);
+		
 		List<Long> searchedItems = new ArrayList<Long>();
 		
 		/*----------------------------
@@ -321,7 +341,8 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 			----------------------------*/
 		for (int i = 0; i < c.getCount(); i++) {
 			
-			String memo = c.getString(6);
+//			String memo = c.getString(6);
+			String memo = c.getString(8);	// memos
 			
 			if (memo == null) {
 
@@ -332,24 +353,24 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 			}//if (memo == null)
 			
 
-			// Log
-			Log.d("SearchTask.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "sw[0].length => " + sw[0].length);
+//			// Log
+//			Log.d("SearchTask.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "sw[0].length => " + sw[0].length);
 
-			if (sw[1] != null) {
-				
-				Log.d("SearchTask.java" + "["
-						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-						+ "]", "sw[1].length => " + sw[1].length);
-				
-			} else {//if (sw[1])
-				
-				Log.d("SearchTask.java" + "["
-						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-						+ "]", "sw[1] => null");
-				
-			}//if (sw[1])
+//			if (sw[1] != null) {
+//				
+//				Log.d("SearchTask.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]", "sw[1].length => " + sw[1].length);
+//				
+//			} else {//if (sw[1])
+//				
+//				Log.d("SearchTask.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]", "sw[1] => null");
+//				
+//			}//if (sw[1])
 			
 			for (String string : sw[0]) {
 				
@@ -367,7 +388,8 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 					/*----------------------------
 					 * 2.4. List<Long> searchedItems => file id
 						----------------------------*/
-					searchedItems.add(c.getLong(1));
+//					searchedItems.add(c.getLong(1));
+					searchedItems.add(c.getLong(3));
 					
 					break;
 					

@@ -3663,7 +3663,6 @@ public class Methods {
 		----------------------------*/
 		rdb.close();
 		
-		
 		/*----------------------------
 		* 4. Return
 		----------------------------*/
@@ -3755,14 +3754,16 @@ public class Methods {
 		 * 1. 
 			----------------------------*/
 		return new TI(
-				c.getLong(1),	// file_id
-				c.getString(2),	// file_path
-				c.getString(3),	// file_name
-				c.getLong(4),	// date_added
+				c.getLong(3),	// file_id
+				c.getString(4),	// file_path
+				c.getString(5),	// file_name
+				c.getLong(6),	// date_added
 //				c.getLong(5)		// date_modified
-				c.getLong(5),		// date_modified
-				c.getString(6),	// memos
-				c.getString(7)	// tags
+				c.getLong(7),		// date_modified
+				c.getString(8),	// memos
+				c.getString(9),	// tags
+				c.getLong(10),	// last_viewed_at
+				c.getString(11)	// table_name
 		);
 		
 		
