@@ -714,7 +714,7 @@ public class Methods_dialog {
 			
 			SQLiteDatabase wdb = dbu.getWritableDatabase();
 			
-			res = dbu.createTable(wdb, tableName, DBUtils.cols_memo_patterns, DBUtils.col_types_memo_patterns);
+			res = dbu.createTable(wdb, tableName, CONS.cols_memo_patterns, CONS.col_types_memo_patterns);
 			
 			if (res == true) {
 				// Log
@@ -920,8 +920,8 @@ public class Methods_dialog {
 		/*----------------------------
 		 * 3. Register data
 			----------------------------*/
-		boolean result = Methods.insertDataIntoDB(actv, DBUtils.table_name_memo_patterns, 
-								DBUtils.cols_memo_patterns, new String[]{word, table_name});
+		boolean result = Methods.insertDataIntoDB(actv, CONS.table_name_memo_patterns, 
+								CONS.cols_memo_patterns, new String[]{word, table_name});
 		
 		/*----------------------------
 		 * 4. Dismiss dialog
@@ -970,8 +970,8 @@ public class Methods_dialog {
 		/*----------------------------
 		 * 3. Register data
 			----------------------------*/
-		boolean result = Methods.insertDataIntoDB(actv, DBUtils.table_name_memo_patterns, 
-								DBUtils.cols_memo_patterns, new String[]{word, table_name});
+		boolean result = Methods.insertDataIntoDB(actv, CONS.table_name_memo_patterns, 
+								CONS.cols_memo_patterns, new String[]{word, table_name});
 		
 		/*----------------------------
 		 * 4. Dismiss dialog
@@ -1239,7 +1239,7 @@ public class Methods_dialog {
 			
 			SQLiteDatabase wdb = dbu.getWritableDatabase();
 			
-			res = dbu.createTable(wdb, tableName, DBUtils.cols_memo_patterns, DBUtils.col_types_memo_patterns);
+			res = dbu.createTable(wdb, tableName, CONS.cols_memo_patterns, CONS.col_types_memo_patterns);
 			
 			if (res == true) {
 				// Log

@@ -6,6 +6,7 @@ import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.tasks.RefreshDBTask;
 import ifm9.tasks.Task_add_table_name;
+import ifm9.utils.CONS;
 import ifm9.utils.Methods;
 import ifm9.utils.Methods_dialog;
 import ifm9.utils.Tags;
@@ -62,7 +63,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		
 		Tags.DialogItemTags tag = (Tags.DialogItemTags) parent.getTag();
 //		
-		vib.vibrate(Methods.vibLength_click);
+		vib.vibrate(CONS.vibLength_click);
 		
 		/*----------------------------
 		 * 3. Switching

@@ -85,12 +85,12 @@ public class Methods {
 	
 //	/****************************************
 	
-	/****************************************
-	 * Vars
-	 ****************************************/
-	public static final int vibLength_click = 35;
-
-	static int tempRecordNum = 20;
+//	/****************************************
+//	 * Vars
+//	 ****************************************/
+//	public static final int vibLength_click = 35;
+//
+//	static int tempRecordNum = 20;
 
 	/****************************************
 	 * Methods
@@ -1373,7 +1373,7 @@ public class Methods {
 		
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         
-		String[] proj = DBUtils.proj;
+		String[] proj = CONS.proj;
 
 		/*----------------------------
 		 * 3.4. Last refreshed date
@@ -1424,8 +1424,8 @@ public class Methods {
 			result = dbu.createTable(
 											wdb, 
 											MainActv.tableName_refreshLog, 
-											DBUtils.cols_refresh_log, 
-											DBUtils.col_types_refresh_log);
+											CONS.cols_refresh_log, 
+											CONS.col_types_refresh_log);
 			
 			if (result == true) {
 				// Log
@@ -1498,7 +1498,7 @@ public class Methods {
 					+ "]", "Table doesn't exist: " + tableName);
 			
 			result = 
-					dbu.createTable(wdb, tableName, DBUtils.cols, DBUtils.col_types);
+					dbu.createTable(wdb, tableName, CONS.cols, CONS.col_types);
 			
 			if (result == false) {
 
@@ -1643,7 +1643,7 @@ public class Methods {
 		
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         
-		String[] proj = DBUtils.proj;
+		String[] proj = CONS.proj;
 
 		/*----------------------------
 		 * 3.4. Last refreshed date
@@ -1694,8 +1694,8 @@ public class Methods {
 			result = dbu.createTable(
 											wdb, 
 											MainActv.tableName_refreshLog, 
-											DBUtils.cols_refresh_log, 
-											DBUtils.col_types_refresh_log);
+											CONS.cols_refresh_log, 
+											CONS.col_types_refresh_log);
 			
 			if (result == true) {
 				// Log
@@ -1757,7 +1757,7 @@ public class Methods {
 					+ "]", "Table doesn't exist: " + tableName);
 			
 			result = 
-					dbu.createTable(wdb, tableName, DBUtils.cols, DBUtils.col_types);
+					dbu.createTable(wdb, tableName, CONS.cols, CONS.col_types);
 			
 			if (result == false) {
 
@@ -1852,7 +1852,7 @@ public class Methods {
 			 * 		4. Record result
 				----------------------------*/
 			boolean blResult = 
-						dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
+						dbu.insertData(wdb, tableName, CONS.cols_for_insert_data, values);
 				
 			if (blResult == false) {
 				// Log
@@ -2055,7 +2055,7 @@ public class Methods {
 			 * 		4. Record result
 				----------------------------*/
 			boolean blResult = 
-						dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
+						dbu.insertData(wdb, tableName, CONS.cols_for_insert_data, values);
 				
 			if (blResult == false) {
 				// Log
@@ -2131,7 +2131,7 @@ public class Methods {
 			* 2. If no, create one
 			----------------------------*/
 			if(dbu.createTable(wdb, tableName, 
-				DBUtils.cols_refresh_log, DBUtils.col_types_refresh_log)) {
+					CONS.cols_refresh_log, CONS.col_types_refresh_log)) {
 				
 				//toastAndLog(actv, "Table created: " + tableName, 3000);
 				
@@ -2177,7 +2177,7 @@ public class Methods {
 			dbu.insertData(
 							wdb, 
 							tableName, 
-							DBUtils.cols_refresh_log, 
+							CONS.cols_refresh_log, 
 							new long[] {lastItemDate, (long) numOfItemsAdded}
 			);
 			
@@ -2490,7 +2490,7 @@ public class Methods {
 		
 		boolean res = dbu.createTable(wdb, tableName, 
 //					dbu.get_cols(), dbu.get_col_types());
-							DBUtils.cols, DBUtils.col_types);
+						CONS.cols, CONS.col_types);
 		
 		wdb.close();
 		
@@ -3710,6 +3710,7 @@ public class Methods {
 				tilist.add(Methods.convertCursorToThumbnailItem(c));
 				
 				c.moveToNext();
+				
 				
 			}//if (c.getCount() > 0)
 			
@@ -4973,7 +4974,7 @@ public class Methods {
 		// Create a table
 		boolean res = dbu.createTable(wdb, t_name, 
 //					dbu.get_cols(), dbu.get_col_types());
-							DBUtils.cols, DBUtils.col_types);
+						CONS.cols, CONS.col_types);
 		
 		// Close db
 		wdb.close();

@@ -5,6 +5,7 @@ import ifm9.main.ImageActv;
 import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.main.TNActv;
+import ifm9.utils.CONS;
 import ifm9.utils.Methods;
 import ifm9.utils.Tags;
 
@@ -73,7 +74,7 @@ public class ButtonOnClickListener implements OnClickListener {
 //		//
 		Tags.ButtonTags tag = (Tags.ButtonTags) v.getTag();
 //
-		vib.vibrate(Methods.vibLength_click);
+		vib.vibrate(CONS.vibLength_click);
 		
 		//
 		switch (tag) {
@@ -105,7 +106,7 @@ public class ButtonOnClickListener implements OnClickListener {
 
 		case thumb_activity_ib_bottom: //----------------------------------------------
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 			int numOfGroups = TNActv.tiList.size() / lv.getChildCount();
 			
@@ -117,7 +118,7 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 		case thumb_activity_ib_top://--------------------------------------------
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 			lv.setSelection(0);
 			

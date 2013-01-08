@@ -1,5 +1,6 @@
 package ifm9.listeners.dialog;
 
+import ifm9.utils.CONS;
 import ifm9.utils.Methods;
 import ifm9.utils.Methods_dialog;
 import ifm9.utils.Tags;
@@ -88,7 +89,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		
 		case dlg_generic_dismiss://------------------------------------------------
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 			dlg.dismiss();
 			
@@ -96,7 +97,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 
 		case dlg_generic_dismiss_second_dialog: // ----------------------------------------------------
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 			dlg2.dismiss();
 			
@@ -104,7 +105,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 
 		case dlg_generic_dismiss_third_dialog://------------------------------------------------
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 			dlg3.dismiss();
 			
@@ -181,7 +182,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Calling => Methods.addMemo()");
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 			Methods.addMemo(actv, dlg, file_id, tableName);
 			
@@ -189,7 +190,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 
 		case dlg_register_patterns_register:// ----------------------------------------------------
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 //			Methods.dlg_register_patterns_isInputEmpty(actv, dlg);
 			Methods_dialog.dlg_register_patterns_isInputEmpty(actv, dlg, dlg2);
@@ -204,7 +205,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 		case dlg_search_ok:// ---------------------------------------------------------------------
 			
-			vib.vibrate(Methods.vibLength_click);
+			vib.vibrate(CONS.vibLength_click);
 			
 			Methods.searchItem(actv, dlg);
 			

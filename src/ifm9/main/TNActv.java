@@ -813,7 +813,7 @@ public class TNActv extends ListActivity {
 		/*----------------------------
 		 * 0. Vibrate
 			----------------------------*/
-		vib.vibrate(Methods.vibLength_click);
+		vib.vibrate(CONS.vibLength_click);
 		
 		// Log
 		Log.d("TNActv.java" + "["

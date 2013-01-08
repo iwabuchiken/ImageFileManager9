@@ -6,6 +6,7 @@ import ifm9.listeners.button.ButtonOnClickListener;
 import ifm9.listeners.button.ButtonOnTouchListener;
 import ifm9.listeners.dialog.DialogListener;
 import ifm9.tasks.RefreshDBTask;
+import ifm9.utils.CONS;
 import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
 import ifm9.utils.Methods_dialog;
@@ -1064,7 +1065,7 @@ public class MainActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onListItemClick()");
 		//
-		vib.vibrate(Methods.vibLength_click);
+		vib.vibrate(CONS.vibLength_click);
 		
 		String itemName = (String) lv.getItemAtPosition(position);
 		

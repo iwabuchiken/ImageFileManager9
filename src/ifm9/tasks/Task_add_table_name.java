@@ -2,6 +2,7 @@ package ifm9.tasks;
 
 import ifm9.main.MainActv;
 import ifm9.main.TNActv;
+import ifm9.utils.CONS;
 import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
 
@@ -464,7 +465,7 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 				// Insert data
 				for (String[] data : data_list) {
 					
-					Methods.insertDataIntoDB(actv, t_name, DBUtils.cols, data);
+					Methods.insertDataIntoDB(actv, t_name, CONS.cols, data);
 				}
 				
 				// Clear the data_list
@@ -631,7 +632,7 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 		// Insert data
 		for (String[] data : data_list) {
 			
-			Methods.insertDataIntoDB(actv, t_name_trunk, DBUtils.cols, data);
+			Methods.insertDataIntoDB(actv, t_name_trunk, CONS.cols, data);
 		}
 		
 			
@@ -1219,7 +1220,7 @@ public class Task_add_table_name extends AsyncTask<String, Integer, String>{
 				// Insert data from the list into the new table
 				for (String[] data : data_list) {
 					
-					Methods.insertDataIntoDB(actv, t_name, DBUtils.cols, data);
+					Methods.insertDataIntoDB(actv, t_name, CONS.cols, data);
 					
 				}
 //				Methods.insertDataIntoDB(actv, t_name, DBUtils.cols, obj);
