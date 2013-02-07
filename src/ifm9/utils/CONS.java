@@ -41,9 +41,12 @@ public class CONS {
 					"INTEGER",		"TEXT",	"TEXT"};
 
 	// Main data
-	public static String[] cols = 
+	public static String[] cols =
+		//column number: 3-6
 		{"file_id", "file_path", "file_name", 	"date_added",
+		//column number: 7-10
 		"date_modified",	"memos", "tags", 	"last_viewed_at",
+		//column number: 11
 		"table_name"};
 //	"date_modified", "memos", "tags"};
 
@@ -86,6 +89,14 @@ public class CONS {
 	static String[] col_types_memo_patterns = {"TEXT", "TEXT"};
 	
 	static String table_name_memo_patterns = "memo_patterns";
+
+	public static String[] cols_show_history = {
+		"file_id", "table_name"
+	};
+	
+	public static String[] col_types_show_history = {
+		"INTEGER", "TEXT"
+	};
 
 	/****************************************
 	 * Vars

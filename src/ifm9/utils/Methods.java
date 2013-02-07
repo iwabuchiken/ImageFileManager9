@@ -4024,8 +4024,8 @@ public class Methods {
 			result = dbu.createTable(
 											wdb, 
 											MainActv.tableName_show_history, 
-											MainActv.cols_show_history, 
-											MainActv.col_types_show_history);
+											CONS.cols_show_history, 
+											CONS.col_types_show_history);
 			
 			if (result == true) {
 				// Log
@@ -4058,6 +4058,13 @@ public class Methods {
 		 *********************************/
 		long num_of_records = Methods.get_num_of_entries(actv, MainActv.tableName_show_history);
 
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "num_of_records=" + num_of_records);
+		
 		SharedPreferences prefs =
 				actv.getSharedPreferences(
 						actv.getString(R.string.prefs_shared_prefs_name), 0);
@@ -4081,17 +4088,19 @@ public class Methods {
 			
 		}//if (result == true)
 		
+
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "history_size=" + history_size);
 		
 //		int pref_history_size = 
 ////				(int) prefs.getInt(actv.getString(R.string.prefs_history_size_key), 0);
 //				prefs.getin;
 
 //		int pref_history_size = prefs.getString(actv.getString(R.string.prefs_history_size_key), null);
-		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "num_of_records=" + num_of_records);
 		
 		long start_id_num = 0;
 		
@@ -4125,6 +4134,12 @@ public class Methods {
 				+ " WHERE " + android.provider.BaseColumns._ID + " >= "
 				+ start_id_num;
 		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "sql=" + sql);
 		
 		Cursor c = wdb.rawQuery(sql, null);
 		
@@ -4214,6 +4229,21 @@ public class Methods {
 			
 			table_names[j] = c.getString(4);
 			
+			// MEMO: 20130207_121730
+			// Need to add 3 to the index, for CONS.cols_show_history
+			//	doesn't include the 3 automatically included columns,
+			//	i.e. "_id", "created_at" and "modified_at"
+			table_names[j] =
+					c.getString(3 + Methods.getArrayIndex(
+									CONS.cols_show_history, "table_name"));
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ ":"
+//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//					+ "]", "table_name=" + c.getString(Methods.getArrayIndex(
+//							CONS.cols, "table_name")));
+			
 			c.moveToNext();
 			
 		}//for (int j = 0; j < data_length; j++)
@@ -4247,8 +4277,8 @@ public class Methods {
 //			result = dbu.createTable(
 //											wdb, 
 //											MainActv.tableName_show_history, 
-//											MainActv.cols_show_history, 
-//											MainActv.col_types_show_history);
+//											CONS.cols_show_history, 
+//											CONS.col_types_show_history);
 //			
 //			if (result == true) {
 //				// Log
@@ -4315,8 +4345,8 @@ public class Methods {
 			result = dbu.createTable(
 											wdb, 
 											MainActv.tableName_show_history, 
-											MainActv.cols_show_history, 
-											MainActv.col_types_show_history);
+											CONS.cols_show_history, 
+											CONS.col_types_show_history);
 			
 			if (result == true) {
 				// Log
@@ -5241,6 +5271,23 @@ public class Methods {
 		
 	}//public static void db_backup(Activity actv, Dialog dlg, String item)
 
+	public static int getArrayIndex(String[] targetArray, String targetString) {
+		int index = -1;
+		
+		for (int i = 0; i < targetArray.length; i++) {
+			
+			if (targetArray[i].equals(targetString)) {
+				
+				index = i;
+				
+				break;
+				
+			}//if (targetArray[i] == )
+			
+		}//for (int i = 0; i < targetArray.length; i++)
+		
+		return index;
+	}//public static int getArrayIndex(String[] targetArray, String targetString)
 
 }//public class Methods
 

@@ -129,13 +129,13 @@ public class MainActv extends ListActivity {
 	// show_history
 	public static String tableName_show_history = "show_history";
 	
-	public static String[] cols_show_history = {
-		"file_id", "table_name"
-	};
-	
-	public static String[] col_types_show_history = {
-		"INTEGER", "TEXT"
-	};
+//	public static String[] cols_show_history = {
+//		"file_id", "table_name"
+//	};
+//	
+//	public static String[] col_types_show_history = {
+//		"INTEGER", "TEXT"
+//	};
 
 	public static String tableName_separator = "__";
 
