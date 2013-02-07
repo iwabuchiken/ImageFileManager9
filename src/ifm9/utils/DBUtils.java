@@ -883,6 +883,8 @@ public class DBUtils extends SQLiteOpenHelper{
 		// Log
 		Log.d("DBUtils.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
 				+ "]", "Starting => get_all_data_history()");
 		
 		/*********************************
@@ -910,6 +912,8 @@ public class DBUtils extends SQLiteOpenHelper{
 		// Log
 		Log.d("DBUtils.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
 				+ "]", "history_file_ids.length=" + history_file_ids.length);
 		
 		for (int i = 0; i < history_file_ids.length; i++) {
@@ -919,7 +923,13 @@ public class DBUtils extends SQLiteOpenHelper{
 			 *********************************/
 			String sql = "SELECT * FROM " + history_table_names[i]
 						+ " WHERE file_id='" + history_file_ids[i] + "'";
-			
+
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "sql=" + sql);
 			Cursor c = null;
 			
 			try {
@@ -964,6 +974,18 @@ public class DBUtils extends SQLiteOpenHelper{
 				
 				continue;
 				
+			} else {
+				
+				// Log
+				Log.d("DBUtils.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber()
+							+ ":"
+							+ Thread.currentThread().getStackTrace()[2]
+									.getMethodName() + "]",
+						"c.getCount()=" + c.getCount());
+				
 			}
 			
 			
@@ -973,18 +995,22 @@ public class DBUtils extends SQLiteOpenHelper{
 			c.moveToFirst();
 			
 			TI ti = new TI(
-					c.getLong(1),	// file_id
-					c.getString(2),	// file_path
-					c.getString(3),	// file_name
+					c.getLong(3),	// file_id
+					c.getString(4),	// file_path
+					c.getString(5),	// file_name
 					
-					c.getLong(4),	// date_added
+					c.getLong(6),	// date_added
 //					c.getLong(5)		// date_modified
-					c.getLong(5),		// date_modified
+					c.getLong(7),		// date_modified
 					
-					c.getString(6),	// memos
-					c.getString(7),	// tags
+					c.getString(8),	// memos
+					c.getString(9),	// tags
 					
-					c.getLong(8)	// last_viewed_at
+					c.getLong(10),	// last_viewed_at
+//					c.getString(11)	// table_name
+					c.getString(Methods.getArrayIndex(
+									CONS.cols,
+									"table_name"))	// table_name
 					);	
 
 			/*********************************

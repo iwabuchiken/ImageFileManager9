@@ -4236,6 +4236,14 @@ public class Methods {
 			table_names[j] =
 					c.getString(3 + Methods.getArrayIndex(
 									CONS.cols_show_history, "table_name"));
+			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ ":"
+//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//					+ "]", "table_name=" + c.getString(3 + Methods.getArrayIndex(
+//							CONS.cols_show_history, "table_name")));
 //			// Log
 //			Log.d("Methods.java" + "["
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
@@ -4433,6 +4441,8 @@ public class Methods {
 		// Log
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
 				+ "]", "Build list");
 		
 		List<TI> tiList = dbu.get_all_data_history(

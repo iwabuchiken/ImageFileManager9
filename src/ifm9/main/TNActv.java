@@ -437,20 +437,32 @@ public class TNActv extends ListActivity {
 			// Log
 			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
 					+ "]", "history_file_ids != null");
 			
 			// Log
 			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", 
-					"file_ids: length=" + history_file_ids.length + 
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "file_ids: length=" + history_file_ids.length + 
 					"/" + "history_table_names: length=" + history_table_names.length);
 			
-			tiList = Methods.get_all_data_history(this, history_file_ids, history_table_names);
-			
+			tiList = Methods.get_all_data_history(
+								this,
+								history_file_ids,
+								history_table_names);
+
 			// Log
 			Log.d("TNActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "tiList.size()=" + tiList.size());
+			// Log
+			Log.d("TNActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
 					+ "]", "tiList.size()=" + tiList.size());
 			
 //			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
