@@ -5290,5 +5290,68 @@ public class Methods {
 		return index;
 	}//public static int getArrayIndex(String[] targetArray, String targetString)
 
+	/*********************************
+	 * 20130213_134916
+	 * convert_Kana2Gana(String s)
+	 * 1. The name "Kana2Gana" is borrowed from: http://java.akjava.com/library/kanagana
+	 * 2. The code from: http://www7a.biglobe.ne.jp/~java-master/samples/string/ZenkakuKatakanaToZenkakuHiragana.html
+	 * 
+	 *********************************/
+	public static String convert_Kana2Gana(String s) {
+		StringBuffer sb = new StringBuffer(s);
+		
+		for (int i = 0; i < sb.length(); i++) {
+		
+			char c = sb.charAt(i);
+			
+			if (c >= 'ァ' && c <= 'ン') {
+
+						sb.setCharAt(i, (char)(c - 'ァ' + 'ぁ'));
+
+					} else if (c == 'ヵ') {
+
+						sb.setCharAt(i, 'か');
+
+					} else if (c == 'ヶ') {
+
+						sb.setCharAt(i, 'け');
+
+					} else if (c == 'ヴ') {
+
+						sb.setCharAt(i, 'う');
+
+						sb.insert(i + 1, '゛');
+
+						i++;
+						
+			}//if (c >= 'ァ' && c <= 'ン')
+			
+//			if (c >= '??ｽ@' && c <= '??ｽ??ｽ') {
+//				
+//				sb.setCharAt(i, (char)(c - '??ｽ@' + '??ｽ??ｽ'));
+//				
+//			} else if (c == '??ｽ??ｽ') {
+//				
+//				sb.setCharAt(i, '??ｽ??ｽ');
+//				
+//			} else if (c == '??ｽ??ｽ') {
+//				
+//				sb.setCharAt(i, '??ｽ??ｽ');
+//
+//			} else if (c == '??ｽ??ｽ') {
+//
+//				sb.setCharAt(i, '??ｽ??ｽ');
+//
+//				sb.insert(i + 1, '??ｽJ');
+//
+//				i++;
+//			}
+			
+		}//for (int i = 0; i < sb.length(); i++)
+		
+		return sb.toString(); 
+		
+	}//public static String convert_Kana2Gana(String s)
+
 }//public class Methods
 
