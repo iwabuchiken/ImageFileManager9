@@ -17,6 +17,7 @@ import ifm9.tasks.RefreshDBTask;
 import ifm9.tasks.SearchTask;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -24,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
@@ -52,6 +55,7 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -72,6 +76,16 @@ import android.os.Looper;
 // Apache
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 // REF=> http://commons.apache.org/net/download_net.cgi
 //REF=> http://www.searchman.info/tips/2640.html
@@ -183,7 +197,7 @@ public class Methods {
 		
 		Methods.update_image_buttons(actv, currentPath);
 		
-//		update_image_buttons(actv, currentPath)G
+//		update_image_buttons(actv, currentPath)ï¿½G
 		
 //		ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
 //		
@@ -625,7 +639,7 @@ public class Methods {
 		if (currentPath.equals(MainActv.dirPath_base)) {
 			
 			// debug
-			Toast.makeText(actv, "ƒgƒbƒvEƒtƒHƒ‹ƒ_‚É‚¢‚Ü‚·", 2000).show();
+			Toast.makeText(actv, "ï¿½gï¿½bï¿½vï¿½Eï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½É‚ï¿½ï¿½Ü‚ï¿½", 2000).show();
 		
 			return;
 		}//if (ImageFileManager8Activity.currentDirPath == ImageFileManager8Activity.baseDirPath)
@@ -682,7 +696,7 @@ public class Methods {
 		if (!targetFileName.equals(MainActv.listFileName)) {
 			
 			// debug
-			Toast.makeText(actv, "list.txt ‚Å‚Í‚ ‚è‚Ü‚¹‚ñ", 2000).show();
+			Toast.makeText(actv, "list.txt ï¿½Å‚Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½", 2000).show();
 			
 			return;
 		}//if (!target.getName().equals(ImageFileManager8Activity.listFileName))
@@ -727,16 +741,16 @@ public class Methods {
 
 	public static void confirm_quit(Activity actv, int keyCode) {
 		
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		if (keyCode==KeyEvent.KEYCODE_BACK) {
 			
 			AlertDialog.Builder dialog=new AlertDialog.Builder(actv);
 			
-	        dialog.setTitle("ƒAƒvƒŠ‚ÌI—¹");
-	        dialog.setMessage("ƒAƒvƒŠ‚ğI—¹‚µ‚Ü‚·‚©H");
+	        dialog.setTitle("ï¿½Aï¿½vï¿½ï¿½ï¿½ÌIï¿½ï¿½");
+	        dialog.setMessage("ï¿½Aï¿½vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½H");
 	        
-	        dialog.setPositiveButton("I—¹",new DialogListener(actv, dialog, 0));
-	        dialog.setNegativeButton("ƒLƒƒƒ“ƒZƒ‹",new DialogListener(actv, dialog, 1));
+	        dialog.setPositiveButton("ï¿½Iï¿½ï¿½",new DialogListener(actv, dialog, 0));
+	        dialog.setNegativeButton("ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½",new DialogListener(actv, dialog, 1));
 	        
 	        dialog.create();
 	        dialog.show();
@@ -1239,7 +1253,7 @@ public class Methods {
 			numOfItemsAdded = 0;
 			
 //			// debug
-//			Toast.makeText(actv, "V‹K‚Ìƒtƒ@ƒCƒ‹‚Í‚ ‚è‚Ü‚¹‚ñ", 2000).show();
+//			Toast.makeText(actv, "ï¿½Vï¿½Kï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½ï¿½Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½", 2000).show();
 			
 		} else {//if (c.getCount() < 1)
 			
@@ -1310,7 +1324,7 @@ public class Methods {
 			numOfItemsAdded = 0;
 			
 			// debug
-			Toast.makeText(actv, "V‹K‚Ìƒtƒ@ƒCƒ‹‚Í‚ ‚è‚Ü‚¹‚ñ", 2000).show();
+			Toast.makeText(actv, "ï¿½Vï¿½Kï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½ï¿½Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½", 2000).show();
 			
 		} else {//if (c.getCount() < 1)
 			
@@ -2285,7 +2299,7 @@ public class Methods {
 		//
 		if (newDir.exists()) {
 			// debug
-			Toast.makeText(actv, "‚±‚Ì–¼‘O‚ÌƒtƒHƒ‹ƒ_‚Í‚·‚Å‚É‚ ‚è‚Ü‚·IF " + folderName, 3000).show();
+			Toast.makeText(actv, "ï¿½ï¿½ï¿½Ì–ï¿½ï¿½Oï¿½Ìƒtï¿½Hï¿½ï¿½ï¿½_ï¿½Í‚ï¿½ï¿½Å‚É‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Iï¿½F " + folderName, 3000).show();
 			
 			return null;
 			
@@ -2300,7 +2314,7 @@ public class Methods {
 				dlg.dismiss();
 				
 				// debug
-				Toast.makeText(actv, "ƒtƒHƒ‹ƒ_‚ğì‚è‚Ü‚µ‚½ : " + newDir.getAbsolutePath(), 3000).show();
+				Toast.makeText(actv, "ï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ : " + newDir.getAbsolutePath(), 3000).show();
 				
 				// Log
 				Log.d("Methods.java" + "["
@@ -2310,7 +2324,7 @@ public class Methods {
 				
 			} catch (Exception e) {
 				// debug
-				Toast.makeText(actv, "ƒtƒHƒ‹ƒ_‚ğì‚ê‚Ü‚¹‚ñ‚Å‚µ‚½ : " + newDir.getName(), 3000).show();
+				Toast.makeText(actv, "ï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ : " + newDir.getName(), 3000).show();
 				
 				// Log
 				Log.d("Methods.java" + "["
@@ -2339,7 +2353,7 @@ public class Methods {
 					+ "]", "listFile => Exists");
 			
 			// debug
-			Toast.makeText(actv, "list.txt => ‚·‚Å‚É‚ ‚è‚Ü‚·", 3000).show();
+			Toast.makeText(actv, "list.txt => ï¿½ï¿½ï¿½Å‚É‚ï¿½ï¿½ï¿½Ü‚ï¿½", 3000).show();
 			
 		} else {//if (listFile.exists())
 			try {
@@ -2354,7 +2368,7 @@ public class Methods {
 								.getLineNumber() + "]", "listFile => Created");
 				
 //				// debug
-//				Toast.makeText(actv, "list.txt => ì¬‚³‚ê‚Ü‚µ‚½", 3000).show();
+//				Toast.makeText(actv, "list.txt => ï¿½ì¬ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½", 3000).show();
 				
 			} catch (IOException e) {
 				// Log
@@ -2363,7 +2377,7 @@ public class Methods {
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
 				// debug
-				Toast.makeText(actv, "list.txt => ì¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½", 3000).show();
+				Toast.makeText(actv, "list.txt => ï¿½ì¬ï¿½Å‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½", 3000).show();
 				
 				return null;
 			}
@@ -2428,7 +2442,7 @@ public class Methods {
 										.getLineNumber() + "]", "listFile => Created");
 						
 						// debug
-						Toast.makeText(actv, "list.txt => ì¬‚³‚ê‚Ü‚µ‚½", 3000).show();
+						Toast.makeText(actv, "list.txt => ï¿½ì¬ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½", 3000).show();
 						
 					} catch (IOException e) {
 						// Log
@@ -2437,7 +2451,7 @@ public class Methods {
 								+ Thread.currentThread().getStackTrace()[2]
 										.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
 						// debug
-						Toast.makeText(actv, "list.txt => ì¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½", 3000).show();
+						Toast.makeText(actv, "list.txt => ï¿½ì¬ï¿½Å‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½", 3000).show();
 					}
 					
 				}//if (res)
@@ -2525,14 +2539,14 @@ public class Methods {
 		
 		if (!targetDir.exists()) {
 			// debug
-			Toast.makeText(actv, "‚±‚ÌƒAƒCƒeƒ€‚ÍA‘¶İ‚µ‚Ü‚¹‚ñ", 2000).show();
+			Toast.makeText(actv, "ï¿½ï¿½ï¿½ÌƒAï¿½Cï¿½eï¿½ï¿½ï¿½ÍAï¿½ï¿½ï¿½İ‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½", 2000).show();
 			
 			return;
 		}
 		
 		if (!targetDir.isDirectory()) {
 			// debug
-			Toast.makeText(actv, "‚±‚ÌƒAƒCƒeƒ€‚ÍAƒtƒHƒ‹ƒ_‚Å‚Í‚ ‚è‚Ü‚¹‚ñ", 2000).show();
+			Toast.makeText(actv, "ï¿½ï¿½ï¿½ÌƒAï¿½Cï¿½eï¿½ï¿½ï¿½ÍAï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½Å‚Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½", 2000).show();
 			
 			return;
 		}//if (!targetDir.exists() || !targetDir.isDirectory())
@@ -2560,7 +2574,7 @@ public class Methods {
 					+ "]", "Dir => Removed: " + path);
 			
 			// debug
-			Toast.makeText(actv, "íœ‚µ‚Ü‚µ‚½" + path, 3000).show();
+			Toast.makeText(actv, "ï¿½íœï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½" + path, 3000).show();
 		} else {//if (result == true)
 			// Log
 			Log.d("Methods.java" + "["
@@ -2568,7 +2582,7 @@ public class Methods {
 					+ "]", "Remove dir => Failed: " + path);
 			
 			// debug
-			Toast.makeText(actv, "íœ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½: " + path, 3000).show();
+			Toast.makeText(actv, "ï¿½íœï¿½Å‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½: " + path, 3000).show();
 			
 			return;
 		}//if (result == true)
@@ -2649,7 +2663,7 @@ public class Methods {
 
 //			@Override
 			public int compare(TI lhs, TI rhs) {
-				// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+				// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 				
 //				return (int) (lhs.getDate_added() - rhs.getDate_added());
 				
@@ -3297,7 +3311,7 @@ public class Methods {
 			----------------------------*/
 //		ti.setMemo("abcdefg");
 //		ti.setMemo("123456");
-//		ti.setMemo("WHERE‹å‚ğÈ—ª‚µ‚½ê‡‚Íƒe[ƒuƒ‹‚ÉŠÜ‚Ü‚ê‚é‘S‚Ä‚Ìƒf[ƒ^‚Ìw’è‚ÌƒJƒ‰ƒ€‚Ì’l‚ªw’è‚Ì’l‚ÅXV‚³‚ê‚Ü‚·B");
+//		ti.setMemo("WHEREï¿½ï¿½ï¿½ï¿½È—ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Íƒeï¿½[ï¿½uï¿½ï¿½ï¿½ÉŠÜ‚Ü‚ï¿½ï¿½Sï¿½Ä‚Ìƒfï¿½[ï¿½^ï¿½Ìwï¿½ï¿½ÌƒJï¿½ï¿½ï¿½ï¿½ï¿½Ì’lï¿½ï¿½ï¿½wï¿½ï¿½Ì’lï¿½ÅXï¿½Vï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B");
 		
 		ti.setMemo(et.getText().toString());
 		
@@ -3528,7 +3542,7 @@ public class Methods {
 		} catch (SQLException e) {
 			
 			// debug
-			Toast.makeText(actv, "ƒpƒ^[ƒ“íœ@=>@‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½", 3000).show();
+			Toast.makeText(actv, "ï¿½pï¿½^ï¿½[ï¿½ï¿½ï¿½íœï¿½@=>ï¿½@ï¿½Å‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½", 3000).show();
 			
 			// Log
 			Log.e("Methods.java" + "["
@@ -3561,7 +3575,7 @@ public class Methods {
 		if (words.equals("")) {
 			
 			// debug
-			Toast.makeText(actv, "Œê‹å‚ğ“ü‚ê‚Ä‚È‚¢‚æ", 2000).show();
+			Toast.makeText(actv, "èªå¥ã‚’å…¥ã‚Œã¦ãªã„ã‚ˆ", 2000).show();
 			
 			return;
 			
@@ -3570,7 +3584,8 @@ public class Methods {
 		/*----------------------------
 		 * 2. Format words
 			----------------------------*/
-		words = words.replace('@', ' ');
+//		words = words.replace('ï¿½@x', ' ');
+		words = words.replace('ã€€', ' ');
 		
 		String[] a_words = words.split(" ");
 		
@@ -5298,6 +5313,421 @@ public class Methods {
 		
 		return index;
 	}//public static int getArrayIndex(String[] targetArray, String targetString)
+
+	/*********************************
+	 * 20130213_134916
+	 * convert_Kana2Gana(String s)
+	 * 1. The name "Kana2Gana" is borrowed from: http://java.akjava.com/library/kanagana
+	 * 2. The code from: http://www7a.biglobe.ne.jp/~java-master/samples/string/ZenkakuKatakanaToZenkakuHiragana.html
+	 * 
+	 *********************************/
+	public static String convert_Kana2Gana(String s) {
+		StringBuffer sb = new StringBuffer(s);
+		
+		for (int i = 0; i < sb.length(); i++) {
+		
+			char c = sb.charAt(i);
+			
+			if (c >= 'ï¿½@' && c <= 'ï¿½ï¿½') {
+				
+				sb.setCharAt(i, (char)(c - 'ï¿½@' + 'ï¿½ï¿½'));
+				
+			} else if (c == 'ï¿½ï¿½') {
+				
+				sb.setCharAt(i, 'ï¿½ï¿½');
+				
+			} else if (c == 'ï¿½ï¿½') {
+				
+				sb.setCharAt(i, 'ï¿½ï¿½');
+
+			} else if (c == 'ï¿½ï¿½') {
+
+				sb.setCharAt(i, 'ï¿½ï¿½');
+
+				sb.insert(i + 1, 'ï¿½J');
+
+				i++;
+			}
+			
+		}//for (int i = 0; i < sb.length(); i++)
+		
+		return sb.toString(); 
+		
+	}//public static String convert_Kana2Gana(String s)
+
+	/*********************************
+	 * 20130214_104250
+	 * getYomi_getHttpEntity(String url)
+	 *********************************/
+	public static HttpEntity 
+	getYomi_getHttpEntity(String url) {
+
+//		String url = "http://jlp.yahooapis.jp/FuriganaService/V1/furigana" +
+//		"?appid=dj0zaiZpPTZjQWNRNExhd0thayZkPVlXazlhR2gwTTJGUE56SW1jR285TUEtLSZzPWNvbnN1bWVyc2VjcmV0Jng9Mjc-" +
+//		"&grade=1" +
+//		"&sentence=" + keyword;
+////		+ "output=json";
+		
+		HttpPost httpPost = new HttpPost(url);
+		
+		httpPost.setHeader("Content-type", "application/json");
+		
+		/*********************************
+		 * memo
+		 *********************************/
+		HttpUriRequest postRequest = httpPost;
+		
+		DefaultHttpClient dhc = new DefaultHttpClient();
+		
+		HttpResponse hr = null;
+		
+		/*********************************
+		 * Execute request
+		 *********************************/
+		try {
+			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ ":"
+//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//					+ "]", "Executing postRequest...");
+			
+			hr = dhc.execute(postRequest);
+			
+		} catch (ClientProtocolException e) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		} catch (IOException e) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		}//try
+		
+		/*********************************
+		 * Process response
+		 *********************************/
+		if (hr == null) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "hr == null");
+			
+			return null;
+			
+		}//if (hr == null)
+
+		/*********************************
+		 * Get status
+		 *********************************/
+		int statusCode = hr.getStatusLine().getStatusCode();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "statusCode: " + statusCode);		
+
+//		HttpEntity entity = hr.getEntity();
+		return hr.getEntity();
+		
+	}//private static HttpEntity getYomi_B18_v_1_3__1_getHttpEntity(String sen)
+
+	/*********************************
+	 * 20130214_104945
+	 * convert_HttpEntity2XmlString(HttpEntity entity)
+	 *********************************/
+	public static String
+	convert_HttpEntity2XmlString(HttpEntity entity) {
+
+		/*********************************
+		 * Prepare: InputStream object
+		 * Ref => http://symfoware.blog68.fc2.com/blog-entry-711.html
+		 *********************************/
+		String xmlString = null;
+		
+		try {
+			
+			xmlString = EntityUtils.toString(entity);
+			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ ":"
+//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//					+ "]", xmlString);
+			
+		} catch (ParseException e) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		} catch (IOException e) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+
+		}
+		
+		return xmlString;
+		
+	}//private static XmlPullParser getYomi_B18_v_1_3__2_getXmlParser()
+
+	/*********************************
+	 * 20130214_114218
+	 * getYomi_full(String kw, String enc)
+	 *********************************/
+	public static String[]
+	getYomi_full(String kw, String enc) {
+		/*********************************
+		 * Build a url string
+		 *********************************/
+		String url = "http://jlp.yahooapis.jp/FuriganaService/V1/furigana" +
+				"?appid=dj0zaiZpPTZjQWNRNExhd0thayZkPVlXazlhR2gwTTJGUE56SW1jR285TUEtLSZzPWNvbnN1bWVyc2VjcmV0Jng9Mjc-" +
+				"&grade=1" +
+				"&sentence=" + kw;
+		
+		/*********************************
+		 * Get: Http entity
+		 *********************************/
+		HttpEntity entity = Methods.getYomi_getHttpEntity(url);
+
+		if (entity == null) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "entity == null");
+			
+			return null;
+			
+		}//if (entity == null)
+
+		/*********************************
+		 * Get: XMLPullParser
+		 *********************************/
+		String xmlString =
+					Methods.convert_HttpEntity2XmlString(entity);
+		
+		XmlPullParser xmlPullParser =
+				Methods.getYomi_getXmlParser(xmlString, enc);
+		
+		/*********************************
+		 * Extract: Furigana
+		 *********************************/
+		String furigana =
+				Methods.getYomi_getFurigana(xmlPullParser, "Furigana");
+		
+		/*********************************
+		 * Extract: Surface
+		 *********************************/
+		xmlPullParser =
+				Methods.getYomi_getXmlParser(xmlString, "utf-8");
+		
+		String surface =
+				Methods.getYomi_getFurigana(xmlPullParser, "Surface");
+
+		/*********************************
+		 * Return
+		 *********************************/
+//		if (furigana == null) {
+		if (furigana == null && surface == null) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]",
+					"surface=" + surface + "/"
+					+ "furigana == null");
+
+			return null;
+			
+		} else {//if (furigana == null)
+			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ ":"
+//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//					+ "]",
+//					"surface=" + surface + "/"
+//					+ "furigana = " + furigana);
+			
+			return new String[]{kw, surface, furigana};
+			
+		}//if (furigana == null)
+
+	}//private static String[] getYomi_full(String kw, String enc)
+
+	/*********************************
+	 * 20130214_105728
+	 * getYomi_getXmlParser(String xmlString, String enc)
+	 *********************************/
+	public static XmlPullParser
+	getYomi_getXmlParser(String xmlString, String enc) {
+
+		/*********************************
+		 * Prepare: InputStream object
+		 * Ref => http://symfoware.blog68.fc2.com/blog-entry-711.html
+		 *********************************/
+		InputStream is = null;
+		
+		try {
+			
+			is = new ByteArrayInputStream(
+									xmlString.getBytes(enc));
+			
+		} catch (UnsupportedEncodingException e) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		}
+		
+		/*********************************
+		 * Prepare: XML parser
+		 * REF=> http://android.roof-balcony.com/shori/xml/xmlparse/
+		 *********************************/
+		XmlPullParser xmlPullParser = Xml.newPullParser();
+		
+		try {
+			
+			xmlPullParser.setInput(is, enc);
+			
+		} catch (XmlPullParserException e) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		}
+		
+		return xmlPullParser;
+		
+	}//private static XmlPullParser getYomi_B18_v_1_3__2_getXmlParser()
+
+	/*********************************
+	 * 20130214_105749
+	 * getYomi_B18_v_1_3__3_getFurigana(XmlPullParser xmlPullParser, String targetTag)
+	 *********************************/
+	public static String
+	getYomi_getFurigana
+		(XmlPullParser xmlPullParser, String targetTag) {
+
+		String targetString = null;
+		
+		try {
+			
+			for(int e = xmlPullParser.getEventType();
+					e != XmlPullParser.END_DOCUMENT;
+					e = xmlPullParser.next()) {
+				
+				if(e == XmlPullParser.START_TAG &&
+//						xmlPullParser.getName().equals("Furigana")) {
+						xmlPullParser.getName().equals(targetTag)) {
+					
+					targetString = xmlPullParser.nextText();
+					
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber()
+							+ ":"
+							+ Thread.currentThread().getStackTrace()[2]
+									.getMethodName() + "]",
+//							"Furigana=" + xmlPullParser.nextText());
+							targetTag + "=" + targetString);
+					
+					return targetString;
+					
+				} else {//if
+					
+//					// Log
+//					Log.d("Methods.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber()
+//							+ ":"
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getMethodName() + "]",
+//							"tag=" + xmlPullParser.getName());
+					
+				}//if
+				
+			}//for
+			
+		} catch (XmlPullParserException e) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		} catch (IOException e) {
+
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+
+		}//try
+
+		return targetString;
+		
+	}//getYomi_getFurigana(XmlPullParser xmlPullParser, String targetTag)
 
 }//public class Methods
 
