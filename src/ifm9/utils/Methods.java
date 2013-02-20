@@ -17,7 +17,6 @@ import ifm9.tasks.RefreshDBTask;
 import ifm9.tasks.SearchTask;
 
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -25,8 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
@@ -55,7 +52,6 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -76,16 +72,6 @@ import android.os.Looper;
 // Apache
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 // REF=> http://commons.apache.org/net/download_net.cgi
 //REF=> http://www.searchman.info/tips/2640.html
@@ -3575,6 +3561,7 @@ public class Methods {
 		if (words.equals("")) {
 			
 			// debug
+//			Toast.makeText(actv, "������ĂȂ���", 2000).show();
 			Toast.makeText(actv, "語句を入れてないよ", 2000).show();
 			
 			return;
@@ -3584,7 +3571,6 @@ public class Methods {
 		/*----------------------------
 		 * 2. Format words
 			----------------------------*/
-//		words = words.replace('�@x', ' ');
 		words = words.replace('　', ' ');
 		
 		String[] a_words = words.split(" ");
@@ -4251,14 +4237,6 @@ public class Methods {
 			table_names[j] =
 					c.getString(3 + Methods.getArrayIndex(
 									CONS.cols_show_history, "table_name"));
-			
-//			// Log
-//			Log.d("Methods.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ ":"
-//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-//					+ "]", "table_name=" + c.getString(3 + Methods.getArrayIndex(
-//							CONS.cols_show_history, "table_name")));
 //			// Log
 //			Log.d("Methods.java" + "["
 //					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
@@ -4456,8 +4434,6 @@ public class Methods {
 		// Log
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ ":"
-				+ Thread.currentThread().getStackTrace()[2].getMethodName()
 				+ "]", "Build list");
 		
 		List<TI> tiList = dbu.get_all_data_history(
@@ -5313,421 +5289,6 @@ public class Methods {
 		
 		return index;
 	}//public static int getArrayIndex(String[] targetArray, String targetString)
-
-	/*********************************
-	 * 20130213_134916
-	 * convert_Kana2Gana(String s)
-	 * 1. The name "Kana2Gana" is borrowed from: http://java.akjava.com/library/kanagana
-	 * 2. The code from: http://www7a.biglobe.ne.jp/~java-master/samples/string/ZenkakuKatakanaToZenkakuHiragana.html
-	 * 
-	 *********************************/
-	public static String convert_Kana2Gana(String s) {
-		StringBuffer sb = new StringBuffer(s);
-		
-		for (int i = 0; i < sb.length(); i++) {
-		
-			char c = sb.charAt(i);
-			
-			if (c >= '�@' && c <= '��') {
-				
-				sb.setCharAt(i, (char)(c - '�@' + '��'));
-				
-			} else if (c == '��') {
-				
-				sb.setCharAt(i, '��');
-				
-			} else if (c == '��') {
-				
-				sb.setCharAt(i, '��');
-
-			} else if (c == '��') {
-
-				sb.setCharAt(i, '��');
-
-				sb.insert(i + 1, '�J');
-
-				i++;
-			}
-			
-		}//for (int i = 0; i < sb.length(); i++)
-		
-		return sb.toString(); 
-		
-	}//public static String convert_Kana2Gana(String s)
-
-	/*********************************
-	 * 20130214_104250
-	 * getYomi_getHttpEntity(String url)
-	 *********************************/
-	public static HttpEntity 
-	getYomi_getHttpEntity(String url) {
-
-//		String url = "http://jlp.yahooapis.jp/FuriganaService/V1/furigana" +
-//		"?appid=dj0zaiZpPTZjQWNRNExhd0thayZkPVlXazlhR2gwTTJGUE56SW1jR285TUEtLSZzPWNvbnN1bWVyc2VjcmV0Jng9Mjc-" +
-//		"&grade=1" +
-//		"&sentence=" + keyword;
-////		+ "output=json";
-		
-		HttpPost httpPost = new HttpPost(url);
-		
-		httpPost.setHeader("Content-type", "application/json");
-		
-		/*********************************
-		 * memo
-		 *********************************/
-		HttpUriRequest postRequest = httpPost;
-		
-		DefaultHttpClient dhc = new DefaultHttpClient();
-		
-		HttpResponse hr = null;
-		
-		/*********************************
-		 * Execute request
-		 *********************************/
-		try {
-			
-//			// Log
-//			Log.d("Methods.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ ":"
-//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-//					+ "]", "Executing postRequest...");
-			
-			hr = dhc.execute(postRequest);
-			
-		} catch (ClientProtocolException e) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-			
-		} catch (IOException e) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-			
-		}//try
-		
-		/*********************************
-		 * Process response
-		 *********************************/
-		if (hr == null) {
-			
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "hr == null");
-			
-			return null;
-			
-		}//if (hr == null)
-
-		/*********************************
-		 * Get status
-		 *********************************/
-		int statusCode = hr.getStatusLine().getStatusCode();
-		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ ":"
-				+ Thread.currentThread().getStackTrace()[2].getMethodName()
-				+ "]", "statusCode: " + statusCode);		
-
-//		HttpEntity entity = hr.getEntity();
-		return hr.getEntity();
-		
-	}//private static HttpEntity getYomi_B18_v_1_3__1_getHttpEntity(String sen)
-
-	/*********************************
-	 * 20130214_104945
-	 * convert_HttpEntity2XmlString(HttpEntity entity)
-	 *********************************/
-	public static String
-	convert_HttpEntity2XmlString(HttpEntity entity) {
-
-		/*********************************
-		 * Prepare: InputStream object
-		 * Ref => http://symfoware.blog68.fc2.com/blog-entry-711.html
-		 *********************************/
-		String xmlString = null;
-		
-		try {
-			
-			xmlString = EntityUtils.toString(entity);
-			
-//			// Log
-//			Log.d("Methods.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ ":"
-//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-//					+ "]", xmlString);
-			
-		} catch (ParseException e) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-			
-		} catch (IOException e) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-
-		}
-		
-		return xmlString;
-		
-	}//private static XmlPullParser getYomi_B18_v_1_3__2_getXmlParser()
-
-	/*********************************
-	 * 20130214_114218
-	 * getYomi_full(String kw, String enc)
-	 *********************************/
-	public static String[]
-	getYomi_full(String kw, String enc) {
-		/*********************************
-		 * Build a url string
-		 *********************************/
-		String url = "http://jlp.yahooapis.jp/FuriganaService/V1/furigana" +
-				"?appid=dj0zaiZpPTZjQWNRNExhd0thayZkPVlXazlhR2gwTTJGUE56SW1jR285TUEtLSZzPWNvbnN1bWVyc2VjcmV0Jng9Mjc-" +
-				"&grade=1" +
-				"&sentence=" + kw;
-		
-		/*********************************
-		 * Get: Http entity
-		 *********************************/
-		HttpEntity entity = Methods.getYomi_getHttpEntity(url);
-
-		if (entity == null) {
-			
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", "entity == null");
-			
-			return null;
-			
-		}//if (entity == null)
-
-		/*********************************
-		 * Get: XMLPullParser
-		 *********************************/
-		String xmlString =
-					Methods.convert_HttpEntity2XmlString(entity);
-		
-		XmlPullParser xmlPullParser =
-				Methods.getYomi_getXmlParser(xmlString, enc);
-		
-		/*********************************
-		 * Extract: Furigana
-		 *********************************/
-		String furigana =
-				Methods.getYomi_getFurigana(xmlPullParser, "Furigana");
-		
-		/*********************************
-		 * Extract: Surface
-		 *********************************/
-		xmlPullParser =
-				Methods.getYomi_getXmlParser(xmlString, "utf-8");
-		
-		String surface =
-				Methods.getYomi_getFurigana(xmlPullParser, "Surface");
-
-		/*********************************
-		 * Return
-		 *********************************/
-//		if (furigana == null) {
-		if (furigana == null && surface == null) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]",
-					"surface=" + surface + "/"
-					+ "furigana == null");
-
-			return null;
-			
-		} else {//if (furigana == null)
-			
-//			// Log
-//			Log.d("Methods.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ ":"
-//					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-//					+ "]",
-//					"surface=" + surface + "/"
-//					+ "furigana = " + furigana);
-			
-			return new String[]{kw, surface, furigana};
-			
-		}//if (furigana == null)
-
-	}//private static String[] getYomi_full(String kw, String enc)
-
-	/*********************************
-	 * 20130214_105728
-	 * getYomi_getXmlParser(String xmlString, String enc)
-	 *********************************/
-	public static XmlPullParser
-	getYomi_getXmlParser(String xmlString, String enc) {
-
-		/*********************************
-		 * Prepare: InputStream object
-		 * Ref => http://symfoware.blog68.fc2.com/blog-entry-711.html
-		 *********************************/
-		InputStream is = null;
-		
-		try {
-			
-			is = new ByteArrayInputStream(
-									xmlString.getBytes(enc));
-			
-		} catch (UnsupportedEncodingException e) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-			
-		}
-		
-		/*********************************
-		 * Prepare: XML parser
-		 * REF=> http://android.roof-balcony.com/shori/xml/xmlparse/
-		 *********************************/
-		XmlPullParser xmlPullParser = Xml.newPullParser();
-		
-		try {
-			
-			xmlPullParser.setInput(is, enc);
-			
-		} catch (XmlPullParserException e) {
-			
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-			
-		}
-		
-		return xmlPullParser;
-		
-	}//private static XmlPullParser getYomi_B18_v_1_3__2_getXmlParser()
-
-	/*********************************
-	 * 20130214_105749
-	 * getYomi_B18_v_1_3__3_getFurigana(XmlPullParser xmlPullParser, String targetTag)
-	 *********************************/
-	public static String
-	getYomi_getFurigana
-		(XmlPullParser xmlPullParser, String targetTag) {
-
-		String targetString = null;
-		
-		try {
-			
-			for(int e = xmlPullParser.getEventType();
-					e != XmlPullParser.END_DOCUMENT;
-					e = xmlPullParser.next()) {
-				
-				if(e == XmlPullParser.START_TAG &&
-//						xmlPullParser.getName().equals("Furigana")) {
-						xmlPullParser.getName().equals(targetTag)) {
-					
-					targetString = xmlPullParser.nextText();
-					
-					// Log
-					Log.d("Methods.java"
-							+ "["
-							+ Thread.currentThread().getStackTrace()[2]
-									.getLineNumber()
-							+ ":"
-							+ Thread.currentThread().getStackTrace()[2]
-									.getMethodName() + "]",
-//							"Furigana=" + xmlPullParser.nextText());
-							targetTag + "=" + targetString);
-					
-					return targetString;
-					
-				} else {//if
-					
-//					// Log
-//					Log.d("Methods.java"
-//							+ "["
-//							+ Thread.currentThread().getStackTrace()[2]
-//									.getLineNumber()
-//							+ ":"
-//							+ Thread.currentThread().getStackTrace()[2]
-//									.getMethodName() + "]",
-//							"tag=" + xmlPullParser.getName());
-					
-				}//if
-				
-			}//for
-			
-		} catch (XmlPullParserException e) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-			
-		} catch (IOException e) {
-
-			// Log
-			Log.d("Methods.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ ":"
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-					+ "]", e.toString());
-			
-			return null;
-
-		}//try
-
-		return targetString;
-		
-	}//getYomi_getFurigana(XmlPullParser xmlPullParser, String targetTag)
 
 }//public class Methods
 
