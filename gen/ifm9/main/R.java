@@ -16,6 +16,9 @@ public final class R {
         public static final int darkgreen=0x7f050003;
         public static final int darkolivegreen4=0x7f050005;
         public static final int gold2=0x7f050007;
+        /**  /main.xml 
+         */
+        public static final int gray1=0x7f05000a;
         public static final int green4=0x7f050004;
         public static final int purple4=0x7f050006;
         public static final int red=0x7f050008;

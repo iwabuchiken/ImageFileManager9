@@ -43,6 +43,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -52,8 +53,10 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -5352,6 +5355,85 @@ public class Methods {
 		return sb.toString(); 
 		
 	}//public static String convert_Kana2Gana(String s)
+
+	public static int[]
+	getDisplaySize(Activity actv) {
+
+		Display disp=((WindowManager)actv.getSystemService(
+				Context.WINDOW_SERVICE)).getDefaultDisplay();
+		int w=disp.getWidth();
+		int h=disp.getHeight();
+		
+		return new int[]{w, h};
+
+	}//getDisplaySize(Activity actv)
+
+	/***************************************
+	 * 20130306_112221
+	 * 
+	 ***************************************/
+	public static int getTableSize(Activity actv, String dbName,
+			String tname) {
+		// TODO Auto-generated method stub
+		
+		int count = -1;
+		
+		DBUtils dbm = new DBUtils(actv, dbName);
+		
+		SQLiteDatabase rdb = dbm.getReadableDatabase();
+		
+		Cursor c = null;
+
+		String sql = "SELECT * FROM " + tname;
+		
+		
+		try {
+			
+			c = rdb.rawQuery(sql, null);
+
+			count = c.getCount();
+
+		} catch (Exception e) {
+			
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+		} finally {
+			
+			rdb.close();
+			
+			return count;
+		}
+
+	}//public static int getTableSize
+
+	/***************************************
+	 * 20130308_141651
+	 ***************************************/
+	public static int
+	getSmallerNumber(int i, int j)
+			throws NumberFormatException{
+		
+		if (Methods.is_numeric(String.valueOf(i)) == false
+				|| Methods.is_numeric(String.valueOf(j)) == false) {
+			
+			throw new NumberFormatException("Not a number");
+			
+		}//if (Methods.is_numeric(String.valueOf(i)) == false \)
+		
+		if (i > j) {
+			
+			return j;
+			
+		} else {//if (i > j)
+			
+			return i;
+			
+		}//if (i > j)
+		
+	}//public static int getSmallerNumber(int i, int j)
 
 }//public class Methods
 

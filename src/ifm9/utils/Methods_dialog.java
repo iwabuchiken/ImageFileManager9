@@ -344,7 +344,7 @@ public class Methods_dialog {
 
 //			@Override
 			public boolean accept(File pathname) {
-				// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+				
 				
 				return pathname.isDirectory();
 			}
@@ -905,7 +905,7 @@ public class Methods_dialog {
 		
 		if (et_word.getText().length() == 0) {
 			// debug
-			Toast.makeText(actv, "Œê‹å‚ğ“ü‚ê‚Ä‚­‚¾‚³‚¢", 3000).show();
+			Toast.makeText(actv, "èªå¥ã‚’å…¥ã‚Œã¦ãã ã•ã„", 3000).show();
 			
 			return;
 		}// else {//if (et_column_name.getText().length() == 0)
@@ -933,7 +933,7 @@ public class Methods_dialog {
 		} else {//if (result == true)
 
 			// debug
-			Toast.makeText(actv, "ƒƒ‚‚ğ•ÛŠÇ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½", 3000).show();
+			Toast.makeText(actv, "èªå¥ã‚’ä¿ç®¡ã§ãã¾ã›ã‚“ã§ã—ãŸ", 3000).show();
 
 		}//if (result == true)
 		
@@ -955,7 +955,7 @@ public class Methods_dialog {
 		
 		if (et_word.getText().length() == 0) {
 			// debug
-			Toast.makeText(actv, "Œê‹å‚ğ“ü‚ê‚Ä‚­‚¾‚³‚¢", 3000).show();
+			Toast.makeText(actv, "èªå¥ã‚’å…¥ã‚Œã¦ãã ã•ã„", 3000).show();
 			
 			return;
 		}// else {//if (et_column_name.getText().length() == 0)
@@ -982,12 +982,12 @@ public class Methods_dialog {
 			dlg2.dismiss();
 			
 			// debug
-			Toast.makeText(actv, "’èŒ^‹å‚ğ•ÛŠÇ‚µ‚Ü‚µ‚½", 3000).show();
+			Toast.makeText(actv, "å®šå‹å¥ã‚’ä¿ç®¡ã—ã¾ã—ãŸ", Toast.LENGTH_LONG).show();
 			
 		} else {//if (result == true)
 
 			// debug
-			Toast.makeText(actv, "’èŒ^‹å‚ğ•ÛŠÇ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½", 3000).show();
+			Toast.makeText(actv, "å®šå‹å¥ã‚’ä¿ç®¡ã§ãã¾ã›ã‚“ã§ã—ãŸ", 3000).show();
 
 		}//if (result == true)
 		
@@ -1348,9 +1348,11 @@ public class Methods_dialog {
 	 * <Caller> 1. 
 	 * 
 	 * <Desc> 
-	 * 1. dlg	=> u’èŒ^v
-	 * 2. dlg2	=> u’èŒ^‹å@íœv
-	 * 3. dlg3	=> uŠm”Fv
+	 * 1. dlg	=> ã€Œå®šå‹ã€
+
+	 * 2. dlg2	=> ã€Œå®šå‹å¥ã€€å‰Šé™¤ã€
+
+	 * 3. dlg3	=> ã€Œç¢ºèªã€
 	 * 
 	 * <Params> 1.
 	 * 
@@ -1414,5 +1416,62 @@ public class Methods_dialog {
 		dlg3.show();
 		
 	}//public static void dlg_confirm_delete_patterns()
+
+	public static
+	Dialog dlg_template_okCancel_3Dialogues
+	(Activity actv,
+			int layoutId, int titleStringId,
+			int okButtonId, int cancelButtonId,
+			DialogTags okTag, DialogTags cancelTag,
+			Dialog dlg1, Dialog dlg2) {
+		/*----------------------------
+		* Steps
+		* 1. Set up
+		* 2. Add listeners => OnTouch
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		
+		// 
+		Dialog dlg3 = new Dialog(actv);
+		
+		//
+		dlg3.setContentView(layoutId);
+		
+		// Title
+		dlg3.setTitle(titleStringId);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_ok = (Button) dlg3.findViewById(okButtonId);
+		Button btn_cancel = (Button) dlg3.findViewById(cancelButtonId);
+		
+		//
+		btn_ok.setTag(okTag);
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_ok.setOnTouchListener(
+				new DialogButtonOnTouchListener(actv, dlg3));
+		btn_cancel.setOnTouchListener(
+				new DialogButtonOnTouchListener(actv, dlg3));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_ok.setOnClickListener(
+				new DialogButtonOnClickListener(actv, dlg1, dlg2, dlg3));
+		btn_cancel.setOnClickListener(
+				new DialogButtonOnClickListener(actv, dlg1, dlg2, dlg3));
+		
+		//
+		//dlg.show();
+		
+		return dlg3;
+	
+	}//public static Dialog dlg_template_okCancel()
+
 }//public class Methods
 

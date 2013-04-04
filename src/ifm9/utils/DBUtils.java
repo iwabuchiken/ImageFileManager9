@@ -125,21 +125,30 @@ public class DBUtils extends SQLiteOpenHelper{
 	}//public DBUtils(Context context)
 
 //	public DBUtils() {
-//		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+//		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Eï¿½Xï¿½^ï¿½u
 //	}
+
+	public DBUtils(Context context) {
+		// TODO Auto-generated constructor stub
+		super(context, MainActv.dbName, null, 1);
+		
+		this.activity = (Activity) context;
+		
+		this.context = context;
+	}
 
 	/*******************************************************
 	 * Methods
 	 *******************************************************/
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		
 	}//public void onCreate(SQLiteDatabase db)
 
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		
 	}
 
@@ -313,7 +322,7 @@ public class DBUtils extends SQLiteOpenHelper{
 			return true;
 			
 		} catch (SQLException e) {
-			// TODO ©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+			// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ catch ï¿½uï¿½ï¿½ï¿½bï¿½N
 			// Log
 			Log.e("DBUtils.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
@@ -1089,6 +1098,72 @@ public class DBUtils extends SQLiteOpenHelper{
 
 	}//public static boolean update_data_table_name
 
+	public boolean
+	storeData_withTimeStamp
+	(SQLiteDatabase db, String tableName,
+			String[] cols, String[] values) {
+		try {
+			//
+			db.beginTransaction();
+			
+			//
+			ContentValues cv = new ContentValues();
+			
+			/***************************************
+			 * Time stamps
+			 ***************************************/
+			// "created_at"
+			cv.put(
+					CONS.DBAdmin.timeStamps[0],
+					Methods.getMillSeconds_now());
+
+			// "modified_at"
+			cv.put(
+					CONS.DBAdmin.timeStamps[1],
+					Methods.getMillSeconds_now());
+
+			/***************************************
+			 * Other values
+			 ***************************************/
+			// Put values
+			for (int i = 0; i < cols.length; i++) {
+				cv.put(cols[i], values[i]);
+			}//for (int i = 0; i < columnNames.length; i++)
+
+			// Insert data
+			db.insert(tableName, null, cv);
+			
+			// Set as successful
+			db.setTransactionSuccessful();
+
+			// End transaction
+			db.endTransaction();
+			
+			// Log
+			StringBuilder sb = new StringBuilder();
+			
+			for (int i = 0; i < cols.length; i++) {
+				//
+				sb.append(cols[i] + " => " + values[i] + "/");
+				
+			}//for (int i = 0; i < cols.length; i++)
+			
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Stored => " + sb.toString());
+			
+			return true;
+			
+		} catch (Exception e) {
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			return false;
+		}//try
+		
+	}//storeData_withTimeStamp(SQLiteDatabase db, String tableName, String[] cols, String[] values)
 
 }//public class DBUtils
 

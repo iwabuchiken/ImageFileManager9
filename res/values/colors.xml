@@ -19,4 +19,5 @@
 	<color name="yello">#ffff00</color>
 	
 <!-- /main.xml -->
+	<color name="gray1">#424242</color>
 </resources>

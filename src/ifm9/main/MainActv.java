@@ -689,7 +689,7 @@ public class MainActv extends ListActivity {
 	}//private void set_listeners()
 
 	private boolean set_initial_dir_list() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		set_initial_dir_list_part1();
 //		set_initial_dir_list_part2();
 		
@@ -1283,7 +1283,7 @@ public class MainActv extends ListActivity {
 
 	@Override
 	protected void onPause() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onPause();
 
 		Log.d("MainActv.java" + "["
@@ -1300,7 +1300,7 @@ public class MainActv extends ListActivity {
 
 	@Override
 	protected void onResume() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onResume();
 
 //		Log.d("MainActv.java" + "["
