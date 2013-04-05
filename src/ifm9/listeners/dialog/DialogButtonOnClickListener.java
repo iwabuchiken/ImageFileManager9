@@ -1,8 +1,11 @@
 package ifm9.listeners.dialog;
 
 import ifm9.items.TI;
+import ifm9.main.MainActv;
+import ifm9.main.R;
 import ifm9.main.TNActv;
 import ifm9.utils.CONS;
+import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
 import ifm9.utils.Methods_IFM9;
 import ifm9.utils.Methods_dlg;
@@ -87,6 +90,16 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		this.actv	= actv;
 		this.dlg1	= dlg1;
 		this.dlg2	= dlg2;
+		this.ti		= ti;
+		//
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+
+	}
+
+	public DialogButtonOnClickListener(Activity actv, Dialog dlg1, TI ti) {
+		// TODO Auto-generated constructor stub
+		this.actv	= actv;
+		this.dlg1	= dlg1;
 		this.ti		= ti;
 		//
 		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
@@ -239,11 +252,60 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			dlg2.dismiss();// case dlg_confirm_delete_ti_cancel
 			
 			break;
+		
+		case dlg_edit_ti_bt_ok://---------------------------------------------
 			
-		default: // ----------------------------------------------------
+			case_dlg_edit_ti_bt_ok();
+			
+			break;// case dlg_edit_ti_bt_ok
+			
+		default: //----------------------------------------------------
 			break;
 		}//switch (tag_name)
 	}//public void onClick(View v)
+
+	private void case_dlg_edit_ti_bt_ok() {
+		/***************************************
+		 * Update: TI data
+		 ***************************************/
+		EditText etFileName = (EditText) dlg2.findViewById(
+				R.id.dlg_edit_ti_et_file_name);
+
+		EditText etFilePath = (EditText) dlg2.findViewById(
+			R.id.dlg_edit_ti_et_file_path);
+		
+		EditText etMemos = (EditText) dlg2.findViewById(
+			R.id.dlg_edit_ti_et_memos);
+		
+		ti.setFile_name(etFileName.getText().toString());
+		ti.setFile_path(etFilePath.getText().toString());
+		ti.setMemo(etMemos.getText().toString());
+
+		
+		// TODO Auto-generated method stub
+		DBUtils dbu = new DBUtils(actv, MainActv.dbName);
+		
+		boolean res = dbu.updateData_TI(actv, ti);
+		
+		/***************************************
+		 * Close dialogues
+		 ***************************************/
+		if (res == true) {
+			
+			// debug
+			Toast.makeText(actv, "Data updated", Toast.LENGTH_LONG).show();
+			
+			dlg2.dismiss();
+			dlg1.dismiss();
+			
+		} else {//if (res == true)
+			
+			// debug
+			Toast.makeText(actv, "Update data => Failed", Toast.LENGTH_LONG).show();
+			
+		}//if (res == true)
+		
+	}//private void case_dlg_edit_ti_bt_ok()
 
 	private void case_dlg_confirm_delete_ti_ok() {
 		// TODO Auto-generated method stub

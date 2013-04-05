@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="5dp" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/dlg_edit_ti_tv_file_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:text="@string/dlg_edit_ti_tv_file_name"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/dlg_edit_ti_et_file_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="top|left"
+                android:lines="2" >
+
+                <requestFocus />
+            </EditText>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp" >
+
+            <TextView
+                android:id="@+id/dlg_edit_ti_tv_file_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/dlg_edit_ti_tv_file_path"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/dlg_edit_ti_et_file_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="top|left"
+                android:lines="3" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/dlg_edit_ti_tv_memos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:text="@string/dlg_edit_ti_tv_memos"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/dlg_edit_ti_et_memos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="top|left"
+                android:lines="4" />
+
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        
+        android:layout_marginBottom="10dp"
+        
+        >
+
+        <Button
+            android:id="@+id/dlg_edit_ti_bt_ok"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="1"
+            android:text="@string/generic_bt_ok"
+            android:textColor="@color/blue1"
+            android:textSize="25dp" />
+
+        <Button
+            android:id="@+id/dlg_edit_ti_bt_cancel"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/generic_bt_cancel"
+            android:textColor="@color/red"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

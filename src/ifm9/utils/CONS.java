@@ -43,10 +43,14 @@ public class CONS {
 	// Main data
 	public static String[] cols =
 		//column number: 3-6
+		//Table index
+		//	0			1			2				3
 		{"file_id", "file_path", "file_name", 	"date_added",
 		//column number: 7-10
+		//	4				5			6			7
 		"date_modified",	"memos", "tags", 	"last_viewed_at",
 		//column number: 11
+		//	8
 		"table_name"};
 //	"date_modified", "memos", "tags"};
 

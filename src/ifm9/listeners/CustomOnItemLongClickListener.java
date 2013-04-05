@@ -156,6 +156,12 @@ CustomOnItemLongClickListener implements OnItemLongClickListener {
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //				+ ":"
 //				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//				+ "]", "ti.getFile_path()=" + ti.getFile_path());
+//		// Log
+//		Log.d("CustomOnItemLongClickListener.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ ":"
+//				+ Thread.currentThread().getStackTrace()[2].getMethodName()
 //				+ "]",
 //				"ti.getFile_name()=" + ti.getFile_name());
 		

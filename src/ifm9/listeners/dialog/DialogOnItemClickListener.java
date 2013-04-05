@@ -233,6 +233,8 @@ DialogOnItemClickListener implements OnItemClickListener {
 			
 		} else if (item.equals(actv.getString(R.string.generic_tv_edit))) {//if (item.equals(actv.getString(R.string.generic_tv_delete))))
 			
+			Methods_dlg.dlg_editTI(actv, dlg1, ti);
+			
 		}//if (item.equals(actv.getString(R.string.generic_tv_delete))))
 		
 	}

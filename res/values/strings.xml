@@ -117,4 +117,9 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_fpactv">FPActv</string>
 
+    <!-- dlg_edit_ti.xml -->
+    	<string name="dlg_edit_ti_title">Edit item</string>
+    	<string name="dlg_edit_ti_tv_file_name">File name</string>
+    	<string name="dlg_edit_ti_tv_file_path">File path</string>
+    	<string name="dlg_edit_ti_tv_memos">Memos</string>
 </resources>

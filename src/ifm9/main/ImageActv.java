@@ -117,6 +117,13 @@ public class ImageActv extends Activity {
 
 	private void set_image(String file_path) {
 		
+		// Log
+		Log.d("ImageActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "file_path=" + file_path);
+		
 //		Bitmap bm = BitmapFactory.decodeFile(file_path);
 		bm = BitmapFactory.decodeFile(file_path);
 		

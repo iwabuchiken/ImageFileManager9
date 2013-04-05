@@ -1586,5 +1586,111 @@ public class Methods_dlg {
 		
 	}//dlg_confirm_DeleteTI(Activity actv, Dialog dlg1, TI ti)
 
+	
+	public static void
+	dlg_editTI(Activity actv, Dialog dlg1, TI ti) {
+		// TODO Auto-generated method stub
+
+		Dialog dlg2 = dlg_template_okCancel_2Dialogues_TI(
+					actv,
+					R.layout.dlg_edit_ti,
+					R.string.dlg_edit_ti_title,
+					
+					R.id.dlg_edit_ti_bt_ok,
+					R.id.dlg_edit_ti_bt_cancel,
+					
+					DialogTags.dlg_edit_ti_bt_ok,
+					DialogTags.dlg_generic_dismiss_second_dialog,
+					
+					dlg1,
+					ti);
+		
+		/***************************************
+		 * Set: Texts
+		 ***************************************/
+		EditText etFileName = (EditText) dlg2.findViewById(
+							R.id.dlg_edit_ti_et_file_name);
+		
+		etFileName.setText(ti.getFile_name());
+		
+		EditText etFilePath = (EditText) dlg2.findViewById(
+				R.id.dlg_edit_ti_et_file_path);
+		
+		etFilePath.setText(ti.getFile_path());
+		
+		EditText etMemos = (EditText) dlg2.findViewById(
+				R.id.dlg_edit_ti_et_memos);
+		
+		etMemos.setText(ti.getMemo());
+		
+//		// Log
+//		Log.d("Methods_dlg.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ ":"
+//				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//				+ "]", "ti.getFileId()=" + ti.getFileId());
+//		
+//		// Log
+//		Log.d("Methods_dlg.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ ":"
+//				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//				+ "]", "ti.getTable_name()=" + ti.getTable_name());
+		
+		//
+		dlg2.show();
+		
+	}//dlg_editTI(Activity actv, Dialog dlg1, TI ti)
+
+	private static
+	Dialog dlg_template_okCancel_2Dialogues_TI
+	(
+				Activity actv,
+				int layoutId, int titleStringId,
+				
+				int okButtonId, int cancelButtonId,
+				
+				DialogTags okTag, DialogTags cancelTag,
+				
+				Dialog dlg1,
+				TI ti)
+	{
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(layoutId);
+		
+		// Title
+		dlg2.setTitle(titleStringId);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(okButtonId);
+		Button btn_cancel = (Button) dlg2.findViewById(cancelButtonId);
+		
+		//
+		btn_ok.setTag(okTag);
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg1, dlg2, ti));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg1, dlg2));
+		
+		//
+		//dlg.show();
+		
+		return dlg2;
+		
+	}//Dialog dlg_template_okCancel
+
 }//public class Methods
 
