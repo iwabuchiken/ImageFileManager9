@@ -79,7 +79,7 @@ import org.apache.commons.net.ftp.FTPClient;
 
 //import org.apache.commons.net.ftp.FTPReply;
 
-public class Methods_dialog {
+public class Methods_dlg {
 
 	public static void dlg_createFolder(Activity actv) {
 		/*----------------------------
@@ -569,7 +569,7 @@ public class Methods_dialog {
 		 * 8. Close db
 		 * 9. Show dialog
 			----------------------------*/
-		Dialog dlg = Methods_dialog.dlg_addMemo_1_get_dialog(actv, file_id, tableName);
+		Dialog dlg = Methods_dlg.dlg_addMemo_1_get_dialog(actv, file_id, tableName);
 
 		/*----------------------------
 		 * 4. GridView
@@ -1004,7 +1004,7 @@ public class Methods_dialog {
 		 * 5. Set listener to list
 		 * 6. Show dialog
 			----------------------------*/
-		Dialog dlg = Methods_dialog.dlg_template_cancel(
+		Dialog dlg = Methods_dlg.dlg_template_cancel(
 									actv, R.layout.dlg_db_admin, 
 									R.string.dlg_db_admin_title, 
 									R.id.dlg_db_admin_bt_cancel, 
@@ -1082,7 +1082,7 @@ public class Methods_dialog {
 		/*----------------------------
 		 * memo
 			----------------------------*/
-		Dialog dlg = Methods_dialog.dlg_template_cancel(
+		Dialog dlg = Methods_dlg.dlg_template_cancel(
 													actv, R.layout.dlg_admin_patterns, 
 													R.string.dlg_memo_patterns_title, 
 													R.id.dlg_admin_patterns_bt_cancel, 
@@ -1472,6 +1472,119 @@ public class Methods_dialog {
 		return dlg3;
 	
 	}//public static Dialog dlg_template_okCancel()
+
+	
+	public static void dlg_TNList(Activity actv, TI ti) {
+		// TODO Auto-generated method stub
+		Dialog dlg = Methods_dlg.dlg_template_cancel(
+				actv, R.layout.dlg_db_admin, 
+				R.string.generic_tv_menu, 
+				R.id.dlg_db_admin_bt_cancel, 
+				Tags.DialogTags.dlg_generic_dismiss);
+
+		/*----------------------------
+		* 2. Prep => List
+		----------------------------*/
+		String[] choices = {
+				actv.getString(R.string.generic_tv_edit),
+				actv.getString(R.string.generic_tv_delete),
+		};
+		
+		List<String> list = new ArrayList<String>();
+		
+		for (String item : choices) {
+		
+			list.add(item);
+		
+		}
+		
+		/*----------------------------
+		* 3. Adapter
+		----------------------------*/
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						actv,
+						//R.layout.dlg_db_admin,
+						android.R.layout.simple_list_item_1,
+						list
+		);
+		
+		/*----------------------------
+		* 4. Set adapter
+		----------------------------*/
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_db_admin_lv);
+		
+		lv.setAdapter(adapter);
+		
+		/*----------------------------
+		* 5. Set listener to list
+		----------------------------*/
+		lv.setTag(Tags.DialogItemTags.dlg_tn_list);
+		
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg, ti));
+		
+		/*----------------------------
+		* 6. Show dialog
+		----------------------------*/
+		dlg.show();
+
+	}//public static void dlg_TNList(Activity actv, TI ti)
+
+	public static void
+	dlg_confirm_DeleteTI(Activity actv, Dialog dlg1, TI ti) {
+		// TODO Auto-generated method stub
+		// 
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(R.layout.dlg_confirm_remove_folder);
+		
+		// Title
+		dlg2.setTitle(R.string.generic_tv_confirm);
+		
+		/***************************************
+		 * Set: Message
+		 ***************************************/
+		TextView tvMessage = (TextView) dlg2.findViewById(R.id.dlg_confirm_remove_folder_tv_message);
+		
+		tvMessage.setText("このアイテムを削除しますか？");
+		
+		
+		/*----------------------------
+		 * 2. Set folder name to text view
+			----------------------------*/
+		TextView tv = (TextView) dlg2.findViewById(R.id.dlg_confirm_remove_folder_tv_table_name);
+		
+		tv.setText(ti.getFile_name());
+		
+		/*----------------------------
+		 * 3. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(R.id.dlg_confirm_remove_folder_btn_ok);
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_confirm_remove_folder_btn_cancel);
+		
+		//
+		btn_ok.setTag(DialogTags.dlg_confirm_delete_ti_ok);
+		btn_cancel.setTag(DialogTags.dlg_confirm_delete_ti_cancel);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg1, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg1, dlg2));
+		
+		/*----------------------------
+		 * 4. Add listeners => OnClick
+			----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg1, dlg2, ti));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg1, dlg2));
+		
+		/*----------------------------
+		 * 5. Show dialog
+			----------------------------*/
+		dlg2.show();
+
+		
+	}//dlg_confirm_DeleteTI(Activity actv, Dialog dlg1, TI ti)
 
 }//public class Methods
 

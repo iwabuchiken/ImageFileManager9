@@ -58,6 +58,9 @@ public class Tags {
 		// dlg_confirm_delete_patterns.xml
 		dlg_confirm_delete_patterns_ok,
 		
+		// dlg_confirm_delete_ti
+		dlg_confirm_delete_ti_ok, dlg_confirm_delete_ti_cancel,
+		
 	}//public static enum DialogTags
 	
 	public static enum DialogItemTags {
@@ -75,6 +78,9 @@ public class Tags {
 
 		// dlg_delete_patterns.xml
 		dlg_delete_patterns_gv,
+		
+		// dlg_tn_list
+		dlg_tn_list,
 		
 	}//public static enum DialogItemTags
 	
@@ -121,6 +127,9 @@ public class Tags {
 		
 		// Main
 		main_list_adapter,
+		
+		// TNActv
+		actv_tn_lv,
 		
 	}//public static enum ListTags
 

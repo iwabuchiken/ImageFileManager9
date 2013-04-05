@@ -172,4 +172,18 @@ public class TI {
 		this.last_viewed_at = last_viewed_at;
 	}
 
+	public String getTable_name() {
+		return table_name;
+	}
+
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
+	}
+
+	public void setTable_name(String table_name) {
+		this.table_name = table_name;
+	}
+
+	
+	
 }//public class ThumbnailItem

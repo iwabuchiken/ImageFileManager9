@@ -9,7 +9,7 @@ import ifm9.tasks.RefreshDBTask;
 import ifm9.utils.CONS;
 import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
-import ifm9.utils.Methods_dialog;
+import ifm9.utils.Methods_dlg;
 import ifm9.utils.Tags;
 
 import java.io.BufferedWriter;
@@ -1234,19 +1234,19 @@ public class MainActv extends ListActivity {
 		
 		case R.id.main_opt_menu_create_folder://----------------------------------
 			
-			Methods_dialog.dlg_createFolder(this);
+			Methods_dlg.dlg_createFolder(this);
 			
 			break;// case R.id.main_opt_menu_create_folder
 			
 		case R.id.main_opt_menu_db_activity://----------------------------------
 			
-			Methods_dialog.dlg_db_activity(this);
+			Methods_dlg.dlg_db_activity(this);
 			
 			break;// case R.id.main_opt_menu_db_activity
 
 		case R.id.main_opt_menu_search://-----------------------------------------------
 			
-			Methods_dialog.dlg_seratchItem(this);
+			Methods_dlg.dlg_seratchItem(this);
 			
 			break;// case R.id.main_opt_menu_search
 			

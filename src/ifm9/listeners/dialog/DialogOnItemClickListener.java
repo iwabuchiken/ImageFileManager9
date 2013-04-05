@@ -2,13 +2,14 @@ package ifm9.listeners.dialog;
 
 import java.util.List;
 
+import ifm9.items.TI;
 import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.tasks.RefreshDBTask;
 import ifm9.tasks.Task_add_table_name;
 import ifm9.utils.CONS;
 import ifm9.utils.Methods;
-import ifm9.utils.Methods_dialog;
+import ifm9.utils.Methods_dlg;
 import ifm9.utils.Tags;
 import android.app.Activity;
 import android.app.Dialog;
@@ -21,38 +22,52 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class DialogOnItemClickListener implements OnItemClickListener {
+public class
+DialogOnItemClickListener implements OnItemClickListener {
 
 	//
 	Activity actv;
-	Dialog dlg;
+	Dialog dlg1;
 	Dialog dlg2;
+
+	TI ti;
+	
 	//
 	Vibrator vib;
 	
 	//
 //	Methods.DialogTags dlgTag = null;
 
-	public DialogOnItemClickListener(Activity actv, Dialog dlg) {
+	public DialogOnItemClickListener(Activity actv, Dialog dlg1) {
 		// 
 		this.actv = actv;
-		this.dlg = dlg;
+		this.dlg1 = dlg1;
 		
 		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
 		
 	}//public DialogOnItemClickListener(Activity actv, Dialog dlg)
 
-	public DialogOnItemClickListener(Activity actv, Dialog dlg, Dialog dlg2) {
+	public DialogOnItemClickListener(Activity actv, Dialog dlg1, Dialog dlg2) {
 		// 
 		this.actv = actv;
-		this.dlg = dlg;
+		this.dlg1 = dlg1;
 		this.dlg2 = dlg2;
 		
 		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
 		
 	}//public DialogOnItemClickListener(Activity actv, Dialog dlg)
 
-//	@Override
+	public DialogOnItemClickListener(Activity actv, Dialog dlg1, TI ti) {
+		// TODO Auto-generated constructor stub
+		this.actv = actv;
+		this.dlg1 = dlg1;
+		this.ti = ti;
+		
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
+
+	}
+
+	//	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		/*----------------------------
 		 * Steps
@@ -74,7 +89,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 
 			String folderPath = (String) parent.getItemAtPosition(position);
 			
-			Methods_dialog.dlg_confirm_moveFiles(actv, dlg, folderPath);
+			Methods_dlg.dlg_confirm_moveFiles(actv, dlg1, folderPath);
 
 //			// debug
 //			Toast.makeText(actv, "Move files to: " + folderPath, 2000)
@@ -86,7 +101,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			
 			String word = (String) parent.getItemAtPosition(position);
 			
-			Methods.add_pattern_to_text(dlg, position, word);
+			Methods.add_pattern_to_text(dlg1, position, word);
 			
 //			String word = (String) parent.getItemAtPosition(position);
 //			
@@ -121,11 +136,11 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				----------------------------*/
 			if (item.equals(actv.getString(R.string.dlg_db_admin_item_backup_db))) {
 				
-				Methods.db_backup(actv, dlg);
+				Methods.db_backup(actv, dlg1);
 				
 			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_refresh_db))){
 				
-				RefreshDBTask task_ = new RefreshDBTask(actv, dlg);
+				RefreshDBTask task_ = new RefreshDBTask(actv, dlg1);
 				
 				// debug
 				Toast.makeText(actv, "Starting a task...", 2000)
@@ -133,7 +148,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				
 				task_.execute("Start");
 
-				dlg.dismiss();
+				dlg1.dismiss();
 				
 //				// Log
 //				Log.d("DialogOnItemClickListener.java"
@@ -173,11 +188,11 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				----------------------------*/
 			if (item.equals(actv.getString(R.string.generic_tv_register))) {
 				
-				Methods_dialog.dlg_register_patterns(actv, dlg);
+				Methods_dlg.dlg_register_patterns(actv, dlg1);
 				
 			} else if (item.equals(actv.getString(R.string.generic_tv_delete))) {
 
-				Methods_dialog.dlg_delete_patterns(actv, dlg);
+				Methods_dlg.dlg_delete_patterns(actv, dlg1);
 				
 			} else if (item.equals(actv.getString(R.string.generic_tv_edit))) {
 				
@@ -192,15 +207,35 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 //			// debug
 //			Toast.makeText(actv, item, 2000).show();
 			
-			Methods_dialog.dlg_confirm_delete_patterns(actv, dlg, dlg2, item);
+			Methods_dlg.dlg_confirm_delete_patterns(actv, dlg1, dlg2, item);
 			
 			break;// case dlg_delete_patterns_gv
+			
+		case dlg_tn_list://--------------------------------------------
+			
+			item = (String) parent.getItemAtPosition(position);
+			
+			case_dlg_tn_list(item);
+			
+			break;// case dlg_tn_list
 			
 		default:
 			break;
 		}//switch (tag)
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+
+	private void case_dlg_tn_list(String item) {
+		// TODO Auto-generated method stub
+		if (item.equals(actv.getString(R.string.generic_tv_delete))) {
+			
+			Methods_dlg.dlg_confirm_DeleteTI(actv, dlg1, ti);
+			
+		} else if (item.equals(actv.getString(R.string.generic_tv_edit))) {//if (item.equals(actv.getString(R.string.generic_tv_delete))))
+			
+		}//if (item.equals(actv.getString(R.string.generic_tv_delete))))
+		
+	}
 
 	private void dlg_db_admin_item_restore_db() {
 		
@@ -216,7 +251,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 
 	private void dlg_db_admin_item_set_new_column() {
 		// Dismiss dialog
-		dlg.dismiss();
+		dlg1.dismiss();
 		
 		Task_add_table_name task = new Task_add_table_name(actv);
 		
@@ -293,4 +328,5 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 //////////////////////////////////////////////////
 
 	}//private void dlg_db_admin_item_set_new_column()
-}
+
+}//DialogOnItemClickListener implements OnItemClickListener

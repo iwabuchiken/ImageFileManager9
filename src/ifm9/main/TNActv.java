@@ -14,7 +14,7 @@ import ifm9.listeners.dialog.DialogListener;
 import ifm9.utils.CONS;
 import ifm9.utils.DBUtils;
 import ifm9.utils.Methods;
-import ifm9.utils.Methods_dialog;
+import ifm9.utils.Methods_dlg;
 import ifm9.utils.Tags;
 
 import android.app.AlertDialog;
@@ -244,7 +244,7 @@ public class TNActv extends ListActivity {
 			return;
 //			// debug
 //			Toast.makeText(this, 
-//							"‚±‚ÌƒtƒHƒ‹ƒ_‚É‚ÍAƒtƒ@ƒCƒ‹‚Í‚ ‚è‚Ü‚¹‚ñB‘¼‚ÌƒtƒHƒ‹ƒ_‚©‚çAƒIƒvƒVƒ‡ƒ“Eƒƒjƒ…[‚ÌuˆÚ“®v‚ğg‚Á‚ÄA‚à‚Á‚Ä‚±‚ê‚Ü‚·", 
+//							"ï¿½ï¿½ï¿½Ìƒtï¿½Hï¿½ï¿½ï¿½_ï¿½É‚ÍAï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½Ìƒtï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½Aï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½Ìuï¿½Ú“ï¿½ï¿½vï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÄAï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ü‚ï¿½", 
 //							7000).show();
 			
 		} else {//if (tiList == null)
@@ -276,7 +276,7 @@ public class TNActv extends ListActivity {
 
 //				@Override
 				public int compare(TI lhs, TI rhs) {
-					// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+					// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 					
 //					return (int) (lhs.getDate_added() - rhs.getDate_added());
 					
@@ -300,7 +300,7 @@ public class TNActv extends ListActivity {
 //
 ////			@Override
 //			public int compare(TI lhs, TI rhs) {
-//				// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+//				// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 //				
 ////				return (int) (lhs.getDate_added() - rhs.getDate_added());
 //				
@@ -509,7 +509,8 @@ public class TNActv extends ListActivity {
 //		ListView lv = (ListView) findViewById(android.R.layout.activity_list_item);
 		ListView lv = this.getListView();
 		
-		lv.setTag(Tags.ItemTags.dir_list_thumb_actv);
+//		lv.setTag(Tags.ItemTags.dir_list_thumb_actv);
+		lv.setTag(Tags.ListTags.actv_tn_lv);
 		
 		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
 		
@@ -553,7 +554,7 @@ public class TNActv extends ListActivity {
 	
 	@Override
 	protected void onPause() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onPause();
 	}
 
@@ -565,7 +566,7 @@ public class TNActv extends ListActivity {
 		 * 
 		 * 3. Set selection
 		 *********************************/
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onResume();
 		
 		// Log
@@ -671,7 +672,7 @@ public class TNActv extends ListActivity {
 
 	@Override
 	protected void onStop() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onStop();
 		
 		// Log
@@ -789,8 +790,8 @@ public class TNActv extends ListActivity {
 	public void show_message_no_data() {
 		AlertDialog.Builder dialog=new AlertDialog.Builder(this);
 		
-        dialog.setTitle("î•ñ");
-        dialog.setMessage("‚±‚ÌƒtƒHƒ‹ƒ_‚É‚ÍAƒf[ƒ^‚Í‚ ‚è‚Ü‚¹‚ñB‘¼‚ÌƒtƒHƒ‹ƒ_‚©‚çAƒIƒvƒVƒ‡ƒ“Eƒƒjƒ…[‚ÌuˆÚ“®v‚ğg‚Á‚ÄA‚à‚Á‚Ä‚±‚ê‚Ü‚·");
+        dialog.setTitle("ï¿½ï¿½ï¿½");
+        dialog.setMessage("ï¿½ï¿½ï¿½Ìƒtï¿½Hï¿½ï¿½ï¿½_ï¿½É‚ÍAï¿½fï¿½[ï¿½^ï¿½Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½Ìƒtï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½Aï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½Ìuï¿½Ú“ï¿½ï¿½vï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÄAï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ü‚ï¿½");
         
         dialog.setPositiveButton("OK",new DialogListener(this, dialog, 0));
         
@@ -1063,7 +1064,7 @@ public class TNActv extends ListActivity {
 				/*----------------------------
 				 * 2. If yes, show dialog
 					----------------------------*/
-				Methods_dialog.dlg_moveFiles(this);
+				Methods_dlg.dlg_moveFiles(this);
 				
 			}//if (move_mode == false)
 			

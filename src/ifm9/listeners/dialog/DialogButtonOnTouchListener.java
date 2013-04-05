@@ -16,12 +16,13 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 		----------------------------*/
 	//
 	Activity actv;
-	Dialog dlg;
+	Dialog dlg1;
+	Dialog dlg2;
 	
 	public DialogButtonOnTouchListener(Activity actv, Dialog dlg) {
 		//
 		this.actv = actv;
-		this.dlg = dlg;
+		this.dlg1 = dlg;
 	}
 	
 	public DialogButtonOnTouchListener(Activity actv) {
@@ -29,9 +30,17 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 		this.actv = actv;
 	}
 
-//	@Override
+	public DialogButtonOnTouchListener(Activity actv, Dialog dlg1, Dialog dlg2) {
+		// TODO Auto-generated constructor stub
+		this.actv = actv;
+		this.dlg1 = dlg1;
+		this.dlg2 = dlg2;
+
+	}
+
+	//	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		Tags.DialogTags tag_name = (Tags.DialogTags) v.getTag();
 		
 		switch (event.getActionMasked()) {
@@ -61,6 +70,8 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 				case dlg_register_patterns_register:
 
 				case dlg_confirm_delete_patterns_ok:
+					
+				case dlg_confirm_delete_ti_ok:
 					//
 					v.setBackgroundColor(Color.GRAY);
 					
@@ -95,6 +106,8 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 			case dlg_register_patterns_register:
 				
 			case dlg_confirm_delete_patterns_ok:
+				
+			case dlg_confirm_delete_ti_ok:
 				
 				//
 					v.setBackgroundColor(Color.WHITE);

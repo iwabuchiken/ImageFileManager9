@@ -1,7 +1,8 @@
 package ifm9.listeners;
 
+import ifm9.items.TI;
 import ifm9.utils.Methods;
-import ifm9.utils.Methods_dialog;
+import ifm9.utils.Methods_dlg;
 import ifm9.utils.Tags;
 
 import java.io.File;
@@ -20,7 +21,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-public class CustomOnItemLongClickListener implements OnItemLongClickListener {
+public class
+CustomOnItemLongClickListener implements OnItemLongClickListener {
 
 	Activity actv;
 	static Vibrator vib;
@@ -92,48 +94,118 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 		
 		switch (tag) {
 		
-		case actv_main_lv:
+		case actv_main_lv://-----------------------------
 			
-			/*----------------------------
-			 * 0. Get folder name
-				----------------------------*/
-			String folderName = (String) parent.getItemAtPosition(position);
-
-			// Log
-			Log.d("CustomOnItemLongClickListener.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "folderName: " + folderName);
+			return case_actv_main_lv(parent, position);
 			
-			/*----------------------------
-			 * 5.1.1. Is a directory?
-				----------------------------*/
-			String curPath = Methods.get_currentPath_from_prefs(actv);
-			
-			File targetFile = new File(curPath, folderName);
-			
-			if (targetFile.exists() && targetFile.isFile()) {
-				// debug
-				Toast.makeText(actv, "ƒtƒ@ƒCƒ‹", 2000).show();
-				
-	//			return false;
-				return true;		//=> "false" => Then, onClick process starts
-				
-			}//if (targetFile.exists() && targetFile.isFile())
-			
-			
-			/*----------------------------
-			 * 5.1.2. If yes, call a method
-				----------------------------*/
-			Methods_dialog.dlg_removeFolder(actv, folderName);
+//			/*----------------------------
+//			 * 0. Get folder name
+//				----------------------------*/
+//			String folderName = (String) parent.getItemAtPosition(position);
+//
+//			// Log
+//			Log.d("CustomOnItemLongClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "folderName: " + folderName);
+//			
+//			/*----------------------------
+//			 * 5.1.1. Is a directory?
+//				----------------------------*/
+//			String curPath = Methods.get_currentPath_from_prefs(actv);
+//			
+//			File targetFile = new File(curPath, folderName);
+//			
+//			if (targetFile.exists() && targetFile.isFile()) {
+//				// debug
+//				Toast.makeText(actv, "ï¿½tï¿½@ï¿½Cï¿½ï¿½", 2000).show();
+//				
+//	//			return false;
+//				return true;		//=> "false" => Then, onClick process starts
+//				
+//			}//if (targetFile.exists() && targetFile.isFile())
+//			
+//			
+//			/*----------------------------
+//			 * 5.1.2. If yes, call a method
+//				----------------------------*/
+//			Methods_dialog.dlg_removeFolder(actv, folderName);
 						
-			break;
+//			break;
 		
+		case actv_tn_lv://--------------------------------------
+			
+			case_actv_tn_lv(parent, position);
+			
+			break;// case actv_tn_lv
+			
 		}//switch (tag)
 		
 		
-		return false;
-//		return true;
+//		return false;
+		return true;
 		
 	}//public boolean onItemLongClick()
 
-}
+	private void
+	case_actv_tn_lv(AdapterView<?> parent, int position) {
+		// TODO Auto-generated method stub
+		TI ti = (TI) parent.getItemAtPosition(position);
+		
+//		// Log
+//		Log.d("CustomOnItemLongClickListener.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ ":"
+//				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+//				+ "]",
+//				"ti.getFile_name()=" + ti.getFile_name());
+		
+		Methods_dlg.dlg_TNList(actv, ti);
+		
+		
+		
+	}//case_actv_tn_lv(AdapterView<?> parent, int position)
+
+	private boolean
+	case_actv_main_lv(AdapterView<?> parent, int position) {
+		// TODO Auto-generated method stub
+		/*----------------------------
+		 * 0. Get folder name
+			----------------------------*/
+		String folderName = (String) parent.getItemAtPosition(position);
+
+		// Log
+		Log.d("CustomOnItemLongClickListener.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "folderName: " + folderName);
+		
+		/*----------------------------
+		 * 5.1.1. Is a directory?
+			----------------------------*/
+		String curPath = Methods.get_currentPath_from_prefs(actv);
+		
+		File targetFile = new File(curPath, folderName);
+		
+		if (targetFile.exists() && targetFile.isFile()) {
+			// debug
+			Toast.makeText(actv, "ãƒ•ã‚¡ã‚¤ãƒ«", Toast.LENGTH_LONG).show();
+			
+//			return false;
+			return true;		//=> "false" => Then, onClick process starts
+			
+		}//if (targetFile.exists() && targetFile.isFile())
+		
+		
+		/*----------------------------
+		 * 5.1.2. If yes, call a method
+			----------------------------*/
+		Methods_dlg.dlg_removeFolder(actv, folderName);
+
+		/***************************************
+		 * Return
+		 ***************************************/
+//		return false;
+		return true;
+		
+	}//case_actv_main_lv(AdapterView<?> parent, int position)
+
+}//CustomOnItemLongClickListener implements OnItemLongClickListener

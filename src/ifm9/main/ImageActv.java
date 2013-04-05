@@ -4,7 +4,7 @@ import ifm9.items.*;
 import ifm9.listeners.button.ButtonOnClickListener;
 import ifm9.listeners.button.ButtonOnTouchListener;
 import ifm9.utils.Methods;
-import ifm9.utils.Methods_dialog;
+import ifm9.utils.Methods_dlg;
 import ifm9.utils.Tags;
 
 import android.app.Activity;
@@ -250,7 +250,7 @@ public class ImageActv extends Activity {
 			
 			
 //			Methods.dlg_addMemo(this, file_id, Methods.convertPathIntoTableName(this));
-			Methods_dialog.dlg_addMemo(this, file_id, Methods.convert_path_into_table_name(this));
+			Methods_dlg.dlg_addMemo(this, file_id, Methods.convert_path_into_table_name(this));
 			
 			// Log
 			Log.d("ImageActv.java" + "["
@@ -264,7 +264,7 @@ public class ImageActv extends Activity {
 			
 //			Methods.dlg_register_patterns(this);
 			
-			Methods_dialog.dlg_patterns(this);
+			Methods_dlg.dlg_patterns(this);
 			
 			break;
 		}//switch (item.getItemId())
@@ -275,31 +275,31 @@ public class ImageActv extends Activity {
 
 	@Override
 	protected void onPause() {
-		// TODO Ž©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
-		// TODO Ž©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onResume();
 	}
 
 	@Override
 	protected void onStart() {
-		// TODO Ž©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onStart();
 	}
 
 	@Override
 	protected void onStop() {
-		// TODO Ž©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
-		// TODO Ž©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onDestroy();
 		
 		// REF=> http://ameblo.jp/yolluca/entry-10725668557.html

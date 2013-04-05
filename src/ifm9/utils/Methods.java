@@ -735,11 +735,16 @@ public class Methods {
 			
 			AlertDialog.Builder dialog=new AlertDialog.Builder(actv);
 			
-	        dialog.setTitle("�A�v���̏I��");
-	        dialog.setMessage("�A�v�����I�����܂����H");
+	        dialog.setTitle(actv.getString(R.string.generic_tv_confirm));
+	        dialog.setMessage("終了しますか？");
 	        
-	        dialog.setPositiveButton("�I��",new DialogListener(actv, dialog, 0));
-	        dialog.setNegativeButton("�L�����Z��",new DialogListener(actv, dialog, 1));
+	        dialog.setPositiveButton(
+	        				actv.getString(R.string.generic_bt_ok),
+	        				new DialogListener(actv, dialog, 0));
+	        
+	        dialog.setNegativeButton(
+	        				actv.getString(R.string.generic_bt_cancel),
+	        				new DialogListener(actv, dialog, 1));
 	        
 	        dialog.create();
 	        dialog.show();
