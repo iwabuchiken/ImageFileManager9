@@ -1,4 +1,6 @@
 a
+pushd C:\WORKS\WS\WS_Android~\ImageFileManager9 && gitk
+
 pushd C:\WORKS\WS\WS_Android~\ImageFileManager9
 gitk
 

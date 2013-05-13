@@ -149,25 +149,10 @@ CustomOnItemLongClickListener implements OnItemLongClickListener {
 	private void
 	case_actv_tn_lv(AdapterView<?> parent, int position) {
 		// TODO Auto-generated method stub
+		
 		TI ti = (TI) parent.getItemAtPosition(position);
 		
-//		// Log
-//		Log.d("CustomOnItemLongClickListener.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ ":"
-//				+ Thread.currentThread().getStackTrace()[2].getMethodName()
-//				+ "]", "ti.getFile_path()=" + ti.getFile_path());
-//		// Log
-//		Log.d("CustomOnItemLongClickListener.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ ":"
-//				+ Thread.currentThread().getStackTrace()[2].getMethodName()
-//				+ "]",
-//				"ti.getFile_name()=" + ti.getFile_name());
-		
 		Methods_dlg.dlg_TNList(actv, ti);
-		
-		
 		
 	}//case_actv_tn_lv(AdapterView<?> parent, int position)
 

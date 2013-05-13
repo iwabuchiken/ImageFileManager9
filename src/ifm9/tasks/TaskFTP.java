@@ -1,5 +1,6 @@
 package ifm9.tasks;
 
+import ifm9.items.TI;
 import ifm9.main.R;
 import ifm9.utils.MethodsFTP;
 import android.app.Activity;
@@ -12,17 +13,44 @@ public class TaskFTP extends AsyncTask<String, Integer, String> {
 
 	Activity actv;
 	
+	TI ti;
+	
 	public TaskFTP(Activity actv) {
 		
 		this.actv = actv;
 		
 	}
 	
-	@Override
-	protected String doInBackground(String... arg0) {
+	public TaskFTP(Activity actv, TI ti) {
+		// TODO Auto-generated constructor stub
+		this.actv	= actv;
+		this.ti		= ti;
 		
-		int res = MethodsFTP.ftp_connect_disconnect(actv);
-//		
+	}
+
+	@Override
+	protected String doInBackground(String... ftpTags) {
+		
+		// Log
+		Log.d("TaskFTP.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "ftpTag[0]=" + ftpTags[0]);
+		
+		int res;
+		
+		if (ftpTags[0].equals(actv.getString(R.string.ftp_lollipop))) {
+
+			res = MethodsFTP.ftp_connect_disconnect(actv, ti);
+			
+		} else {//if (ftpTag.equals(actv.getString(R.string.ftp_lollipop)))
+			
+			res = MethodsFTP.ftp_connect_disconnect(actv);
+			
+		}//if (ftpTag.equals(actv.getString(R.string.ftp_lollipop)))
+		
+		
 //		// Log
 //		Log.d("TaskFTP.java" + "["
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
@@ -59,9 +87,9 @@ public class TaskFTP extends AsyncTask<String, Integer, String> {
 		// debug
 		Toast.makeText(actv, result, Toast.LENGTH_SHORT).show();
 		
-		TextView tv = (TextView) actv.findViewById(R.id.activity_ftp_tv_message);
-		
-		tv.setText(result);
+//		TextView tv = (TextView) actv.findViewById(R.id.activity_ftp_tv_message);
+//		
+//		tv.setText(result);
 		
 	}//protected void onPostExecute(String result)
 	

@@ -235,6 +235,11 @@ DialogOnItemClickListener implements OnItemClickListener {
 			
 			Methods_dlg.dlg_editTI(actv, dlg1, ti);
 			
+		} else if (item.equals(actv.getString(
+						R.string.generic_tv_upload))) {//if (item.equals(actv.getString(R.string.generic_tv_delete))))
+			
+			Methods_dlg.uploadImageFile(actv, dlg1, ti);
+			
 		}//if (item.equals(actv.getString(R.string.generic_tv_delete))))
 		
 	}

@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -445,7 +446,7 @@ public class Methods {
 					+ "]", "MainActv.adapter => null");
 			
 			// debug
-			Toast.makeText(actv, "MainActv.adapter => null", 3000).show();
+			Toast.makeText(actv, "MainActv.adapter => null", Toast.LENGTH_LONG).show();
 
 		}//if (condition)
 		
@@ -628,7 +629,7 @@ public class Methods {
 		if (currentPath.equals(MainActv.dirPath_base)) {
 			
 			// debug
-			Toast.makeText(actv, "�g�b�v�E�t�H���_�ɂ��܂�", 2000).show();
+			Toast.makeText(actv, "�g�b�v�E�t�H���_�ɂ��܂�", Toast.LENGTH_LONG).show();
 		
 			return;
 		}//if (ImageFileManager8Activity.currentDirPath == ImageFileManager8Activity.baseDirPath)
@@ -645,7 +646,7 @@ public class Methods {
 //		
 //		ImageFileManager8Activity.currentDirPath = f.getParent();
 //		
-//		Methods.toastAndLog(actv, "f.getParent() => " + f.getParent(), 3000);
+//		Methods.toastAndLog(actv, "f.getParent() => " + f.getParent(), Toast.LENGTH_LONG);
 		
 //		/*----------------------------
 //		 * 3-2. New path => Equal to base dir path?
@@ -685,7 +686,7 @@ public class Methods {
 		if (!targetFileName.equals(MainActv.listFileName)) {
 			
 			// debug
-			Toast.makeText(actv, "list.txt �ł͂���܂���", 2000).show();
+			Toast.makeText(actv, "list.txt �ł͂���܂���", Toast.LENGTH_LONG).show();
 			
 			return;
 		}//if (!target.getName().equals(ImageFileManager8Activity.listFileName))
@@ -721,7 +722,7 @@ public class Methods {
 		RefreshDBTask task_ = new RefreshDBTask(actv);
 		
 		// debug
-		Toast.makeText(actv, "Starting a task...", 2000)
+		Toast.makeText(actv, "Starting a task...", Toast.LENGTH_LONG)
 				.show();
 		
 		task_.execute("Start");
@@ -1211,6 +1212,7 @@ public class Methods {
 //		return -1;
 		
 		Cursor c = refreshMainDB_2_exec_query(actv, wdb, dbu);
+		
 //		
 //		//debug
 //		// Log
@@ -1247,7 +1249,7 @@ public class Methods {
 			numOfItemsAdded = 0;
 			
 //			// debug
-//			Toast.makeText(actv, "�V�K�̃t�@�C���͂���܂���", 2000).show();
+//			Toast.makeText(actv, "�V�K�̃t�@�C���͂���܂���", Toast.LENGTH_LONG).show();
 			
 		} else {//if (c.getCount() < 1)
 			
@@ -1318,7 +1320,7 @@ public class Methods {
 			numOfItemsAdded = 0;
 			
 			// debug
-			Toast.makeText(actv, "�V�K�̃t�@�C���͂���܂���", 2000).show();
+			Toast.makeText(actv, "�V�K�̃t�@�C���͂���܂���", Toast.LENGTH_LONG).show();
 			
 		} else {//if (c.getCount() < 1)
 			
@@ -1941,7 +1943,7 @@ public class Methods {
 			if (Looper.myLooper() == Looper.getMainLooper()) {
 				
 				// debug
-				Toast.makeText(actv, "Data stored", 2000).show();
+				Toast.makeText(actv, "Data stored", Toast.LENGTH_LONG).show();
 				
 			} else {//if (condition)
 
@@ -1955,7 +1957,7 @@ public class Methods {
 			}//if (condition)
 
 //			// debug
-//			Toast.makeText(actv, "Data stored", 2000).show();
+//			Toast.makeText(actv, "Data stored", Toast.LENGTH_LONG).show();
 			
 			/*----------------------------
 			* 4. Close db
@@ -1972,7 +1974,7 @@ public class Methods {
 			if (Looper.myLooper() == Looper.getMainLooper()) {
 				
 				// debug
-				Toast.makeText(actv, "Store data => Failed", 2000).show();
+				Toast.makeText(actv, "Store data => Failed", Toast.LENGTH_LONG).show();
 				
 			} else {//if (condition)
 
@@ -2141,7 +2143,7 @@ public class Methods {
 			if(dbu.createTable(wdb, tableName, 
 					CONS.cols_refresh_log, CONS.col_types_refresh_log)) {
 				
-				//toastAndLog(actv, "Table created: " + tableName, 3000);
+				//toastAndLog(actv, "Table created: " + tableName, Toast.LENGTH_LONG);
 				
 				// Log
 				Log.d("Methods.java"
@@ -2153,7 +2155,7 @@ public class Methods {
 				/*----------------------------
 				* 2-2. Create table failed => Return
 				----------------------------*/
-				//toastAndLog(actv, "Create table failed: " + tableName, 3000);
+				//toastAndLog(actv, "Create table failed: " + tableName, Toast.LENGTH_LONG);
 				
 				// Log
 				Log.d("Methods.java"
@@ -2168,7 +2170,7 @@ public class Methods {
 		
 		} else {//if(dbu.tableExists(wdb, ImageFileManager8Activity.refreshLogTableName))
 		
-			//toastAndLog(actv, "Table exitsts: " + tableName, 2000);
+			//toastAndLog(actv, "Table exitsts: " + tableName, Toast.LENGTH_LONG);
 			
 			// Log
 			Log.d("Methods.java" + "["
@@ -2293,7 +2295,7 @@ public class Methods {
 		//
 		if (newDir.exists()) {
 			// debug
-			Toast.makeText(actv, "���̖��O�̃t�H���_�͂��łɂ���܂��I�F " + folderName, 3000).show();
+			Toast.makeText(actv, "���̖��O�̃t�H���_�͂��łɂ���܂��I�F " + folderName, Toast.LENGTH_LONG).show();
 			
 			return null;
 			
@@ -2308,7 +2310,7 @@ public class Methods {
 				dlg.dismiss();
 				
 				// debug
-				Toast.makeText(actv, "�t�H���_�����܂��� : " + newDir.getAbsolutePath(), 3000).show();
+				Toast.makeText(actv, "�t�H���_�����܂��� : " + newDir.getAbsolutePath(), Toast.LENGTH_LONG).show();
 				
 				// Log
 				Log.d("Methods.java" + "["
@@ -2318,7 +2320,7 @@ public class Methods {
 				
 			} catch (Exception e) {
 				// debug
-				Toast.makeText(actv, "�t�H���_�����܂���ł��� : " + newDir.getName(), 3000).show();
+				Toast.makeText(actv, "�t�H���_�����܂���ł��� : " + newDir.getName(), Toast.LENGTH_LONG).show();
 				
 				// Log
 				Log.d("Methods.java" + "["
@@ -2347,7 +2349,7 @@ public class Methods {
 					+ "]", "listFile => Exists");
 			
 			// debug
-			Toast.makeText(actv, "list.txt => ���łɂ���܂�", 3000).show();
+			Toast.makeText(actv, "list.txt => ���łɂ���܂�", Toast.LENGTH_LONG).show();
 			
 		} else {//if (listFile.exists())
 			try {
@@ -2362,7 +2364,7 @@ public class Methods {
 								.getLineNumber() + "]", "listFile => Created");
 				
 //				// debug
-//				Toast.makeText(actv, "list.txt => �쐬����܂���", 3000).show();
+//				Toast.makeText(actv, "list.txt => �쐬����܂���", Toast.LENGTH_LONG).show();
 				
 			} catch (IOException e) {
 				// Log
@@ -2371,7 +2373,7 @@ public class Methods {
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
 				// debug
-				Toast.makeText(actv, "list.txt => �쐬�ł��܂���ł���", 3000).show();
+				Toast.makeText(actv, "list.txt => �쐬�ł��܂���ł���", Toast.LENGTH_LONG).show();
 				
 				return null;
 			}
@@ -2436,7 +2438,7 @@ public class Methods {
 										.getLineNumber() + "]", "listFile => Created");
 						
 						// debug
-						Toast.makeText(actv, "list.txt => �쐬����܂���", 3000).show();
+						Toast.makeText(actv, "list.txt => �쐬����܂���", Toast.LENGTH_LONG).show();
 						
 					} catch (IOException e) {
 						// Log
@@ -2445,7 +2447,7 @@ public class Methods {
 								+ Thread.currentThread().getStackTrace()[2]
 										.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
 						// debug
-						Toast.makeText(actv, "list.txt => �쐬�ł��܂���ł���", 3000).show();
+						Toast.makeText(actv, "list.txt => �쐬�ł��܂���ł���", Toast.LENGTH_LONG).show();
 					}
 					
 				}//if (res)
@@ -2533,14 +2535,14 @@ public class Methods {
 		
 		if (!targetDir.exists()) {
 			// debug
-			Toast.makeText(actv, "���̃A�C�e���́A���݂��܂���", 2000).show();
+			Toast.makeText(actv, "���̃A�C�e���́A���݂��܂���", Toast.LENGTH_LONG).show();
 			
 			return;
 		}
 		
 		if (!targetDir.isDirectory()) {
 			// debug
-			Toast.makeText(actv, "���̃A�C�e���́A�t�H���_�ł͂���܂���", 2000).show();
+			Toast.makeText(actv, "���̃A�C�e���́A�t�H���_�ł͂���܂���", Toast.LENGTH_LONG).show();
 			
 			return;
 		}//if (!targetDir.exists() || !targetDir.isDirectory())
@@ -2568,7 +2570,7 @@ public class Methods {
 					+ "]", "Dir => Removed: " + path);
 			
 			// debug
-			Toast.makeText(actv, "�폜���܂���" + path, 3000).show();
+			Toast.makeText(actv, "�폜���܂���" + path, Toast.LENGTH_LONG).show();
 		} else {//if (result == true)
 			// Log
 			Log.d("Methods.java" + "["
@@ -2576,7 +2578,7 @@ public class Methods {
 					+ "]", "Remove dir => Failed: " + path);
 			
 			// debug
-			Toast.makeText(actv, "�폜�ł��܂���ł���: " + path, 3000).show();
+			Toast.makeText(actv, "�폜�ł��܂���ł���: " + path, Toast.LENGTH_LONG).show();
 			
 			return;
 		}//if (result == true)
@@ -3293,7 +3295,7 @@ public class Methods {
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 //				+ "]", "DB => closed");
 //		
-//		toastAndLog(actv, ti.getFile_name() + "/" + "memo=" + ti.getMemo(), 2000);
+//		toastAndLog(actv, ti.getFile_name() + "/" + "memo=" + ti.getMemo(), Toast.LENGTH_LONG);
 		
 		/*----------------------------
 		 * 1-2. Get text from edit text
@@ -3333,7 +3335,7 @@ public class Methods {
 			dlg.dismiss();
 
 			// debug
-			Toast.makeText(actv, "Memo => Stored", 3000).show();
+			Toast.makeText(actv, "Memo => Stored", Toast.LENGTH_LONG).show();
 
 		} else {//if (result)
 			
@@ -3480,7 +3482,7 @@ public class Methods {
 
 	public static String get_TimeLabel(long millSec) {
 		
-		 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.JAPAN);
 		 
 		return sdf1.format(new Date(millSec));
 		
@@ -3519,7 +3521,7 @@ public class Methods {
 		
 			
 			// debug
-			Toast.makeText(actv, "Pattern deleted", 3000).show();
+			Toast.makeText(actv, "Pattern deleted", Toast.LENGTH_LONG).show();
 			
 			// Log
 			Log.d("Methods.java" + "["
@@ -3536,7 +3538,7 @@ public class Methods {
 		} catch (SQLException e) {
 			
 			// debug
-			Toast.makeText(actv, "�p�^�[���폜�@=>�@�ł��܂���ł���", 3000).show();
+			Toast.makeText(actv, "�p�^�[���폜�@=>�@�ł��܂���ł���", Toast.LENGTH_LONG).show();
 			
 			// Log
 			Log.e("Methods.java" + "["
@@ -3569,8 +3571,8 @@ public class Methods {
 		if (words.equals("")) {
 			
 			// debug
-//			Toast.makeText(actv, "������ĂȂ���", 2000).show();
-			Toast.makeText(actv, "語句を入れてないよ", 2000).show();
+//			Toast.makeText(actv, "������ĂȂ���", Toast.LENGTH_LONG).show();
+			Toast.makeText(actv, "語句を入れてないよ", Toast.LENGTH_LONG).show();
 			
 			return;
 			
@@ -3831,7 +3833,7 @@ public class Methods {
 			if (Looper.myLooper() == Looper.getMainLooper()) {
 				
 				// debug
-				Toast.makeText(actv, "DB restoration => Done", 3000).show();
+				Toast.makeText(actv, "DB restoration => Done", Toast.LENGTH_LONG).show();
 				
 			} else {//if (condition)
 
@@ -4985,7 +4987,7 @@ public class Methods {
 			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 			+ "]", "sql => Done: " + sql);
 			
-			//Methods.toastAndLog(actv, "Data updated", 2000);
+			//Methods.toastAndLog(actv, "Data updated", Toast.LENGTH_LONG);
 			
 			return true;
 			
@@ -5260,7 +5262,7 @@ public class Methods {
 					+ "]", "File copied");
 			
 			// debug
-			Toast.makeText(actv, "DB backup => Done", 3000).show();
+			Toast.makeText(actv, "DB backup => Done", Toast.LENGTH_LONG).show();
 
 			dlg.dismiss();
 			
@@ -5439,6 +5441,17 @@ public class Methods {
 		}//if (i > j)
 		
 	}//public static int getSmallerNumber(int i, int j)
+
+	public static String getTimeLabel_Japanese(long millSec) {
+		
+		
+//		 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd_HHmmss");
+//		SimpleDateFormat sdf1 = new SimpleDateFormat("MM月dd日", Locale.JAPAN);
+		SimpleDateFormat sdf1 = new SimpleDateFormat("M月d日(E)", Locale.JAPAN);
+		
+		return sdf1.format(new Date(millSec));
+		
+	}//public static String get_TimeLabel(long millSec)
 
 }//public class Methods
 

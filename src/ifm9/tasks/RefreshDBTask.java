@@ -1,5 +1,6 @@
 package ifm9.tasks;
 
+import ifm9.main.MainActv;
 import ifm9.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
@@ -28,7 +29,7 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected String doInBackground(String... params) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		
 		int result = Methods.refreshMainDB((ListActivity) actv);
 //		boolean result = Methods.refreshMainDB((ListActivity) actv);
@@ -43,19 +44,19 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 		
 		if (result > 0) {
 			
-			return "DB refreshed";
+			return "DB refreshed: " + String.valueOf(result) + " items";
 			
 		} else if (result == -1){//if (result == true)
 
-			return "ƒe[ƒuƒ‹‚ª‚È‚­A‚Ü‚½Aì‚é‚±‚Æ‚à‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½";
+			return "Can't create table => " + MainActv.dirName_base;
 			
 		} else if (result == 0){//if (result == true)
 			
-			return "V‹K‚Ìƒtƒ@ƒCƒ‹‚Í‚ ‚è‚Ü‚¹‚ñ";
+			return "No new entry";
 			
 		} else {//if (result == true)
 			
-			return "‚È‚É‚©•s–¾‚ÌŒ‹‰Ê‚ª¶‚¶‚Ü‚µ‚½";
+			return "Unknown result";
 			
 		}//if (result == true)
 		
@@ -64,11 +65,11 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		super.onPostExecute(result);
 
 		// debug
-		Toast.makeText(actv, result, 2000).show();
+		Toast.makeText(actv, result, Toast.LENGTH_LONG).show();
 		
 //		dlg.dismiss();
 		
@@ -76,7 +77,7 @@ public class RefreshDBTask extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected void onProgressUpdate(Integer... values) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 //		super.onProgressUpdate(values);
 		
 		// Log

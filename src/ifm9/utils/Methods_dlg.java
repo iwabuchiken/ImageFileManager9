@@ -15,6 +15,7 @@ import ifm9.main.R;
 import ifm9.main.TNActv;
 import ifm9.tasks.RefreshDBTask;
 import ifm9.tasks.SearchTask;
+import ifm9.tasks.TaskFTP;
 import ifm9.utils.Tags.DialogTags;
 
 import java.io.BufferedWriter;
@@ -1488,6 +1489,7 @@ public class Methods_dlg {
 		String[] choices = {
 				actv.getString(R.string.generic_tv_edit),
 				actv.getString(R.string.generic_tv_delete),
+				actv.getString(R.string.generic_tv_upload),
 		};
 		
 		List<String> list = new ArrayList<String>();
@@ -1691,6 +1693,18 @@ public class Methods_dlg {
 		return dlg2;
 		
 	}//Dialog dlg_template_okCancel
+
+	public static void
+	uploadImageFile(Activity actv, Dialog dlg1, TI ti) {
+		
+		TaskFTP task = new TaskFTP(actv, ti);
+		
+		task.execute(actv.getString(R.string.ftp_lollipop));
+		
+//		// debug
+//		Toast.makeText(actv, "uploadImageFile", Toast.LENGTH_LONG).show();
+		
+	}//uploadImageFile(Activity actv, Dialog dlg1, TI ti)
 
 }//public class Methods
 

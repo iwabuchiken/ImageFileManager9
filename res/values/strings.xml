@@ -9,6 +9,7 @@
     <string name="generic_tv_register">登録</string>
     <string name="generic_tv_edit">編集</string>
     <string name="generic_tv_delete">削除</string>
+    <string name="generic_tv_upload">Upload</string>
     <string name="hello">Hello World, IFM9Activity!</string>
     <string name="app_name">IFM9</string>
     <string name="v1_tv_dir_path">Directory path</string>
@@ -122,4 +123,7 @@
     	<string name="dlg_edit_ti_tv_file_name">File name</string>
     	<string name="dlg_edit_ti_tv_file_path">File path</string>
     	<string name="dlg_edit_ti_tv_memos">Memos</string>
+    	
+    <!-- FTP -->
+    	<string name="ftp_lollipop">lollipop</string>
 </resources>
