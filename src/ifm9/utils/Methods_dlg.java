@@ -1701,6 +1701,8 @@ public class Methods_dlg {
 		
 		task.execute(actv.getString(R.string.ftp_lollipop));
 		
+		dlg1.dismiss();
+		
 //		// debug
 //		Toast.makeText(actv, "uploadImageFile", Toast.LENGTH_LONG).show();
 		

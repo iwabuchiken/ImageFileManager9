@@ -9,7 +9,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TaskFTP extends AsyncTask<String, Integer, String> {
+//public class TaskFTP extends AsyncTask<String, Integer, String> {
+public class TaskFTP extends AsyncTask<String, Integer, Integer> {
 
 	Activity actv;
 	
@@ -28,8 +29,11 @@ public class TaskFTP extends AsyncTask<String, Integer, String> {
 		
 	}
 
+	
+	
 	@Override
-	protected String doInBackground(String... ftpTags) {
+//	protected String doInBackground(String... ftpTags) {
+	protected Integer doInBackground(String... ftpTags) {
 		
 		// Log
 		Log.d("TaskFTP.java" + "["
@@ -60,11 +64,13 @@ public class TaskFTP extends AsyncTask<String, Integer, String> {
 		
 		if (res > 0) {
 			
-			return String.valueOf(res);
+			return res;
+//			return String.valueOf(res);
 			
 		} else {//if (res == true)
 			
-			return String.valueOf(res);
+			return res;
+//			return String.valueOf(res);
 			
 		}//if (res == true)
 		
@@ -80,17 +86,30 @@ public class TaskFTP extends AsyncTask<String, Integer, String> {
 	}
 
 	@Override
-	protected void onPostExecute(String result) {
+//	protected void onPostExecute(String result) {
+	protected void onPostExecute(Integer result) {
 		
 		super.onPostExecute(result);
 		
 		// debug
-		Toast.makeText(actv, result, Toast.LENGTH_SHORT).show();
+		Toast.makeText(actv,
+				"Result => " + String.valueOf(result),
+				Toast.LENGTH_SHORT).show();
 		
 //		TextView tv = (TextView) actv.findViewById(R.id.activity_ftp_tv_message);
 //		
 //		tv.setText(result);
 		
 	}//protected void onPostExecute(String result)
+
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+		
+		// debug
+		Toast.makeText(actv, "Uploading file: " + ti.getFile_name(), Toast.LENGTH_LONG).show();
+		
+	}
 	
 }

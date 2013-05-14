@@ -209,7 +209,8 @@ public class MethodsFTP {
 		
 	}//public static void ftp_connect_disconnect()
 
-	public static int ftp_connect_disconnect(Activity actv, TI ti) {
+	public static int
+	ftp_connect_disconnect(Activity actv, TI ti) {
 		/*********************************
 		 * memo
 		 *********************************/
@@ -224,15 +225,10 @@ public class MethodsFTP {
 
 		String passwd = "9x9jh4";
 		
-//		String fpath = StringUtils.join(
-//				new String[]{
-//						MainActv.dirPath_db,
-//						MainActv.fileName_db
-//				}, File.separator);
-		
 		String fpath = ti.getFile_path();
 		
-		String fpath_remote = "./" + ti.getFile_name();
+		String fpath_remote = "./images/" + ti.getFile_name();
+//		String fpath_remote = "./" + ti.getFile_name();
 //		String fpath_remote = "./" + "Gaelic Folk Song.mp3";
 		
 		/*********************************
@@ -318,6 +314,8 @@ public class MethodsFTP {
 			
 			// REF http://stackoverflow.com/questions/7740817/how-to-upload-an-image-to-ftp-using-ftpclient answered Oct 12 '11 at 13:52
 			res = fp.setFileType(FTP.BINARY_FILE_TYPE);
+			
+			
 			
 			if (res == true) {
 				
@@ -406,6 +404,6 @@ public class MethodsFTP {
 			
 		}
 		
-	}//public static void ftp_connect_disconnect()
+	}//public static void ftp_connect_disconnect(Activity actv, TI ti)
 
 }//public class MethodsFTP
