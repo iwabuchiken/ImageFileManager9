@@ -48,6 +48,10 @@ public class TaskFTP extends AsyncTask<String, Integer, Integer> {
 
 			res = MethodsFTP.ftp_connect_disconnect(actv, ti);
 			
+		} else if (ftpTags[0].equals(actv.getString(R.string.ftp_upload_db_file))) {
+				
+				res = MethodsFTP.uploadDbFile(actv);
+				
 		} else {//if (ftpTag.equals(actv.getString(R.string.ftp_lollipop)))
 			
 			res = MethodsFTP.ftp_connect_disconnect(actv);
@@ -106,9 +110,18 @@ public class TaskFTP extends AsyncTask<String, Integer, Integer> {
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
-		
-		// debug
-		Toast.makeText(actv, "Uploading file: " + ti.getFile_name(), Toast.LENGTH_LONG).show();
+
+		if (this.ti != null) {
+			
+			// debug
+			Toast.makeText(actv, "Uploading file: " + ti.getFile_name(), Toast.LENGTH_LONG).show();
+			
+		} else {//if (this.ti != null)
+
+			// debug
+			Toast.makeText(actv, "Uploading file", Toast.LENGTH_LONG).show();
+			
+		}//if (this.ti != null)
 		
 	}
 	

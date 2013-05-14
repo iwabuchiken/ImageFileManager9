@@ -6,6 +6,7 @@ import ifm9.items.TI;
 import ifm9.main.MainActv;
 import ifm9.main.R;
 import ifm9.tasks.RefreshDBTask;
+import ifm9.tasks.TaskFTP;
 import ifm9.tasks.Task_add_table_name;
 import ifm9.utils.CONS;
 import ifm9.utils.Methods;
@@ -103,21 +104,6 @@ DialogOnItemClickListener implements OnItemClickListener {
 			
 			Methods.add_pattern_to_text(dlg1, position, word);
 			
-//			String word = (String) parent.getItemAtPosition(position);
-//			
-//			EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
-//			
-//			String content = et.getText().toString();
-//			
-//			content += word + " ";
-//			
-//			et.setText(content);
-//			
-//			et.setSelection(et.getText().toString().length());
-			
-//			// debug
-//			Toast.makeText(actv, word, 2000).show();
-			
 			break;
 			
 		case dlg_db_admin_lv://----------------------------------------------
@@ -125,51 +111,50 @@ DialogOnItemClickListener implements OnItemClickListener {
 			 * 1. Get chosen item name
 			 * 2. Switching
 				----------------------------*/
-			
-			String item = (String) parent.getItemAtPosition(position);
-			
-//			// debug
-//			Toast.makeText(actv, item, 2000).show();
-			
-			/*----------------------------
-			 * 2. Switching
-				----------------------------*/
-			if (item.equals(actv.getString(R.string.dlg_db_admin_item_backup_db))) {
-				
-				Methods.db_backup(actv, dlg1);
-				
-			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_refresh_db))){
-				
-				RefreshDBTask task_ = new RefreshDBTask(actv, dlg1);
-				
-				// debug
-				Toast.makeText(actv, "Starting a task...", 2000)
-						.show();
-				
-				task_.execute("Start");
-
-				dlg1.dismiss();
-				
-//				// Log
-//				Log.d("DialogOnItemClickListener.java"
-//						+ "["
-//						+ Thread.currentThread().getStackTrace()[2]
-//								.getLineNumber() + "]", "DB refresh");
-				
-				
-//				Methods.refreshMainDB(actv, dlg);
-			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_set_new_column))){
-				
-				//
-				dlg_db_admin_item_set_new_column();
-				
-			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_restore_db))){
-				
-				//
-				dlg_db_admin_item_restore_db();
-				
-			}
-			
+			case_dlg_db_admin_lv(parent, position);
+//			
+//			String item = (String) parent.getItemAtPosition(position);
+//			
+////			// debug
+////			Toast.makeText(actv, item, 2000).show();
+//			
+//			/*----------------------------
+//			 * 2. Switching
+//				----------------------------*/
+//			if (item.equals(actv.getString(R.string.dlg_db_admin_item_backup_db))) {
+//				
+//				Methods.db_backup(actv, dlg1);
+//				
+//			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_refresh_db))){
+//				
+//				RefreshDBTask task_ = new RefreshDBTask(actv, dlg1);
+//				
+//				// debug
+//				Toast.makeText(actv, "Starting a task...", 2000)
+//						.show();
+//				
+//				task_.execute("Start");
+//
+//				dlg1.dismiss();
+//				
+//			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_set_new_column))){
+//				
+//				//
+//				dlg_db_admin_item_set_new_column();
+//				
+//			} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_restore_db))){
+//				
+//				//
+//				dlg_db_admin_item_restore_db();
+//				
+//			} else if (item.equals(actv.getString(
+//							R.string.dlg_db_admin_item_upload_db))){
+//				
+//				//
+//				dlg_db_admin_item_upload_db();
+//				
+//			}
+//			
 			break;// case dlg_add_memos_gv
 
 		case dlg_admin_patterns_lv://----------------------------------------------
@@ -178,7 +163,7 @@ DialogOnItemClickListener implements OnItemClickListener {
 			 * 2. Switching
 				----------------------------*/
 			
-			item = (String) parent.getItemAtPosition(position);
+			String item = (String) parent.getItemAtPosition(position);
 			
 //			// debug
 //			Toast.makeText(actv, item, 2000).show();
@@ -224,6 +209,67 @@ DialogOnItemClickListener implements OnItemClickListener {
 		}//switch (tag)
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+
+	private void
+	case_dlg_db_admin_lv(AdapterView<?> parent, int position) {
+		// TODO Auto-generated method stub
+
+		String item = (String) parent.getItemAtPosition(position);
+		
+//		// debug
+//		Toast.makeText(actv, item, 2000).show();
+		
+		/*----------------------------
+		 * 2. Switching
+			----------------------------*/
+		if (item.equals(actv.getString(R.string.dlg_db_admin_item_backup_db))) {
+			
+			Methods.db_backup(actv, dlg1);
+			
+		} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_refresh_db))){
+			
+			RefreshDBTask task_ = new RefreshDBTask(actv, dlg1);
+			
+			// debug
+			Toast.makeText(actv, "Starting a task...", Toast.LENGTH_LONG)
+					.show();
+			
+			task_.execute("Start");
+
+			dlg1.dismiss();
+			
+		} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_set_new_column))){
+			
+			//
+			dlg_db_admin_item_set_new_column();
+			
+		} else if (item.equals(actv.getString(R.string.dlg_db_admin_item_restore_db))){
+			
+			//
+			dlg_db_admin_item_restore_db();
+			
+		} else if (item.equals(actv.getString(
+						R.string.dlg_db_admin_item_upload_db))){
+			
+			//
+			dlg_db_admin_item_upload_db();
+			
+		}
+		
+	}//private void case_dlg_db_admin_lv(AdapterView<?> parent, int position)
+
+	private void dlg_db_admin_item_upload_db() {
+
+		TaskFTP task = new TaskFTP(actv);
+		
+		task.execute(actv.getString(R.string.ftp_upload_db_file));
+		
+		dlg1.dismiss();
+		
+//		// debug
+//		Toast.makeText(actv, "dlg_db_admin_item_upload_db", Toast.LENGTH_LONG).show();
+		
+	}//private void dlg_db_admin_item_upload_db()
 
 	private void case_dlg_tn_list(String item) {
 		// TODO Auto-generated method stub

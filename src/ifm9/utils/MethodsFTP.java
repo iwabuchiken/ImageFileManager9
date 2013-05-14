@@ -406,4 +406,194 @@ public class MethodsFTP {
 		
 	}//public static void ftp_connect_disconnect(Activity actv, TI ti)
 
+	
+	public static int uploadDbFile(Activity actv) {
+		/*********************************
+		 * memo
+		 *********************************/
+		// FTP client
+		FTPClient fp = new FTPClient();
+		
+		int reply_code;
+		
+		String server_name = "ftp.benfranklin.chips.jp";
+		
+		String uname = "chips.jp-benfranklin";
+
+		String passwd = "9x9jh4";
+		
+		String fpath = StringUtils.join(
+				new String[]{
+						MainActv.dirPath_db,
+						MainActv.fileName_db
+				}, File.separator);
+		
+		// Log
+		Log.d("MethodsFTP.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "fpath=" + fpath);
+		
+		String fpath_remote = "./" + "ifm9." + String.valueOf(Methods.getMillSeconds_now())
+								+ ".db";
+
+		// Log
+		Log.d("MethodsFTP.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "fpath_remote=" + fpath_remote);
+
+		/*********************************
+		 * Connect
+		 *********************************/
+		try {
+			
+			fp.connect(server_name);
+			
+			reply_code = fp.getReplyCode();
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "fp.getReplyCode()=" + fp.getReplyCode());
+			
+		} catch (SocketException e) {
+			
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Error: " + e.toString());
+			
+			return -1;
+			
+		} catch (IOException e) {
+
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Error: " + e.toString());
+			
+			return -1;
+		}
+		
+		/*********************************
+		 * Log in
+		 *********************************/
+		boolean res;
+		
+		try {
+			
+			res = fp.login(uname, passwd);
+			
+			if(res == false) {
+				
+				reply_code = fp.getReplyCode();
+				
+				// Log
+				Log.e("MethodsFTP.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Log in failed => " + reply_code);
+				
+				fp.disconnect();
+				
+				return -2;
+				
+			} else {
+				
+				// Log
+				Log.d("MethodsFTP.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Log in => Succeeded");
+				
+			}
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		/*********************************
+		 * FTP files
+		 *********************************/
+		// REF http://stackoverflow.com/questions/7740817/how-to-upload-an-image-to-ftp-using-ftpclient answered Oct 12 '11 at 13:52
+
+		// �t�@�C�����M
+		FileInputStream is;
+		
+		try {
+			
+			is = new FileInputStream(fpath);
+//			is = new FileInputStream(fpath_audio);
+			
+			res = fp.setFileType(FTP.BINARY_FILE_TYPE);
+			
+//			fp.storeFile("./" + MainActv.fileName_db, is);// �T�[�o�[��
+			res = fp.storeFile(fpath_remote, is);// �T�[�o�[��
+			
+//			fp.makeDirectory("./ABC");
+			
+			if (res == true) {
+				
+				// Log
+				Log.d("MethodsFTP.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "File => Stored");
+				
+			} else {//if (res == true)
+
+				// Log
+				Log.d("MethodsFTP.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Store file => Failed");
+
+			}//if (res == true)
+			
+			is.close();
+
+		} catch (FileNotFoundException e) {
+
+			// Log
+			Log.e("MethodsFTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+			
+		} catch (IOException e) {
+			
+			// Log
+			Log.e("MethodsFTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+
+		}
+						
+		/*********************************
+		 * Disconnect
+		 *********************************/
+		try {
+			
+			fp.disconnect();
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "fp => Disconnected");
+
+			return reply_code;
+			
+		} catch (IOException e) {
+			
+			// Log
+			Log.e("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Error: " + e.toString());
+			
+			return -1;
+			
+		}
+		
+	}//public static int uploadDbFile(Activity actv)
+
 }//public class MethodsFTP

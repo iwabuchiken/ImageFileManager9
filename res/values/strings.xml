@@ -108,6 +108,7 @@
     <string name="dlg_db_admin_item_refresh_db">DBリフレッシュ</string>
     <string name="dlg_db_admin_item_set_new_column">Set new column</string>
     <string name="dlg_db_admin_item_restore_db">Restore db</string>
+    <string name="dlg_db_admin_item_upload_db">Upload db</string>
 
     <!-- dlg_delete_patterns.xml -->
     <string name="dlg_delete_patterns_title">定型句　削除</string>
@@ -126,4 +127,6 @@
     	
     <!-- FTP -->
     	<string name="ftp_lollipop">lollipop</string>
+    	<string name="ftp_upload_db_file">upload_db_file</string>
+    	
 </resources>
