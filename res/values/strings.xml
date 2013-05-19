@@ -131,5 +131,6 @@
     	<string name="ftp_upload_db_file">upload_db_file</string>
     <!-- HTTP -->
     	<string name="http_post_file_name_lollipop">http_post_file_name_lollipop</string>
+    	<string name="http_post_image_data_rails">http_post_image_data_rails</string>
     	
 </resources>

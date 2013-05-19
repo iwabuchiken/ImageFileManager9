@@ -82,8 +82,11 @@ public class Methods_IFM9 {
 
 
 	public static Integer postFileNameToRailsSite(Activity actv, TI ti) {
-		// TODO Auto-generated method stub
 		
+		TaskHTTP task = new TaskHTTP(actv, ti);
+		
+		task.execute(actv.getString(R.string.http_post_image_data_rails));
+
 		
 		return null;
 	}

@@ -333,6 +333,7 @@ public final class R {
         /**  HTTP 
          */
         public static final int http_post_file_name_lollipop=0x7f06004d;
+        public static final int http_post_image_data_rails=0x7f06004e;
         /**  image_actv_menu.xml 
          */
         public static final int image_actv_menu_add_memo=0x7f060027;

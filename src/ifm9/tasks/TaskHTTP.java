@@ -13,8 +13,11 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import ifm9.items.TI;
 import ifm9.main.R;
@@ -59,9 +62,163 @@ public class TaskHTTP extends AsyncTask<String, Integer, Integer> {
 	
 
 	private Integer _doInBackground_Rails() {
-		// TODO Auto-generated method stub
+		//REF post json: http://stackoverflow.com/questions/6218143/android-post-json-using-http answered Jun 2 '11 at 18:16
+		
+		// Log
+		Log.d("TaskHTTP.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ ":"
+				+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "]", "Starting to post data to remote rails app");
+		
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+		String url = "http://cosmos-ifm-1.herokuapp.com/images/new";
+		
+	    //url with the post data
+		HttpPost httpPost = new HttpPost(url);
+
+		/***************************************
+		 * Json object
+		 *
+		 ***************************************/
+		//REF json object: http://stackoverflow.com/questions/8706046/create-json-in-android answered Jan 2 '12 at 22:42
+//		JSONObject joRoot = new JSONObject();
+		
+		JSONObject joBody = new JSONObject();
+		
+		try {
+			
+			joBody.put("file_name", "1_v1.png");
+			joBody.put("table_name", "IFM_Android");
+			
+		} catch (JSONException e) {
+			
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		}
+		
+		StringEntity se;
+		try {
+			
+			se = new StringEntity(joBody.toString());
+			
+		} catch (UnsupportedEncodingException e) {
+			
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", e.toString());
+			
+			return null;
+			
+		}
+		
+		httpPost.setEntity(se);
+		
+		httpPost.setHeader("Accept", "application/json");
+	    httpPost.setHeader("Content-type", "application/json");
+		
+	    /***************************************
+		 * Post
+		 ***************************************/
+	    DefaultHttpClient dhc = new DefaultHttpClient();
+	    
+		HttpResponse hr = null;
+		
+		try {
+			
+			hr = dhc.execute(httpPost);
+			
+		} catch (ClientProtocolException e) {
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", e.toString());
+			
+		} catch (IOException e) {
+			
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", e.toString());
+			
+		}
+		
+		/***************************************
+		 * Validate: Return
+		 ***************************************/
+		if (hr == null) {
+			
+//			// debug
+//			Toast.makeText(actv, "hr == null", 2000).show();
+			
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "hr == null");
+			
+//			return CONS.Task_GetTexts.EXECUTE_POST_NULL;
+			return null;
+			
+		} else {//if (hr == null)
+			
+			// Log
+			Log.d("Task_GetTexts.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "Http response => Obtained");
+
+			
+//			return null;
+			
+		}//if (hr == null)
+
+		/***************************************
+		 * Status code
+		 ***************************************/
+		/*********************************
+		 * Status code
+		 *********************************/
+		int status = hr.getStatusLine().getStatusCode();
+		
+		if (status == CONS.HTTP_Response.CREATED
+				|| status == CONS.HTTP_Response.OK) {
+
+			// Log
+			Log.d("Task_GetYomi.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "status=" + status);
+
+//			return CONS.HTTP_Response.CREATED;
+			
+		} else {//if (status == CONS.HTTP_Response.CREATED)
+			
+			// Log
+			Log.d("Task_GetTexts.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "status=" + status);
+			
+			return CONS.HTTP_Response.NOT_CREATED;
+			
+		}//if (status == CONS.HTTP_Response.CREATED)
+		
 		return null;
-	}
+		
+	}//private Integer _doInBackground_Rails()
 
 	private Integer _doInBackground_Lollipop() {
 		// TODO Auto-generated method stub
