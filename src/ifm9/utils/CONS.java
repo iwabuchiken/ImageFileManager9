@@ -137,5 +137,16 @@ public class CONS {
 
 	}
 
+	public static class HTTP_Response {
+		
+		public static final int OK = 200;
+		
+		public static final int CREATED = 201;
+		
+		public static final int NOT_CREATED = -201;
+		
+		
+		
+	}
 	
 }

@@ -2,6 +2,9 @@ package ifm9.utils;
 
 import ifm9.items.TI;
 import ifm9.main.MainActv;
+import ifm9.main.R;
+import ifm9.tasks.TaskFTP;
+import ifm9.tasks.TaskHTTP;
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
@@ -63,5 +66,26 @@ public class Methods_IFM9 {
 		}
 		
 	}//delete_TI(Activity actv, Dialog dlg1, Dialog dlg2, TI ti)
+
+	
+	public static int
+	postFileNameToLollipopSite(Activity actv, TI ti) {
+		
+		TaskHTTP task = new TaskHTTP(actv, ti);
+		
+		task.execute(actv.getString(R.string.http_post_file_name_lollipop));
+
+		
+		return 1;
+	}//postFileNameToLollipopSite(Activity actv, TI ti)
+	
+
+
+	public static Integer postFileNameToRailsSite(Activity actv, TI ti) {
+		// TODO Auto-generated method stub
+		
+		
+		return null;
+	}
 
 }//public class Methods_IFM9

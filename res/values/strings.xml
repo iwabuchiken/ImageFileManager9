@@ -126,7 +126,10 @@
     	<string name="dlg_edit_ti_tv_memos">Memos</string>
     	
     <!-- FTP -->
+
     	<string name="ftp_lollipop">lollipop</string>
     	<string name="ftp_upload_db_file">upload_db_file</string>
+    <!-- HTTP -->
+    	<string name="http_post_file_name_lollipop">http_post_file_name_lollipop</string>
     	
 </resources>

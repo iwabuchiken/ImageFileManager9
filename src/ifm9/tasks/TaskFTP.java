@@ -3,6 +3,7 @@ package ifm9.tasks;
 import ifm9.items.TI;
 import ifm9.main.R;
 import ifm9.utils.MethodsFTP;
+import ifm9.utils.Methods_IFM9;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -46,7 +47,15 @@ public class TaskFTP extends AsyncTask<String, Integer, Integer> {
 		
 		if (ftpTags[0].equals(actv.getString(R.string.ftp_lollipop))) {
 
-			res = MethodsFTP.ftp_connect_disconnect(actv, ti);
+//			res = MethodsFTP.ftp_connect_disconnect(actv, ti);
+			
+			res = 1;
+			
+//			if (res > 0) {
+//
+//				res = Methods_IFM9.postFileNameToLollipopSite(actv, ti);
+//				
+//			}//if (res == true)
 			
 		} else if (ftpTags[0].equals(actv.getString(R.string.ftp_upload_db_file))) {
 				
@@ -67,7 +76,7 @@ public class TaskFTP extends AsyncTask<String, Integer, Integer> {
 //		int res = try_1();
 		
 		if (res > 0) {
-			
+
 			return res;
 //			return String.valueOf(res);
 			
@@ -91,14 +100,22 @@ public class TaskFTP extends AsyncTask<String, Integer, Integer> {
 
 	@Override
 //	protected void onPostExecute(String result) {
-	protected void onPostExecute(Integer result) {
+	protected void onPostExecute(Integer res) {
 		
-		super.onPostExecute(result);
+		super.onPostExecute(res);
 		
 		// debug
 		Toast.makeText(actv,
-				"Result => " + String.valueOf(result),
+				"Result => " + String.valueOf(res),
 				Toast.LENGTH_SHORT).show();
+		
+		if (res > 0 && ti != null) {
+
+			res = Methods_IFM9.postFileNameToRailsSite(actv, ti);
+			
+//			res = Methods_IFM9.postFileNameToLollipopSite(actv, ti);
+			
+		}//if (res == true)
 		
 //		TextView tv = (TextView) actv.findViewById(R.id.activity_ftp_tv_message);
 //		

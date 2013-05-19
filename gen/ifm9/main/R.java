@@ -330,6 +330,9 @@ public final class R {
         public static final int generic_tv_upload=0x7f060007;
         public static final int hello=0x7f060008;
         public static final int hello_world=0x7f060044;
+        /**  HTTP 
+         */
+        public static final int http_post_file_name_lollipop=0x7f06004d;
         /**  image_actv_menu.xml 
          */
         public static final int image_actv_menu_add_memo=0x7f060027;
