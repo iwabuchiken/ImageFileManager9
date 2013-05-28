@@ -90,7 +90,13 @@ public class TaskHTTP extends AsyncTask<String, Integer, Integer> {
 		try {
 			
 			joBody.put("file_name", ti.getFile_name());
+			joBody.put("file_path", ti.getFile_path());
+			joBody.put("file_id", ti.getFileId());
+			
 			joBody.put("table_name", ti.getTable_name());
+			
+			joBody.put("memos", ti.getMemo());
+			joBody.put("tags", ti.getTags());
 			
 			// Log
 			Log.d("TaskHTTP.java" + "["
@@ -127,8 +133,17 @@ public class TaskHTTP extends AsyncTask<String, Integer, Integer> {
 		try {
 			
 //			se = new StringEntity(joRoot.toString());
-			se = new StringEntity(joBody.toString());
+//			se = new StringEntity(joBody.toString());
 			
+			//REF encoging: http://stackoverflow.com/questions/5084462/how-to-send-unicode-characters-in-an-httppost-on-android answered Feb 22 '11 at 22:38
+			se = new StringEntity(joBody.toString(), "UTF-8");
+			
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "joBody => Set \"UTF-8\"");
 			// Log
 			Log.d("TaskHTTP.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
