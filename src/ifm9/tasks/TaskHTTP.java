@@ -85,11 +85,30 @@ public class TaskHTTP extends AsyncTask<String, Integer, Integer> {
 //		JSONObject joRoot = new JSONObject();
 		
 		JSONObject joBody = new JSONObject();
+//		JSONObject joRoot = new JSONObject();
 		
 		try {
 			
-			joBody.put("file_name", "1_v1.png");
-			joBody.put("table_name", "IFM_Android");
+			joBody.put("file_name", ti.getFile_name());
+			joBody.put("table_name", ti.getTable_name());
+			
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "ti.getFile_name()=" + ti.getFile_name());
+			
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "ti.getTable_name()=" + ti.getTable_name());
+			
+//			joRoot.put("image_dev", joBody);
+//			joRoot.put("image", joBody);
+//			joBody.put("file_name", "1_v1.png");
+//			joBody.put("table_name", "IFM_Android");
 			
 		} catch (JSONException e) {
 			
@@ -107,7 +126,15 @@ public class TaskHTTP extends AsyncTask<String, Integer, Integer> {
 		StringEntity se;
 		try {
 			
+//			se = new StringEntity(joRoot.toString());
 			se = new StringEntity(joBody.toString());
+			
+			// Log
+			Log.d("TaskHTTP.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", "joBody.toString()=" + joBody.toString());
 			
 		} catch (UnsupportedEncodingException e) {
 			

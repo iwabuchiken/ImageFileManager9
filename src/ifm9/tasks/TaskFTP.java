@@ -47,9 +47,9 @@ public class TaskFTP extends AsyncTask<String, Integer, Integer> {
 		
 		if (ftpTags[0].equals(actv.getString(R.string.ftp_lollipop))) {
 
-//			res = MethodsFTP.ftp_connect_disconnect(actv, ti);
+			res = MethodsFTP.ftp_connect_disconnect(actv, ti);
 			
-			res = 1;
+//			res = 1;
 			
 //			if (res > 0) {
 //

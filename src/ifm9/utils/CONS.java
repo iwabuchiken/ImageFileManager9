@@ -31,10 +31,12 @@ public class CONS {
 	SQLiteDatabase db = null;
 
 	//
-	static String[] cols_with_index = 
-				{android.provider.BaseColumns._ID, 
-					"file_id", 		"file_path", "file_name", "date_added",
-					"date_modified", "memos", "tags"};
+	static String[] cols_with_index = {
+				// 0-2
+				android.provider.BaseColumns._ID,
+				// 3-6
+				"file_id", 		"file_path", "file_name", "date_added",
+				"date_modified", "memos", "tags"};
 	
 	static String[] col_types_with_index =
 				{	"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
@@ -59,8 +61,12 @@ public class CONS {
 		"INTEGER",			"TEXT",	"TEXT",		"INTEGER",
 		"String"};
 
-	static String[] cols_for_insert_data = 
-		{"file_id", 		"file_path", "file_name", "date_added", "date_modified"};
+	static String[] cols_for_insert_data = {
+				"file_id", "file_path",
+				"file_name",
+				"date_added", "date_modified",
+				"table_name"};
+//	{"file_id", 		"file_path", "file_name", "date_added", "date_modified"};
 
 	// Proj
 	static String[] proj = {

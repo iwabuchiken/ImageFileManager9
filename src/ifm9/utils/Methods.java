@@ -889,7 +889,10 @@ public class Methods {
 //						c.getLong(5)		// date_modified
 						c.getLong(7),		// date_modified
 						c.getString(8),	// memos
-						c.getString(10)	// tags
+//						c.getString(10)	// tags
+						c.getString(9),	// tags
+						c.getLong(10),	// tags
+						c.getString(11)	// tags
 						
 				);
 				
@@ -1851,7 +1854,9 @@ public class Methods {
 					c.getString(1),
 					c.getString(2),
 					String.valueOf(c.getLong(3)),
-					String.valueOf(c.getLong(4))
+//					String.valueOf(c.getLong(4))
+					String.valueOf(c.getLong(4)),
+					MainActv.tname_main,
 			};
 
 			/*----------------------------
