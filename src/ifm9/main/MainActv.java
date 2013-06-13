@@ -230,7 +230,6 @@ public class MainActv extends ListActivity {
 //		check_db();
 //		show_column_list();
 		
-        
     }//public void onCreate(Bundle savedInstanceState)
 
     private void setup_tablet() {
@@ -362,6 +361,39 @@ public class MainActv extends ListActivity {
 	}//private void setup()
 
 	private void do_debug() {
+		
+		/***************************************
+		 * Processing
+		 ***************************************/
+		File dname = new File("/mnt/sdcard-ext/processing");
+		
+		if (dname.exists()) {
+			
+			for (String fname : dname.list()) {
+				
+				// Log
+				Log.d("MainActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber()
+						+ ":"
+						+ Thread.currentThread().getStackTrace()[2]
+								.getMethodName() + "]",
+					"fname=" + fname);
+				
+			}
+			
+		} else {//if (dname.exists())
+			
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ ":"
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+					+ "]", dname.getName() + " => Doesn't exist");
+			
+		}//if (dname.exists())
+		
 		/*********************************
 		 * 6. Drop table
 		 * 7. Add new col => "last_viewed_at"
@@ -370,7 +402,7 @@ public class MainActv extends ListActivity {
 //		test_simple_format();
 //		restore_db("ifm9_backup_20121001_140224.bk");
 //		check_db();
-		show_column_list("IFM9__Android");
+//		show_column_list("IFM9__Android");
 //		10-01 15:05:54.408: D/MainActv.java[260](14946): New col added to: IFM9__Android
 
     	/*********************************
